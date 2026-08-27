@@ -136,11 +136,11 @@ def load_jobs_counts() -> pd.DataFrame:
         Island jobs are split by land area, "approximately 80.5% ... within the City of Coronado
         and 19.5% ... within the City of San Diego."
 
-    This is a **multi-site employer correction** -- the same defect ``metrics/adjustments/
-    multi_site.py`` is built to detect from open data. In the 6th cycle it was found by a phone
-    call to Naval Facilities Engineering Command, four months after the draft allocation was
-    issued, and only because Coronado could afford to appeal. That is the case for computing it
-    in the open.
+    This is a **multi-site employer correction** -- the same defect that
+    ``metrics/adjustments/multi_site.py`` is specified to detect from open data, and which is not
+    yet built. In the 6th cycle it was found by a phone call to Naval Facilities Engineering
+    Command, four months after the draft allocation was issued, and only because Coronado could
+    afford to appeal. That is the case for computing it in the open.
 
     Source:
         SANDAG Employment Estimates: a blend of EDD QCEW job spaces filled with a five-year

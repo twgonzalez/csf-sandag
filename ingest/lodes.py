@@ -11,12 +11,14 @@ Three things a reader needs to know before using these numbers:
 which is in the **second quarter (April-June)** of the vintage year. It is a single-quarter
 snapshot, not an annual average. A beach resort, an agricultural packing shed, and a school
 district all look different in Q2 than they do in January.
-:mod:`metrics.adjustments.seasonality` converts this to annualised full-time equivalents.
+Annualising this to full-time equivalents is specified as ``metrics/adjustments/seasonality.py``
+and is not yet built.
 
 **Workplace geocoding.** A job is assigned to the block of the employer's reporting unit, which
 for a multi-site employer is often headquarters rather than the site where the work happens. A
 school district's 4,000 employees can land on the block holding the district office.
-:mod:`metrics.adjustments.multi_site` detects and corrects this.
+Detecting and correcting this is specified as ``metrics/adjustments/multi_site.py`` and is not
+yet built.
 
 **Earnings bands are nominal.** CE01/CE02/CE03 split jobs at $1,250 and $3,333 per month. Those
 thresholds are fixed in nominal dollars and are *not* indexed across vintages, so they drift

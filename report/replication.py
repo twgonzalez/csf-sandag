@@ -223,7 +223,8 @@ Reading this table:
   was issued, and only because Coronado could afford to appeal.
 
   This is exactly the multi-site employer defect that `metrics/adjustments/multi_site.py` is
-  built to detect from open data, before an allocation is issued rather than after.
+  specified to detect from open data, before an allocation is issued rather than after. That
+  module is not yet built; see `docs/status.md`.
 
 ## What could not be reproduced from open data
 

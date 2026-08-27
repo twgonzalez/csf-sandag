@@ -5,9 +5,10 @@ allocation from a proprietary blend.
 
 The counts here are **unadjusted Q2 job counts**. Three corrections stand between them and a
 number fit to allocate housing on, and each is a separate, toggleable function in
-``metrics/adjustments/``: multi-site employer redistribution, QCEW reconciliation to county
-sector totals, and seasonal annualisation to full-time equivalents. Using
-:func:`workplace_jobs` directly in a methodology means accepting all three defects.
+``metrics/adjustments/`` -- multi-site employer redistribution, QCEW reconciliation to county
+sector totals, and seasonal annualisation to full-time equivalents. **None of the three is built
+yet** (see ``docs/status.md``), so using :func:`workplace_jobs` in a methodology today means
+accepting all three defects.
 """
 
 from __future__ import annotations

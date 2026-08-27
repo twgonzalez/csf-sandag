@@ -260,7 +260,8 @@ SOURCES: dict[str, Source] = {
         notes=(
             "Jobs counted at the WORKPLACE block. Reference period is the second quarter "
             "(April-June) of the vintage year, so a single-quarter snapshot -- not an annual "
-            "average. metrics/adjustments/seasonality.py converts it to annualized FTE."
+            "average. Annualising it to FTE is specified as metrics/adjustments/seasonality.py, "
+            "which is NOT YET BUILT -- see docs/status.md."
         ),
     ),
     "lodes_rac": Source(

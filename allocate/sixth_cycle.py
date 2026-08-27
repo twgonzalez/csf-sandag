@@ -1,6 +1,7 @@
 """Replication of SANDAG's adopted 6th-cycle allocation.
 
-This is the validation milestone. It is deliberately kept out of :mod:`allocate.model`, because
+This is the validation milestone. It is deliberately kept out of the general tract-scored
+allocator planned as ``allocate/model.py``, because
 the adopted 6th-cycle method scores *jurisdictions* directly -- station counts and jurisdiction
 job totals -- which Hard constraint 2 forbids for any methodology this pipeline would propose.
 It is here to prove the arithmetic in ``allocate/`` is right, not to be adopted.

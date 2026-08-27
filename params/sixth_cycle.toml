@@ -1,7 +1,7 @@
 # SANDAG's adopted 6th-cycle RHNA methodology, expressed as parameters.
 #
 # This file documents the adopted rule in the pipeline's own vocabulary. It is NOT usable by the
-# general tract-scored allocator in allocate/model.py, because the adopted method scores
+# general tract-scored allocator planned as allocate/model.py (not yet built), because it scores
 # jurisdictions directly and Hard constraint 2 forbids that for any methodology this pipeline
 # would propose. It is run by allocate/sixth_cycle.py, the replication harness.
 #
