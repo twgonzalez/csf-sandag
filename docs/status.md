@@ -7,6 +7,9 @@ anything else. That is where this stands: **milestone 1 is complete and passing*
 are partially built to the depth the replication and the first feature table needed, and Layers 3
 and 4 exist in the form the replication required.
 
+**What happens next is in [plan.md](plan.md)** — seven phases, each ending in a report a person
+can check without reading code.
+
 ---
 
 ## Milestone 1 — 6th-cycle replication: PASS
@@ -81,7 +84,7 @@ data before an allocation is issued. It is not yet built (see below).
 | Transit access (GTFS) | **not built** |
 | Street network capacity | **not built** |
 | Hazard constraint index | **not built** |
-| Evacuation capacity (JOSH interface) | **not built** |
+| Evacuation capacity (NUREG/CR-7002 method, in-repo) | **not built** — Phase 4 |
 | Multi-site correction | **not built** |
 | QCEW reconciliation | **not built** |
 | Seasonality / FTE annualisation | **not built** |
@@ -209,7 +212,7 @@ built. Until they are, `jobs_total` should not carry weight in any candidate met
 ## Open questions for the project owner
 
 These need a decision before the work they block can proceed. None of them blocks anything
-currently built.
+currently built. The full sequencing is in [plan.md](plan.md).
 
 1. **AMI-based affordability.** The fit metric currently uses LODES wage bands, which are fixed
    in nominal dollars and drift against area median income every year. Keying it to HCD's
@@ -224,10 +227,11 @@ currently built.
    column totals until a determination is issued — a placeholder RHND, or the 6th-cycle
    determination resplit into six?
 
-3. **Evacuation capacity.** The brief calls for a stub interface for an external per-tract
-   evacuation score from JOSH. The sibling project at `../csf-josh` computes this per city on a
-   road network, not per tract. Should the interface take a tract score directly, or should the
-   pipeline apportion a city-level JOSH result to tracts — and if so, on what weight?
+3. **Mitigation assumption for wildfire exposure.** *(Replaces the earlier question about a JOSH
+   interface. Evacuation capacity is now computed in this repository from NUREG/CR-7002 Rev. 1
+   rather than taken from an external score — see [plan.md](plan.md), Phase 4.)* A unit built to
+   current WUI standards is not the risk the surrounding older stock is. Should the safety axis
+   report raw exposure, mitigation-adjusted exposure, or both?
 
 4. **The transit component has no open replacement yet.** 65% of the 6th-cycle allocation ran on
    SANDAG ABM output. A GTFS-based accessibility metric is the obvious open substitute, but the
