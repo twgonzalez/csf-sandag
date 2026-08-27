@@ -1,0 +1,25 @@
+# Exploration is never committed (project convention: no notebooks in main)
+scratch/
+*.ipynb
+
+# Cached downloads and derived data are reproducible from code; do not commit
+data/raw/
+data/interim/
+data/processed/
+reports/
+
+# Environment
+.venv/
+
+# Secrets. CENSUS_API_KEY lives here; it must never be committed. The pipeline runs without it
+# (see docs/status.md, "Census API key") -- the key is a speed-up, never a correctness dependency.
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# OS
+.DS_Store

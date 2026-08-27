@@ -1,0 +1,89 @@
+# SANDAG's adopted 6th-cycle RHNA methodology, expressed as parameters.
+#
+# This file documents the adopted rule in the pipeline's own vocabulary. It is NOT usable by the
+# general tract-scored allocator in allocate/model.py, because the adopted method scores
+# jurisdictions directly and Hard constraint 2 forbids that for any methodology this pipeline
+# would propose. It is run by allocate/sixth_cycle.py, the replication harness.
+#
+# Source for every number below: SANDAG, Final 6th Cycle Regional Housing Needs Assessment Plan
+# (adopted 2020-07-10), and the 6th Cycle RHNA Methodology (adopted 2019-11-22).
+
+[methodology]
+name = "sixth_cycle"
+label = "SANDAG adopted 6th-cycle methodology"
+cycle = 6
+adopted = "2020-07-10"
+geography = "jurisdiction"          # replication only; 7th-cycle methodologies must use "tract"
+replication_only = true
+source = "https://www.sandag.org/-/media/SANDAG/Documents/PDF/projects-and-programs/regional-initiatives/housing-land-use/6th-cycle-regional-housing-needs-assessment-plan-2020-07-10.pdf"
+
+[determination]
+# The RHND is an input, never an output. Hard constraint 1.
+total = 171685
+issued_by = "California Department of Housing and Community Development"
+issued = "2018-07-05"
+planning_period = "2021-04-30 to 2029-04-30"
+
+[determination.by_income_category]
+# HCD's split of the determination, in units. These are the control column totals.
+# The percentages printed in methodology Table 3 (24.7 / 15.5 / 17.3 / 42.5) are these counts
+# rounded, and do not reproduce them: 0.247 x 171,685 = 42,406, not 42,332.
+very_low = 42332
+low = 26627
+moderate = 29734
+above_moderate = 72992
+
+# ---------------------------------------------------------------------------------------------
+# Factors. Every factor is screened against Gov. Code 65584.04(e)(2)(B) at load time by
+# allocate/guardrails.py before any allocation runs.
+# ---------------------------------------------------------------------------------------------
+
+[factors.rail_rapid_stations]
+weight = 0.4875                     # 65% transit x 75% rail & Rapid
+units = 83696
+description = "Jurisdiction share of the region's 154 rail and Rapid bus stations"
+source = "SANDAG Activity Based Model, Release v14.0.1, Forecast Year 2025 No Build, Reference Scenario #242, January 2019"
+public = false
+public_gap = "Model output. Only the 19 jurisdiction counts were published, in Plan Table 4.1."
+
+[factors.major_transit_stops]
+weight = 0.1625                     # 65% transit x 25% major transit stops
+units = 27899
+description = "Jurisdiction share of the region's 140 major transit stops, defined as the intersection of two or more bus routes running at 15-minute peak headways"
+source = "SANDAG Activity Based Model, Release v14.0.1, Forecast Year 2020, Reference Scenario #243, January 2019"
+public = false
+public_gap = "Model output. Only the 19 jurisdiction counts were published, in Plan Table 4.1."
+
+[factors.total_jobs]
+weight = 0.35
+units = 60090
+description = "Jurisdiction share of the region's jobs, all types, full-time or part-time, year-round or seasonal"
+source = "SANDAG Employment Estimates: EDD QCEW job spaces filled with a five-year LODES average, plus SDMAC and DMDC military counts"
+public = false
+public_gap = "Blend is internal. Only the 19 jurisdiction totals were published, in Plan Table 4.2. metrics/jobs.py builds the open-data replacement."
+
+# ---------------------------------------------------------------------------------------------
+# Income-category split
+# ---------------------------------------------------------------------------------------------
+
+[income_split]
+rule = "inverse_ratio_equity"
+description = "A jurisdiction's share of its allocation in an income category is the regional share of households in that category, scaled by the inverse ratio of the jurisdiction's household share to the region's."
+formula = "regional_share^2 / jurisdiction_household_share"
+source = "6th Cycle RHNA Methodology, Appendix FAQ #15, p. 27; households from ACS 2012-2016 5-Year Table B19001"
+statutory_basis = "Gov. Code 65584(d)(4)"
+public = true
+
+[income_split.reconciliation]
+# NOT stated in the adopted methodology or the adopted Plan. Recovered by working backwards from
+# the published allocation. See reports/sixth_cycle_replication.md.
+rule = "iterative_proportional_fitting"
+description = "The equity shares do not sum to 1.0 within a jurisdiction, so the resulting matrix is fitted to both margins: jurisdiction totals from the factors above, and HCD's income-category totals."
+row_margin = "jurisdiction totals from the transit and jobs factors"
+column_margin = "determination.by_income_category"
+source = "inferred; absent from all published documentation"
+tolerance = 1e-10
+
+[rounding]
+rule = "largest_remainder"
+description = "Fractional allocations are floored, then leftover units are given to the cells with the largest discarded fractions, so column totals stay exact. Ties break by jurisdiction name for determinism."

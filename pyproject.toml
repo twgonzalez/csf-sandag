@@ -1,0 +1,61 @@
+[project]
+name = "sandag-rhna"
+version = "0.1.0"
+description = "Open-data allocation pipeline for the SANDAG 7th-cycle Regional Housing Needs Allocation (RHNA)"
+readme = "README.md"
+requires-python = "==3.12.*"
+
+# Every dependency is pinned to an exact version. Constraint 7 (Deterministic):
+# the same inputs and parameters must produce byte-identical outputs, which is
+# only true if the library versions are fixed as tightly as the data vintages.
+dependencies = [
+    "pandas==2.2.3",
+    "pyarrow==18.1.0",
+    "numpy==2.1.3",
+    "geopandas==1.0.1",
+    "shapely==2.0.6",
+    "pyproj==3.7.0",
+    "fiona==1.10.1",
+    "osmnx==2.0.1",
+    "networkx==3.4.2",
+    "requests==2.32.3",
+    "click==8.1.8",
+    "rich==13.9.4",
+    "pypdf==5.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "ruff==0.8.4",
+]
+
+[project.scripts]
+rhna = "cli:cli"
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+include = ["ingest", "metrics", "allocate", "report", "cli.py", "config.py", "cache.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "network: test requires downloading real public data (deselect with '-m \"not network\"')",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# report/replication.py holds the markdown report template as an f-string. Its long lines are
+# prose destined for a rendered document, not code, and hard-wrapping them would put line breaks
+# in the middle of sentences a planner reads.
+"report/replication.py" = ["E501"]

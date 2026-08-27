@@ -1,0 +1,20 @@
+jurisdiction,name,sandag_open_data_name,methodology_pdf_name,place_geoid,kind
+carlsbad,Carlsbad,CARLSBAD,Carlsbad,0611194,city
+chula_vista,Chula Vista,CHULA VISTA,Chula Vista,0613392,city
+coronado,Coronado,CORONADO,Coronado,0616378,city
+del_mar,Del Mar,DEL MAR,Del Mar,0618506,city
+el_cajon,El Cajon,EL CAJON,El Cajon,0621712,city
+encinitas,Encinitas,ENCINITAS,Encinitas,0622678,city
+escondido,Escondido,ESCONDIDO,Escondido,0622804,city
+imperial_beach,Imperial Beach,IMPERIAL BEACH,Imperial Beach,0636294,city
+la_mesa,La Mesa,LA MESA,La Mesa,0640004,city
+lemon_grove,Lemon Grove,LEMON GROVE,Lemon Grove,0641124,city
+national_city,National City,NATIONAL CITY,National City,0650398,city
+oceanside,Oceanside,OCEANSIDE,Oceanside,0653322,city
+poway,Poway,POWAY,Poway,0658520,city
+san_diego,San Diego,SAN DIEGO,San Diego,0666000,city
+san_marcos,San Marcos,SAN MARCOS,San Marcos,0668196,city
+santee,Santee,SANTEE,Santee,0670224,city
+solana_beach,Solana Beach,SOLANA BEACH,Solana Beach,0672506,city
+vista,Vista,VISTA,Vista,0682996,city
+unincorporated,Unincorporated County,SAN DIEGO COUNTY,Unincorporated County,,unincorporated
