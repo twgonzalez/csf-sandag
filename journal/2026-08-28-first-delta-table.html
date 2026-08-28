@@ -1,0 +1,189 @@
+<title>First Delta Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --sunk:#E8ECEE; --ink:#16232B; --muted:#5A6B74;
+  --rule:#D2DADE; --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F;
+  --signal-soft:#F6E7E1; --ok:#2E6B4F; --ok-soft:#E2EFE8;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+    --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+    --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+  --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+  --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1020px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+h1,h2,h3 { font-family:var(--display); text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2.1rem,5.5vw,3.4rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; }
+h2 { font-size:clamp(1.3rem,2.8vw,1.7rem); font-weight:700; letter-spacing:-.018em; }
+h3 { font-size:1.05rem; font-weight:700; }
+p { margin:0; max-width:66ch; }
+.eyebrow { font-family:var(--mono); font-size:.7rem; font-weight:500; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--muted); }
+code,.cite { font-family:var(--mono); font-size:.855em; color:var(--accent); }
+.masthead { border-bottom:2px solid var(--ink); padding-bottom:2rem; }
+.masthead .eyebrow { display:block; margin-bottom:1rem; }
+.standfirst { font-size:clamp(1.02rem,2vw,1.18rem); color:var(--muted); margin-top:1.2rem; max-width:58ch; }
+.badges { display:flex; flex-wrap:wrap; gap:.55rem 2rem; margin-top:1.8rem;
+  font-family:var(--mono); font-size:.775rem; color:var(--muted); }
+.badges b { color:var(--ink); font-weight:500; }
+section { margin-top:clamp(2.6rem,5.5vw,4rem); }
+.section-head { display:flex; align-items:baseline; gap:1rem; padding-bottom:.65rem;
+  border-bottom:1px solid var(--rule); margin-bottom:1.5rem; }
+.section-head h2 { flex:1; }
+.gate-card { background:var(--ok-soft); border-left:3px solid var(--ok); padding:1.4rem 1.6rem;
+  display:flex; flex-direction:column; gap:.5rem; }
+.gate-card .stat { font-family:var(--display); font-size:2.6rem; font-weight:800;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--ok); }
+.gate-card p { font-size:.92rem; color:var(--muted); }
+.warn { background:var(--signal-soft); border-left:3px solid var(--signal);
+  padding:1.1rem 1.3rem; margin-top:1rem; }
+.warn p { font-size:.92rem; color:var(--muted); }
+.warn p strong { color:var(--signal); }
+.chart { background:var(--surface); border:1px solid var(--rule); padding:1.4rem 1.5rem 1.1rem; }
+.chart-title { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.3rem 1rem;
+  align-items:baseline; margin-bottom:.4rem; }
+.chart-title .src { font-family:var(--mono); font-size:.7rem; color:var(--muted); }
+.axis-labels { display:grid; grid-template-columns:10.5rem 1fr 1fr 4rem; gap:0 .7rem;
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:.5rem; }
+.axis-labels .l { text-align:right; } .axis-labels .r { text-align:left; }
+.drow { display:grid; grid-template-columns:10.5rem 1fr 1fr 4rem; align-items:center;
+  gap:0 .7rem; padding:.2rem 0; }
+.drow .lbl { font-size:.83rem; text-align:right; white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis; }
+.drow .neg { display:flex; justify-content:flex-end; border-right:2px solid var(--rule); height:.75rem; }
+.drow .pos { display:flex; justify-content:flex-start; height:.75rem; }
+.drow .bar-n { background:var(--signal); height:100%; border-radius:2px 0 0 2px; min-width:0; }
+.drow .bar-p { background:var(--accent); height:100%; border-radius:0 2px 2px 0; min-width:0; }
+.drow .val { font-family:var(--mono); font-size:.76rem; font-variant-numeric:tabular-nums;
+  color:var(--muted); text-align:right; }
+.chart-note { font-size:.875rem; color:var(--muted); margin-top:1rem; max-width:62ch; }
+@media (max-width:560px){ .drow,.axis-labels{grid-template-columns:6.8rem 1fr 1fr 3.4rem;}
+  .drow .lbl{font-size:.73rem;} }
+.recon { background:var(--surface); border:1px solid var(--rule); padding:1.2rem 1.4rem; }
+.recon ul { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.4rem; }
+.recon li { font-size:.9rem; color:var(--muted); }
+.recon li b { color:var(--ink); font-weight:500; }
+.recon li::marker { color:var(--ok); }
+footer { margin-top:4rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.75rem; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:.5rem 1.8rem; }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important;} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Journal entry · Milestone D1</span>
+    <h1>The first delta table</h1>
+    <p class="standfirst">
+      The tract-scored allocator is real. Its first run — the resource-only baseline — against the
+      6th-cycle determination of 171,685 units, beside the allocation SANDAG actually adopted.
+      Same total in both columns; every difference is pure redistribution.
+    </p>
+    <div class="badges">
+      <span>Commit &nbsp;<b>5365e88</b></span>
+      <span>Tests &nbsp;<b>113 passing</b></span>
+      <span>Both columns sum to &nbsp;<b>171,685</b></span>
+      <span>Deltas sum to &nbsp;<b>0</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>The AFFH gate constant, now measured</h2></div>
+    <div class="gate-card">
+      <span class="eyebrow" style="color:var(--ok)">Share of lower-income units in High / Highest Resource tracts</span>
+      <span class="stat">0.9946</span>
+      <p>
+        Every future candidate methodology must meet or beat this number before the pipeline will
+        emit it. The gap to 1.0000 is the statutory nonzero floor — 1% of each category spread
+        across all tracts so all 19 jurisdictions receive units in every income category, as
+        <span class="cite">§65584(d)(1)</span> requires — priced exactly.
+      </p>
+      <p>
+        The adopted 6th cycle has <strong>no measurable value on this axis</strong>: it allocated
+        to jurisdictions, never to tracts, so its AFFH performance cannot be computed from the
+        adopted documents. A tract-scored methodology is auditable on the fair-housing objective
+        in a way the adopted one structurally cannot be.
+      </p>
+    </div>
+    <div class="warn">
+      <p><strong>This baseline is a measuring stick, not a proposal.</strong> It answers one
+      question — where would units go if fair housing were the only lower-income driver — so that
+      real candidates can be scored against it. Quoting its numbers as a recommendation misreads
+      the design.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Resource-only minus adopted, by jurisdiction</h2></div>
+    <div class="chart">
+      <div class="chart-title">
+        <h3>Change in total allocation (units)</h3>
+        <span class="src">reports/delta_vs_sixth_cycle/jurisdiction_totals.csv</span>
+      </div>
+      <div class="axis-labels"><span></span><span class="l">fewer than adopted&nbsp;</span><span class="r">&nbsp;more than adopted</span><span></span></div>
+      <div class="drow"><span class="lbl">Unincorporated County</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:57.5%"></div></div><span class="val">+14,384</span></div>
+      <div class="drow"><span class="lbl">Carlsbad</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:23.4%"></div></div><span class="val">+5,855</span></div>
+      <div class="drow"><span class="lbl">Encinitas</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:15.3%"></div></div><span class="val">+3,828</span></div>
+      <div class="drow"><span class="lbl">Oceanside</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:8.9%"></div></div><span class="val">+2,217</span></div>
+      <div class="drow"><span class="lbl">Poway</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:8.5%"></div></div><span class="val">+2,120</span></div>
+      <div class="drow"><span class="lbl">San Marcos</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:6.7%"></div></div><span class="val">+1,672</span></div>
+      <div class="drow"><span class="lbl">Santee</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:6.0%"></div></div><span class="val">+1,502</span></div>
+      <div class="drow"><span class="lbl">Vista</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:3.9%"></div></div><span class="val">+973</span></div>
+      <div class="drow"><span class="lbl">Coronado</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:3.6%"></div></div><span class="val">+893</span></div>
+      <div class="drow"><span class="lbl">Chula Vista</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:3.5%"></div></div><span class="val">+887</span></div>
+      <div class="drow"><span class="lbl">Solana Beach</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:1.9%"></div></div><span class="val">+465</span></div>
+      <div class="drow"><span class="lbl">Del Mar</span><div class="neg"></div><div class="pos"><div class="bar-p" style="width:1.4%"></div></div><span class="val">+362</span></div>
+      <div class="drow"><span class="lbl">El Cajon</span><div class="neg"><div class="bar-n" style="width:0.7%"></div></div><div class="pos"></div><span class="val">−187</span></div>
+      <div class="drow"><span class="lbl">La Mesa</span><div class="neg"><div class="bar-n" style="width:1.3%"></div></div><div class="pos"></div><span class="val">−330</span></div>
+      <div class="drow"><span class="lbl">Imperial Beach</span><div class="neg"><div class="bar-n" style="width:1.9%"></div></div><div class="pos"></div><span class="val">−479</span></div>
+      <div class="drow"><span class="lbl">Lemon Grove</span><div class="neg"><div class="bar-n" style="width:2.3%"></div></div><div class="pos"></div><span class="val">−573</span></div>
+      <div class="drow"><span class="lbl">National City</span><div class="neg"><div class="bar-n" style="width:15.7%"></div></div><div class="pos"></div><span class="val">−3,926</span></div>
+      <div class="drow"><span class="lbl">Escondido</span><div class="neg"><div class="bar-n" style="width:18.6%"></div></div><div class="pos"></div><span class="val">−4,650</span></div>
+      <div class="drow"><span class="lbl">San Diego</span><div class="neg"><div class="bar-n" style="width:100%"></div></div><div class="pos"></div><span class="val">−25,013</span></div>
+      <p class="chart-note">
+        Bars scaled to San Diego city's −25,013. What the shape says: pure resource weighting
+        moves lower-income housing <em>out of</em> the lower-resource jurisdictions — National
+        City −72%, Escondido −48%, Lemon Grove −42% — and <em>into</em> the high-resource ones.
+        That is the fair-housing objective as arithmetic. San Diego falls because the adopted
+        transit component weighted it even harder than its 56% share of high-resource housing;
+        the unincorporated county rises most in absolute units because it holds the region's
+        largest stock. Santee, which wants more housing, gets +123% on resource grounds alone —
+        before any capacity factor is applied.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Reconciliation</h2></div>
+    <div class="recon">
+      <ul>
+        <li>Adopted column: <b>171,685</b> — cross-checked against Plan Table 4.7 and the open-data portal this run</li>
+        <li>Resource-only column: <b>171,685</b> — zero-sum asserted per category in code</li>
+        <li>Category totals equal HCD's determination: <b>42,332 / 26,627 / 29,734 / 72,992</b></li>
+        <li>Every jurisdiction nonzero in every category: <b>asserted, §65584(d)(1)</b></li>
+        <li>Every jurisdiction number recomputable from <b>resource_only_tracts.csv</b> plus the published crosswalk</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Journal entry · frozen at commit 5365e88</span>
+    <span>Rule: params/resource_only.toml · Report: reports/delta_vs_sixth_cycle.md</span>
+  </footer>
+</div>
