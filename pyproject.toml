@@ -22,6 +22,7 @@ dependencies = [
     "click==8.1.8",
     "rich==13.9.4",
     "pypdf==5.1.0",
+    "openpyxl==3.1.5",
 ]
 
 [project.optional-dependencies]
@@ -59,3 +60,4 @@ select = ["E", "F", "I", "UP", "B"]
 # prose destined for a rendered document, not code, and hard-wrapping them would put line breaks
 # in the middle of sentences a planner reads.
 "report/replication.py" = ["E501"]
+"report/opportunity.py" = ["E501"]

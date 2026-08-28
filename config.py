@@ -248,6 +248,43 @@ SOURCES: dict[str, Source] = {
         landing="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html",
         verified="2026-08-27",
     ),
+    # ---------------------------------------------------------------- opportunity (AFFH)
+    "tcac_opportunity_map": Source(
+        key="tcac_opportunity_map",
+        url="https://www.treasurer.ca.gov/sites/default/files/2025-11/summary_file.zip",
+        vintage="2026 map, adopted December 2025",
+        publisher=(
+            "California Tax Credit Allocation Committee and "
+            "California Department of Housing and Community Development"
+        ),
+        title="CTCAC/HCD Opportunity Map, Statewide Summary Table",
+        landing="https://www.treasurer.ca.gov/ctcac/opportunity",
+        verified="2026-08-27",
+        sha256="70c102bc41620308803e7d84f914555b4adae883554b234df4320142449527f2",
+        notes=(
+            "Contains final_opp_2026_public.xlsx: every input indicator, every regional median, "
+            "the composite Opportunity Score, the Opportunity Category, and the High-Poverty & "
+            "Segregated flag, for 11,337 California tracts and block groups. Because TCAC "
+            "publishes the inputs alongside the outputs, the score is exactly reproducible -- "
+            "see metrics/opportunity.py. Note the publisher serves this at a generic filename "
+            "(summary_file.zip) with no year in the path, so the pinned checksum is the only "
+            "thing distinguishing the 2026 file from a future reissue."
+        ),
+    ),
+    "tcac_opportunity_methodology": Source(
+        key="tcac_opportunity_methodology",
+        url="https://www.treasurer.ca.gov/sites/default/files/2025-11/Draft-2026-OM-Methodology.pdf",
+        vintage="2026 map methodology",
+        publisher="California Tax Credit Allocation Committee and California HCD",
+        title="Methodology for the 2026 CTCAC/HCD Opportunity Map",
+        landing="https://www.treasurer.ca.gov/ctcac/opportunity",
+        verified="2026-08-27",
+        notes=(
+            "The publisher serves this under a 'Draft-2026' filename although the accompanying "
+            "data file is named final_opp_2026_public.xlsx. Naming inconsistency is the "
+            "publisher's, not ours."
+        ),
+    ),
     # ---------------------------------------------------------------- jobs
     "lodes_wac": Source(
         key="lodes_wac",

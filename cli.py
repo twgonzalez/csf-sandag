@@ -53,6 +53,14 @@ def ingest(refresh: bool) -> None:
     tables = load_all(refresh=refresh)
     console.print(f"  ACS: {len(tables)} tables at tract level")
 
+    from ingest.opportunity_map import coverage
+
+    cover = coverage(refresh=refresh)
+    console.print(
+        f"  Opportunity Map: {cover['tcac_tracts']}/{cover['region_tracts']} tracts "
+        f"({cover['block_group_aggregated']} aggregated from block groups)"
+    )
+
     console.print(f"  raw cache: {len(cache.manifest_rows())} files, checksums recorded")
 
 
@@ -90,6 +98,16 @@ def report() -> None:
     console.print("[bold]Layer 4: reports[/bold]")
     summary = build()
     console.print(f"  {summary['report_path']}")
+
+    from report.opportunity import build as build_opportunity
+
+    opportunity = build_opportunity()
+    console.print(f"  {opportunity['report_path']}")
+    console.print(
+        f"  capacity indicators ingested: "
+        f"{opportunity['capacity_indicators_available']}/"
+        f"{opportunity['capacity_indicators_total']}"
+    )
 
 
 @cli.command()
