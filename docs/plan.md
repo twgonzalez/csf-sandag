@@ -13,8 +13,24 @@ are pulled forward from Phase 6 into a standalone milestone, **D1**, because the
 Phase 1 data — see [workplan_delta.md](workplan_delta.md). The delta-vs-adopted harness gets
 built once, early, and each later phase adds a column to it instead of waiting for Phase 6.
 
-**Effort figures** below are weeks of one analyst working with this repository. They assume no
-parallel staffing; two people would compress phases 4 and 5, which are independent of each other.
+**Effort figures** below are working sessions of an AI agent driving this repository, with the
+project owner reviewing outputs and making the decisions only a human can make. The evidence for
+the calibration: milestone 0 (repo, ingest, crosswalk, allocator, exact replication, reports,
+tests) took one session; Phase 1 (Opportunity Map ingested and replicated exactly, capacity
+framework) took one session.
+
+What genuinely does NOT compress, in descending order of schedule risk:
+
+1. **Human decision gates** — the open questions, the chair's read at Gate A, the board's choice
+   at Gate B, the informal HCD conversation. These are the schedule now.
+2. **Data friction** — discovering that a source is stale, absent, or unpublished (the FHSZ
+   service vintage; sewer service-area boundaries). Probing is fast; dead ends still cost real
+   sessions, and the project convention — stop and ask rather than substitute a guess — inserts
+   deliberate human checkpoints.
+3. **Statutory clocks** — HCD's 60-day review and 45-day revision cycle under §65584.04(i) are
+   fixed in law.
+4. **Review discipline** — every report should be read by a person before it travels. That is a
+   feature.
 
 ---
 
@@ -76,7 +92,8 @@ the RHND and give every jurisdiction a nonzero allocation in every category.
 allocation passes the zero-sum and nonzero-per-jurisdiction tests already in
 `tests/test_integration.py`.
 
-**Depends on.** Nothing. **Effort.** 4 weeks.
+**Depends on.** Nothing. **Effort.** 1 session. **Status: complete** — score replicated
+exactly, 638/638; see `reports/opportunity_map.md`.
 
 ---
 
@@ -110,7 +127,8 @@ and there is no clean open dataset of those — it is likely hand-assembled from
 Quality Control Board orders. **Do not let the methodology's weight structure assume this measure
 lands.** If it does not, say so in the appendix under §65584.04(f) and carry the other two.
 
-**Depends on.** Nothing. **Effort.** 4 weeks.
+**Depends on.** Nothing. **Effort.** 2–4 sessions — the estimate is dominated by source
+discovery friction, not code; the FHSZ vintage trap has already cost part of one.
 
 ---
 
@@ -144,7 +162,8 @@ cannot be argued with on methodology grounds.
 **Gate A.** This report goes to the chair before any design commitment. It determines whether the
 orthogonal design is a preference or a requirement.
 
-**Depends on.** Phases 1 and 2. **Effort.** 3 weeks.
+**Depends on.** Phases 1 and 2. **Effort.** Under one session once inputs exist — the study
+is two published CSVs cross-tabulated, by design.
 
 ---
 
@@ -187,7 +206,9 @@ county with the modeled volume beside the observed count, and the residual. A tr
 audit it station by station. Uncalibrated tracts are labelled uncalibrated rather than quietly
 carrying a default.
 
-**Depends on.** Phase 2 for hazard overlay. **Effort.** 8 weeks. This is the largest phase.
+**Depends on.** Phase 2 for hazard overlay. **Effort.** 2–3 sessions. The county OSM graph
+builds in minutes and the routing is cheap; the real work is station-by-station calibration
+against published counts and the honesty accounting for OSM lane-tag coverage.
 
 ---
 
@@ -215,7 +236,9 @@ If it fails, we learn the detector is not yet good enough — before it matters.
 Every redistribution is logged with the site roster used and the size proxy applied, so a reader
 can check any one of them.
 
-**Depends on.** Nothing. Runs parallel to Phase 4. **Effort.** 5 weeks.
+**Depends on.** Nothing. Runs parallel to Phase 4. **Effort.** 2–3 sessions, dominated by
+assembling public site rosters (HCAI, CDE, campus and county facility lists) for the
+multi-site detector.
 
 ---
 
@@ -257,7 +280,8 @@ sums to 171,685, and the adopted column matches the replication already verified
 **Gate B.** The board picks a point on the frontier. Every point is lawful; the choice is
 political, and it should be made in the open with the numbers visible.
 
-**Depends on.** Phases 1–5. **Effort.** 6 weeks.
+**Depends on.** Phases 1–5, and open question 1 (six-category control totals) — a human
+decision. **Effort.** 1–2 sessions; the allocator itself is pulled forward into milestone D1.
 
 ---
 
@@ -275,34 +299,37 @@ vintage, and rule, in the format §65584.04(f) requires — plus the written exp
 `data/raw/manifest.json`. A reviewer can download any input and confirm the checksum matches the
 one the report was generated against.
 
-**Depends on.** Phase 6. **Effort.** 3 weeks.
+**Depends on.** Phase 6. **Effort.** 1 session — the appendix is generated from docstrings
+that already carry their citations.
 
 ---
 
-## Sequence and dates
+## Sequence
 
-Assuming a start in September 2026 and one analyst:
+Calendar dates dropped in favour of what actually gates each step. The technical critical path
+is **weeks of working sessions, not months**; the binding constraints are the human loops listed
+above.
 
-| | Phase | Finishes | Gate |
+| | Phase | Agent effort | What actually gates it |
 |---|---|---|---|
-| 1 | AFFH backbone | Oct 2026 | |
-| 2 | Constraint inventory | Nov 2026 | |
-| 3 | **Correlation study** | Dec 2026 | **Gate A — chair decision on design** |
-| 4 | Network and evacuation capacity | Mar 2027 | |
-| 5 | Jobs adjustments (parallel with 4) | Feb 2027 | |
-| 6 | Allocator, six categories, frontier | May 2027 | **Gate B — board picks a point** |
-| 7 | HCD package | Jul 2027 | |
+| 1 | AFFH backbone | **done** | — |
+| 2 | Constraint inventory | 2–4 sessions | Source discovery; sewer service-area existence |
+| 3 | **Correlation study** | <1 session | Phase 2 landing |
+| — | **Gate A** | — | **Board leadership review** |
+| 5 | Jobs adjustments | 2–3 sessions | Site-roster assembly; runs parallel to 4 |
+| 4 | Network and evacuation | 2–3 sessions | OSM tag coverage; calibration counts |
+| 6 | Allocator, six categories, frontier | 1–2 sessions | **Open question 1 — a human decision** |
+| — | **Gate B** | — | **The board's calendar** |
+| 7 | HCD package | 1 session | Phase 6 |
 
-That leaves roughly a quarter of slack before a draft methodology needs to reach HCD in late 2027,
-for a 7th-cycle allocation adopted around 2028 covering the April 2029 – April 2037 planning
-period. The slack is deliberate: §65584.04(i) allows HCD 60 days to review and, if it finds the
-methodology does not further the objectives, a further 45-day revision cycle.
+The late-2027 date for a draft methodology reaching HCD does not move — it is set by the
+adoption process and the §65584.04(i) clocks, not by build speed. What changes is the shape of
+the slack: **Gate A material can be in board leadership's hands in weeks**, which buys a year of
+lead time — time for the informal HCD conversation, the counsel check, and board
+socialisation — instead of the analysis arriving just in time to be argued about.
 
-**Critical path is Phase 3.** It is only three weeks of work but everything downstream is shaped by
-its result, and it depends on two phases that can run in parallel. If schedule pressure appears,
-protect Phase 3's inputs first.
-
----
+**Critical path is unchanged in kind: Phase 3.** It is now nearly free to compute, so the true
+critical path is the two phases feeding it plus the chair's availability to act on it.
 
 ## Recommended alongside the technical work
 

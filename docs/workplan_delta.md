@@ -110,7 +110,8 @@ HCD's category totals.
 cross-checked every run; each delta column must sum to zero by construction; any cell is
 recomputable from the tract CSV and the crosswalk CSV.
 
-**Effort.** Roughly a week and a half of focused work. No new downloads, so no source risk.
+**Effort.** One to two working sessions; D1.1 landed in under an hour of one. No new downloads,
+so no source-friction risk — this is the rare milestone with no external gate at all.
 
 ---
 
