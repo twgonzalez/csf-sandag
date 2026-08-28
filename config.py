@@ -356,6 +356,7 @@ ACS_TABLES: dict[str, str] = {
     "B19001": "Household income in the past 12 months (income distribution)",
     "B25056": "Contract rent (affordability level of the existing stock)",
     "B25077": "Median home value",
+    "B25044": "Tenure by vehicles available (evacuation demand per household)",
 }
 
 

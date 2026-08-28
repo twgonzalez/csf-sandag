@@ -34,8 +34,13 @@ PROHIBITED_PATTERNS: dict[str, list[str]] = {
         r"growth\s*cap",
         r"growth\s*control",
         r"growth\s*management",
-        r"permit\s*(cap|limit|allocation|quota)",
-        r"building\s*permit\s*limit",
+        # A permit cap or quota is essentially always the prohibited thing. A permit *limit* is
+        # ambiguous -- an NPDES discharge permit limit is a federal water-quality parameter and
+        # has nothing to do with building permits -- so that form requires residential context.
+        r"permit\s*(cap|quota)",
+        r"(building|residential|dwelling|housing)\s*permits?\s*(cap|limit|quota|allocation)",
+        r"permits?\s*(cap|limit|quota|allocation)\s*(on|for)\s*(housing|residential|dwelling|units?)",
+        r"limits?\s*the\s*number\s*of\s*residential\s*building\s*permits",
         r"measure\s*[a-z]\b",
         r"voter[\s_-]*approved",
         r"\bzoning\b",
@@ -101,6 +106,23 @@ class ProhibitedFactor(ValueError):
         super().__init__("\n".join(r.explain() for r in refusals))
 
 
+#: False positives a human has adjudicated, each with the reason it is not what it looks like.
+#: This exists so an ambiguous match is resolved in the open, in one auditable place, rather than
+#: by quietly widening or narrowing a regular expression until the tripwire stops firing. A
+#: pattern tuned until it stops complaining is a pattern that will miss the real thing later.
+#:
+#: Keyed by factor name; the value must state why the match is spurious.
+ACKNOWLEDGED_FALSE_POSITIVES: dict[str, str] = {
+    "sewer_units_accommodatable": (
+        "Matches on 'permit limits' in its source description. The reference is to NPDES "
+        "discharge permit limits -- a federal Clean Water Act parameter on treated effluent "
+        "volume -- not to a local limit on residential building permits. Gov. Code "
+        "65584.04(e) names sewer capacity as a factor a COG SHALL consider, so the underlying "
+        "measure is not merely permitted but required."
+    ),
+}
+
+
 def screen_factor(name: str, *, source: str = "", description: str = "") -> list[Refusal]:
     """Check one factor's name, source and description against the prohibited categories.
 
@@ -119,12 +141,17 @@ def screen_factor(name: str, *, source: str = "", description: str = "") -> list
         where: _NORMALISE.sub(" ", text or "")
         for where, text in (("name", name), ("source", source), ("description", description))
     }
+    acknowledged = name in ACKNOWLEDGED_FALSE_POSITIVES
     refusals = []
     for category, patterns in _COMPILED.items():
         for pattern in patterns:
             for where, text in haystacks.items():
                 match = pattern.search(text or "")
                 if match:
+                    if acknowledged:
+                        # Adjudicated as spurious; the reason is recorded in
+                        # ACKNOWLEDGED_FALSE_POSITIVES and surfaced by acknowledged_reasons().
+                        break
                     refusals.append(
                         Refusal(
                             factor=name,
@@ -172,3 +199,12 @@ def enforce(parameters: dict) -> None:
     refusals = screen_parameters(parameters)
     if refusals:
         raise ProhibitedFactor(refusals)
+
+
+def acknowledged_reasons() -> dict[str, str]:
+    """Factors whose statutory match a human has adjudicated as spurious, with the reason.
+
+    Reported alongside every screen result so that a suppressed match is visible rather than
+    silent. A reviewer should be able to see what the screen caught *and* chose not to refuse.
+    """
+    return dict(ACKNOWLEDGED_FALSE_POSITIVES)

@@ -13,7 +13,12 @@ import pandas as pd
 from config import REPORTS, SOURCES
 from ingest.crosswalk import load_crosswalk, roll_up_to_jurisdictions
 from ingest.opportunity_map import ALL_INDICATORS, _slug, coverage, load_opportunity_map
-from metrics.capacity import CAPACITY_DOMAINS, availability, check_guardrails
+from metrics.capacity import (
+    CAPACITY_DOMAINS,
+    SCORED_INDICATORS,
+    availability,
+    check_guardrails,
+)
 from metrics.opportunity import (
     check_category_banding,
     replicate_opportunity_score,
@@ -112,9 +117,12 @@ def build(*, write: bool = True) -> dict:
     )
 
     domain_rows = "\n".join(
-        f"| {d.label} | {len(d.indicators)} | "
+        f"| {d.label} | {sum(1 for i in d.indicators if i.scored)} | "
         f"{sum(1 for i in d.indicators if i.available)} | {d.statutory_text} |"
         for d in CAPACITY_DOMAINS
+    )
+    measure_rows = "\n".join(
+        f"| {i.label} | `{i.measure}` | {i.reported_as} |" for i in SCORED_INDICATORS
     )
 
     body = f"""# Opportunity Map and Capacity Map
@@ -239,11 +247,37 @@ a tract is at or above the regional median, add one. Three things follow.
    between the data and the reader.
 
 Domains mirror the statute rather than any analytic convenience, so that the §65584.04(f)
-explanation of how each factor was incorporated writes itself:
+explanation of how each factor was incorporated writes itself. **Evacuation is its own domain**,
+not a hazard footprint: a dense neighbourhood with two narrow outlets evacuates badly whether or
+not it is in a fire zone, and a ridge tract inside a Very High Fire Hazard Severity Zone with
+four arterials may evacuate fine.
 
-| Domain | Indicators | Ingested | Statutory text |
+| Domain | Scored indicators | Ingested | Statutory text |
 |---|---:|---:|---|
 {domain_rows}
+
+### The objective measures
+
+Every scored indicator is **marginal** — it asks what the next increment of housing costs, not
+how much is already there. That distinction is legally decisive: "100 units is 8% of Del Mar" is
+the prohibited stable-population argument, while "100 units adds six minutes of clearance time
+for 2,400 existing residents" is a physical fact about the increment, and §65584.04(e) names
+evacuation route capacity explicitly.
+
+| Indicator | Scored measure | Reported as |
+|---|---|---|
+{measure_rows}
+
+Density enters only as the numerator of a ratio whose denominator is an independently measured
+capacity. Density alone as a constraint is the prohibited argument wearing arithmetic.
+
+Full specification, including data sources, spatial join paths and open decisions:
+[`docs/capacity_indicators.md`](../docs/capacity_indicators.md).
+
+**Electrical capacity is registered but deliberately not scored.** §65584.04(e) names sewer and
+water; it does not name power. A methodology that moves a jurisdiction's units on electrical
+grounds invites the question "under which subdivision?" and there is no clean answer. The CPUC
+Integration Capacity Analysis data exists and is public — carry it as a diagnostic, not a factor.
 
 ### Status of each indicator
 
@@ -259,6 +293,15 @@ tract that physically cannot hold more.
 
 Every registered indicator is screened by `allocate/guardrails.py` before the map will build.
 Current screen result: **{"no refusals — all indicators permissible" if not check_guardrails() else "REFUSALS PRESENT"}**.
+
+One match was adjudicated rather than pattern-tweaked. The sewer indicator cites "NPDES permit
+limits", which the screen initially read as a residential building-permit cap. It is a Clean
+Water Act effluent parameter and has nothing to do with building permits — and §65584.04(e) names
+sewer capacity as a factor a COG *shall* consider, so refusing it would have blocked a required
+factor. The suppression is recorded with its reason in
+`allocate.guardrails.ACKNOWLEDGED_FALSE_POSITIVES` and surfaced on every screen, because a
+pattern quietly tuned until it stops complaining is a pattern that will miss the real thing
+later.
 
 ### Direction
 

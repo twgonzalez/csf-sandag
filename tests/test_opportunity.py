@@ -8,10 +8,12 @@ import pytest
 from metrics.capacity import (
     ALL_CAPACITY_INDICATORS,
     CAPACITY_DOMAINS,
+    SCORED_INDICATORS,
     capacity_category_from_score,
     check_guardrails,
     check_orientation,
     score_capacity,
+    scoring_set,
 )
 from metrics.opportunity import category_from_score
 
@@ -44,11 +46,39 @@ def test_every_capacity_indicator_passes_the_statutory_screen() -> None:
 
 
 def test_capacity_domains_mirror_the_statute() -> None:
-    """Three domains, one per capacity family named in Gov. Code 65584.04(e)."""
-    assert [d.key for d in CAPACITY_DOMAINS] == ["infrastructure", "land", "climate"]
+    """Evacuation is its own domain, not a hazard footprint.
+
+    Evacuation capacity is a network property: a dense neighbourhood with two narrow outlets
+    evacuates badly whether or not it is in a fire zone, and a ridge tract inside a Very High
+    Fire Hazard Severity Zone with four arterials may evacuate fine. Folding it into a hazard
+    domain conflates the two.
+    """
+    assert [d.key for d in CAPACITY_DOMAINS] == [
+        "evacuation",
+        "infrastructure",
+        "land",
+        "hazard",
+        "diagnostic",
+    ]
     for domain in CAPACITY_DOMAINS:
         assert domain.statutory_text
         assert domain.indicators
+
+
+def test_power_is_registered_but_never_scored() -> None:
+    """Gov. Code 65584.04(e) names sewer and water. It does not name electrical capacity."""
+    power = [i for i in ALL_CAPACITY_INDICATORS if i.name == "circuit_headroom"]
+    assert len(power) == 1
+    assert power[0].scored is False
+    assert power[0] not in SCORED_INDICATORS
+    assert "does not name" in power[0].statutory_basis
+
+
+def test_every_scored_indicator_states_an_objective_measure() -> None:
+    """'Absolute clarity' means a formula a reader can check, not a description."""
+    for indicator in SCORED_INDICATORS:
+        assert indicator.measure and ("/" in indicator.measure or "-" in indicator.measure)
+        assert indicator.reported_as
 
 
 def test_every_indicator_declares_a_source_and_statutory_basis() -> None:
@@ -60,16 +90,34 @@ def test_every_indicator_declares_a_source_and_statutory_basis() -> None:
 
 
 def test_share_indicators_are_oriented_so_higher_is_more_capacity() -> None:
-    good = pd.DataFrame({"share_outside_very_high_fire_hazard": [0.0, 0.5, 1.0]})
+    good = pd.DataFrame({"share_outside_vhfhsz": [0.0, 0.5, 1.0]})
     assert check_orientation(good) == []
 
-    inverted = pd.DataFrame({"share_outside_very_high_fire_hazard": [-0.2, 0.5, 1.4]})
+    inverted = pd.DataFrame({"share_outside_vhfhsz": [-0.2, 0.5, 1.4]})
     assert check_orientation(inverted)
+
+
+def test_scoring_uses_only_indicators_complete_for_every_tract() -> None:
+    """A tract scored on four indicators and one scored on six are not comparable."""
+    table = pd.DataFrame(
+        {
+            "tract_geoid": ["a", "b", "c"],
+            "share_land_unprotected": [0.9, 0.5, 0.1],
+            "share_outside_floodway": [0.9, None, 0.1],  # incomplete
+        }
+    )
+    usable, excluded = scoring_set(table)
+    assert usable == ["share_land_unprotected"]
+    assert "share_outside_floodway" in excluded
+
+    scored = score_capacity(table)
+    assert (scored["indicators_scored"] == 1).all()
+    assert "share_outside_floodway" in scored["indicators_excluded"].iloc[0]
 
 
 def test_scoring_refuses_when_no_indicator_is_ingested() -> None:
     """A capacity map with no capacity data must fail loudly, not score everything the same."""
-    with pytest.raises(ValueError, match="no capacity indicators are present"):
+    with pytest.raises(ValueError, match="no capacity indicator is complete"):
         score_capacity(pd.DataFrame({"tract_geoid": ["06073000100"]}))
 
 

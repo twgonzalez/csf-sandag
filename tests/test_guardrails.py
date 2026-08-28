@@ -98,3 +98,42 @@ def test_sixth_cycle_parameter_file_passes_the_guardrails() -> None:
 
     parameters = tomllib.loads(Path(PARAMS / "sixth_cycle.toml").read_text())
     enforce(parameters)
+
+
+# ---------------------------------------------------------------------------------------------
+# Precision: the screen must not refuse a factor the statute REQUIRES a COG to consider.
+# ---------------------------------------------------------------------------------------------
+
+
+def test_npdes_discharge_permit_limits_are_not_a_building_permit_cap() -> None:
+    """An NPDES permit limit is a Clean Water Act effluent parameter, not a permit quota.
+
+    Gov. Code 65584.04(e) names sewer capacity as a factor a COG *shall* consider, so refusing
+    it would be worse than a nuisance -- it would block a required factor.
+    """
+    from allocate.guardrails import acknowledged_reasons
+
+    refusals = screen_factor(
+        "sewer_units_accommodatable",
+        source="EPA ECHO NPDES permit limits and Discharge Monitoring Reports",
+        description="(permitted_capacity_mgd - current_average_flow_mgd) / per_unit_gpd",
+    )
+    assert refusals == []
+    assert "sewer_units_accommodatable" in acknowledged_reasons()
+
+
+def test_every_acknowledgement_states_a_reason() -> None:
+    """A suppressed match must be adjudicated in the open, never silently."""
+    from allocate.guardrails import acknowledged_reasons
+
+    for factor, reason in acknowledged_reasons().items():
+        assert len(reason) > 80, f"{factor} suppresses a match without a real justification"
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["residential_permit_cap", "building_permit_limit", "housing_permit_quota", "permit_quota"],
+)
+def test_real_permit_caps_still_refused_after_the_precision_fix(name: str) -> None:
+    """Narrowing the pattern must not create a false negative."""
+    assert screen_factor(name)

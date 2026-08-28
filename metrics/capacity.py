@@ -1,31 +1,27 @@
 """The Capacity Map — a tract-level companion to the CTCAC/HCD Opportunity Map.
 
-Gov. Code Sec. 65584.04(e) requires a council of governments to consider three families of
-physical capacity constraint. There is no published map of them. This module builds one, at tract
-level, for the SANDAG region.
+Gov. Code Sec. 65584.04(e) requires a council of governments to consider several families of
+physical capacity constraint. There is no published map of them. This module builds one.
 
-**It is scored by the Opportunity Map's own rule, on purpose.** TCAC computes a tract's score by
-counting the indicators on which it is at or above its region's median, and this map does exactly
-the same thing with capacity indicators. Three things follow:
+``docs/capacity_indicators.md`` is the authoritative specification: every objective measure, data
+source, spatial join path, and open decision. This module implements it. If the two disagree, the
+specification is right.
 
-1. The two maps are directly comparable. A 4x4 cross-tab of resource category against capacity
-   category is legible on one page, which is what Phase 3 of the plan needs.
-2. The scoring cannot be attacked as ad hoc. It is the state's own method, applied to a different
-   set of inputs.
-3. Nothing is weighted. There are no coefficients to argue about, no thumb on any scale, and
-   nobody has to take a modelling choice on trust.
+Three design rules run through everything here.
 
-**Direction matters and is stated once here.** A high capacity score means a tract is *more* able
-to accommodate housing. Every indicator below is therefore oriented so that more is better --
-a constraint indicator is stored as its complement (share *not* constrained), not as the
-constraint itself. :func:`check_orientation` enforces it.
+**Marginal, not stock.** Each indicator asks what the *next increment* of housing costs, not how
+much is already present. "100 units is 8% of Del Mar" is the prohibited stable-population
+argument; "100 units adds six minutes of clearance time for 2,400 existing residents" is a
+physical fact about the increment, and Sec. 65584.04(e) names evacuation route capacity by name.
 
-**What this map may never contain.** Zoned capacity, sites-inventory capacity, general plan
-buildout, permit history, and observed residential density are all excluded. The first four are
-prohibited by Gov. Code Sec. 65584.04(e)(2)(B). The fifth is excluded because "already built out"
-is the prohibited stable-population justification wearing an empirical hat: a tract that is dense
-today is not a tract that physically cannot hold more. Every indicator registered below is
-screened by :mod:`allocate.guardrails` before the map will build.
+**Density is demand, never capacity.** No indicator takes density as an input except as the
+numerator of a ratio whose denominator is an independently measured capacity. Density alone as a
+constraint is the prohibited argument wearing arithmetic.
+
+**Scored by the Opportunity Map's own rule.** Count the indicators on which a tract is at or above
+the regional median, add one -- the rule verified exactly against TCAC's published output in
+:mod:`metrics.opportunity`. Identical construction means the two maps cross-tabulate on one page,
+the scoring cannot be attacked as ad hoc, and nothing is weighted.
 """
 
 from __future__ import annotations
@@ -39,27 +35,34 @@ from allocate.guardrails import screen_factor
 
 @dataclass(frozen=True)
 class CapacityIndicator:
-    """One indicator in the Capacity Map.
+    """One indicator in the Capacity Map. See ``docs/capacity_indicators.md`` for the full spec.
 
     Attributes:
-        name: Stable snake_case column name. Oriented so that higher is more capacity.
-        label: How it should read in a report heading.
-        description: The rule, in a sentence a planner can check.
-        statutory_basis: The clause of Gov. Code Sec. 65584.04(e) it answers.
-        source: Publisher and dataset, as it will appear in the methodology appendix.
+        name: Stable column name for the **scored** form, oriented so higher is more capacity.
+        label: How it reads in a report heading.
+        measure: The objective measure, as a formula a reader can check.
+        reported_as: The interpretable continuous value published alongside the score, with its
+            unit. Often the reciprocal or complement of the scored form.
+        statutory_basis: The clause of Gov. Code Sec. 65584.04(e) it answers, or why it has none.
+        source: Publisher and dataset, as it appears in the methodology appendix.
         url: Where the data comes from.
-        available: Whether the ingest for it is built yet.
+        scored: Whether it enters the composite. ``False`` means diagnostic only.
+        available: Whether the ingest is built yet.
         gap: If unavailable, what is missing and what it would take.
+        caution: A known risk in using it, carried into every report that scores it.
     """
 
     name: str
     label: str
-    description: str
+    measure: str
+    reported_as: str
     statutory_basis: str
     source: str
     url: str
+    scored: bool = True
     available: bool = False
     gap: str = ""
+    caution: str = ""
 
 
 @dataclass(frozen=True)
@@ -72,10 +75,43 @@ class CapacityDomain:
     indicators: list[CapacityIndicator] = field(default_factory=list)
 
 
-#: The three capacity families named in Gov. Code Sec. 65584.04(e), with the indicators this
-#: pipeline uses for each. Domains mirror the statute rather than any analytic convenience, so
-#: that the Sec. 65584.04(f) explanation of "how each factor was incorporated" writes itself.
 CAPACITY_DOMAINS: list[CapacityDomain] = [
+    CapacityDomain(
+        key="evacuation",
+        label="Evacuation",
+        statutory_text="Emergency evacuation route capacity",
+        indicators=[
+            CapacityIndicator(
+                name="egress_headroom",
+                label="Egress headroom",
+                measure="egress_capacity_vph / (100 * vehicles_per_household)",
+                reported_as=(
+                    "Additional clearance time in minutes per 100 dwelling units: "
+                    "60 * 100 * vehicles_per_household / egress_capacity_vph"
+                ),
+                statutory_basis="Gov. Code 65584.04(e), emergency evacuation route capacity",
+                source=(
+                    "OpenStreetMap road network; ACS Table B25044 vehicles per household; "
+                    "NRC NUREG/CR-7002 Rev. 1 evacuation methodology; FHWA HPMS Field Manual "
+                    "Appendix N capacity parameters"
+                ),
+                url="https://www.nrc.gov/docs/ML2101/ML21013A504.pdf",
+                available=False,
+                gap=(
+                    "Phase 4. Egress capacity is a maximum flow from the tract to the regional "
+                    "exit set, not a sum of links crossing the tract boundary -- a boundary sum "
+                    "would show central Coronado as well served and miss entirely that "
+                    "everything funnels to one bridge two hops away."
+                ),
+                caution=(
+                    "If dense urban tracts score poorly on egress merely for being dense, this "
+                    "indicator steers housing away from urban cores, which are the "
+                    "lower-resource areas. Grids usually have many outlets and foothills few, so "
+                    "it may cut the other way. Measure before relying on it."
+                ),
+            ),
+        ],
+    ),
     CapacityDomain(
         key="infrastructure",
         label="Infrastructure",
@@ -85,24 +121,50 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
         ),
         indicators=[
             CapacityIndicator(
-                name="share_not_under_service_restriction",
-                label="Share of residential land not under a state or federal service restriction",
-                description=(
-                    "Complement of the share of a tract's residential land subject to a sewer or "
-                    "water connection restriction imposed by state or federal action. Locally "
-                    "chosen limits are excluded: the statute counts only restrictions arising "
-                    "from federal or state laws, regulations, regulatory actions, or supply and "
-                    "distribution decisions."
+                name="sewer_units_accommodatable",
+                label="Sewer headroom, in dwelling units",
+                measure=(
+                    "(permitted_capacity_mgd - current_average_flow_mgd) * 1e6 "
+                    "/ per_unit_wastewater_gpd"
                 ),
-                statutory_basis="Gov. Code 65584.04(e), sewer and water capacity",
-                source="State and Regional Water Quality Control Board orders",
-                url="https://www.waterboards.ca.gov/board_decisions/",
+                reported_as="Dwelling units of remaining permitted treatment capacity",
+                statutory_basis=(
+                    "Gov. Code 65584.04(e), sewer capacity from state or federal action"
+                ),
+                source=(
+                    "EPA ECHO NPDES permit limits and Discharge Monitoring Reports; "
+                    "SWRCB CIWQS enforcement orders as a hard override"
+                ),
+                url="https://echo.epa.gov/",
                 available=False,
                 gap=(
-                    "No clean open dataset of state or federal service restrictions exists. "
-                    "Likely hand-assembled from Water Board orders. This is the weakest of the "
-                    "three statutory capacity factors and the methodology's weight structure "
-                    "must not assume it lands -- see docs/plan.md, Phase 2."
+                    "Phase 2. Plant capacity is public; sewer service area boundaries are the "
+                    "question. If SanGIS does not publish district boundaries this loses tract "
+                    "resolution and should drop out of scoring rather than be smeared."
+                ),
+                caution=(
+                    "Sanitary sewer overflow records are evidence of strain, not a state-imposed "
+                    "restriction, and must never be used as the factor itself."
+                ),
+            ),
+            CapacityIndicator(
+                name="water_units_accommodatable",
+                label="Water supply headroom, in dwelling units",
+                measure="supply_headroom_acre_feet_per_year / per_unit_demand_af_per_year",
+                reported_as="Dwelling units of remaining supply headroom",
+                statutory_basis="Gov. Code 65584.04(e), water supply and distribution decisions",
+                source=(
+                    "DWR Urban Water Management Plans via WUEdata; State Water Project Table A "
+                    "allocations; US Bureau of Reclamation Colorado River shortage declarations"
+                ),
+                url="https://wuedata.water.ca.gov/",
+                available=False,
+                gap="Phase 2. Per-unit demand factors must be sourced from UWMPs, not assumed.",
+                caution=(
+                    "Expect this to do very little. The County Water Authority has diversified "
+                    "supply for two decades specifically so it can report sufficiency. A "
+                    "near-uniform indicator redistributes nothing; that is a finding, not a "
+                    "failure, and the weight structure must not assume this one lands."
                 ),
             ),
         ],
@@ -118,11 +180,8 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
             CapacityIndicator(
                 name="share_land_unprotected",
                 label="Share of tract land not permanently protected",
-                description=(
-                    "Complement of the share of tract land under a permanent conservation "
-                    "easement or public open-space designation. Protection is a federal, state "
-                    "or private conservation instrument, not a local land use designation."
-                ),
+                measure="1 - (protected_area / tract_land_area)",
+                reported_as="Share of tract land available, 0 to 1",
                 statutory_basis="Gov. Code 65584.04(e), protected lands",
                 source=(
                     "California Protected Areas Database (CPAD) and California Conservation "
@@ -130,97 +189,123 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                 ),
                 url="https://www.calands.org/",
                 available=False,
-                gap="Ingest not built. Phase 2.",
+                gap="Phase 2.",
+                caution=(
+                    "Protection means a federal, state or private conservation instrument. A "
+                    "local open-space designation is not protection for this purpose; counting "
+                    "it would be prohibited zoning reasoning."
+                ),
             ),
             CapacityIndicator(
                 name="share_outside_floodway",
                 label="Share of residential land outside the regulatory floodway",
-                description=(
-                    "Complement of the share of a tract's residential land inside the FEMA "
-                    "regulatory floodway. The floodway, not the wider 100-year floodplain, is "
-                    "used here: the floodplain is buildable with mitigation, the floodway is not."
-                ),
+                measure="1 - (residential_land_in_floodway / residential_land_area)",
+                reported_as="Share of residential land outside the floodway, 0 to 1",
                 statutory_basis="Gov. Code 65584.04(e), land suitable for urban development",
-                source="FEMA National Flood Hazard Layer",
+                source="FEMA National Flood Hazard Layer, zone designation FLOODWAY",
                 url="https://www.fema.gov/flood-maps/national-flood-hazard-layer",
                 available=False,
-                gap="Ingest not built. Phase 2.",
+                gap="Phase 2.",
+                caution=(
+                    "The regulatory floodway, not the 100-year floodplain. The floodplain is "
+                    "buildable with mitigation and holds a great deal of existing California "
+                    "housing; using it would exclude far more land than the statute "
+                    "contemplates and would read as constraint-shopping."
+                ),
             ),
         ],
     ),
     CapacityDomain(
-        key="climate",
-        label="Climate and evacuation",
-        statutory_text=(
-            "Emergency evacuation route capacity, wildfire risk, sea level rise, and other "
-            "impacts caused by climate change"
-        ),
+        key="hazard",
+        label="Hazard",
+        statutory_text="Wildfire risk, sea level rise, and other impacts caused by climate change",
         indicators=[
             CapacityIndicator(
-                name="share_outside_very_high_fire_hazard",
+                name="share_outside_vhfhsz",
                 label="Share of residential land outside Very High Fire Hazard Severity Zone",
-                description=(
-                    "Complement of the share of a tract's residential land in a Very High Fire "
-                    "Hazard Severity Zone, across both State and Local Responsibility Areas."
-                ),
+                measure="1 - (residential_land_in_VHFHSZ / residential_land_area)",
+                reported_as="Share of residential land outside VHFHSZ, 0 to 1",
                 statutory_basis="Gov. Code 65584.04(e), wildfire risk",
-                source="CAL FIRE Office of the State Fire Marshal, Fire Hazard Severity Zones",
+                source=(
+                    "CAL FIRE Office of the State Fire Marshal Fire Hazard Severity Zones, "
+                    "State Responsibility Area effective 2024-04-01 and Local Responsibility "
+                    "Area as recommended 2025-03-24"
+                ),
                 url=(
                     "https://osfm.fire.ca.gov/what-we-do/"
                     "community-wildfire-preparedness-and-mitigation/fire-hazard-severity-zones"
                 ),
                 available=False,
                 gap=(
-                    "Ingest not built. Current vintage is SRA effective 2024-04-01 and LRA as "
-                    "recommended 2025-03-24; the older statewide GIS service still serves 2007 "
-                    "SRA and 2011 LRA zones and must not be used. Phase 2."
+                    "Phase 2. Do NOT use the statewide GIS Fire_Severity_Zones service: it still "
+                    "serves 2007 SRA and 2011 LRA zones, confirmed 2026-08-27, and anything "
+                    "built on it would be silently eighteen years stale."
+                ),
+                caution=(
+                    "Hazard is the one family where stock and marginal converge: because units "
+                    "are allocated to tracts, a tract 80% in VHFHSZ gives an added unit roughly "
+                    "an 80% chance of landing in it, so the share is the marginal exposure. "
+                    "Whether exposure is reported raw or mitigation-adjusted is unresolved."
                 ),
             ),
             CapacityIndicator(
                 name="share_outside_slr_inundation",
                 label="Share of residential land outside modelled sea level rise inundation",
-                description=(
-                    "Complement of the share of a tract's residential land inside the modelled "
-                    "inundation extent for the pinned sea level rise scenario. The scenario is a "
-                    "parameter, not a constant, and the report states which one was used."
-                ),
+                measure="1 - (residential_land_in_inundation / residential_land_area)",
+                reported_as="Share of residential land outside inundation, 0 to 1",
                 statutory_basis="Gov. Code 65584.04(e), sea level rise",
                 source="USGS Coastal Storm Modeling System (CoSMoS)",
                 url="https://www.usgs.gov/centers/pcmsc/science/coastal-storm-modeling-system-cosmos",
                 available=False,
-                gap="Ingest not built. Scenario selection is an open question. Phase 2.",
+                gap="Phase 2.",
+                caution=(
+                    "The scenario is a parameter, not a constant. CoSMoS publishes several sea "
+                    "level rise and storm scenarios; which one is pinned is a policy choice that "
+                    "changes the result, and every report must state which produced its numbers."
+                ),
             ),
+        ],
+    ),
+    CapacityDomain(
+        key="diagnostic",
+        label="Diagnostic (not scored)",
+        statutory_text="Not named in Gov. Code 65584.04(e)",
+        indicators=[
             CapacityIndicator(
-                name="evacuation_route_capacity",
-                label="Emergency evacuation route capacity",
-                description=(
-                    "Per-tract egress capacity and clearance time, computed from the "
-                    "OpenStreetMap road network using the federal evacuation time estimate "
-                    "methodology, with link and intersection capacity from published federal "
-                    "parameters and calibration against public traffic counts."
+                name="circuit_headroom",
+                label="Electrical distribution circuit headroom",
+                measure="available_circuit_capacity_mw / per_unit_coincident_load_mw",
+                reported_as="Dwelling units of remaining circuit capacity",
+                statutory_basis=(
+                    "None. Section 65584.04(e) names sewer and water; it does not name "
+                    "electrical capacity."
                 ),
-                statutory_basis="Gov. Code 65584.04(e), emergency evacuation route capacity",
                 source=(
-                    "NRC NUREG/CR-7002 Rev. 1 methodology; FHWA HPMS Field Manual Appendix N "
-                    "capacity parameters; OpenStreetMap network"
+                    "CPUC-required Integration Capacity Analysis maps; SDG&E Grid Needs "
+                    "Assessment and Distribution Deferral Opportunity Report"
                 ),
-                url="https://www.nrc.gov/docs/ML2101/ML21013A504.pdf",
+                url="https://www.cpuc.ca.gov/",
+                scored=False,
                 available=False,
-                gap=(
-                    "Computed in this repository rather than taken from an external score. "
-                    "The Highway Capacity Manual itself is a licensed TRB publication and is not "
-                    "used; every parameter cites a free federal source. Phase 4."
+                gap="Diagnostic only. Not on any phase's critical path.",
+                caution=(
+                    "Deliberately unscored. A methodology that moves a jurisdiction's units on "
+                    "electrical grounds invites the question 'under which subdivision?' and "
+                    "there is no clean answer. Integration Capacity Analysis is also built for "
+                    "distributed energy interconnection rather than load growth, so it is an "
+                    "awkward fit technically as well as legally. Report it; do not weight it."
                 ),
             ),
         ],
     ),
 ]
 
-#: Flat list of every registered indicator.
 ALL_CAPACITY_INDICATORS = [i for d in CAPACITY_DOMAINS for i in d.indicators]
 
-#: Concepts that may never enter this map, with the reason. Checked by :func:`check_guardrails`
-#: in addition to the general screen in :mod:`allocate.guardrails`.
+#: Indicators that enter the composite score. Diagnostics are excluded by construction.
+SCORED_INDICATORS = [i for i in ALL_CAPACITY_INDICATORS if i.scored]
+
+#: Concepts that may never enter this map, with the reason.
 EXCLUDED_CONCEPTS = {
     "zoned capacity": (
         "Gov. Code 65584.04(e)(2)(B) — a local land use decision, not a physical constraint"
@@ -231,68 +316,86 @@ EXCLUDED_CONCEPTS = {
     "observed residential density": (
         "Not prohibited by name, but 'already built out' is the stable-population justification "
         "wearing an empirical hat. A tract that is dense today is not a tract that physically "
-        "cannot hold more."
+        "cannot hold more. Density may enter only as the numerator of a ratio whose denominator "
+        "is an independently measured capacity."
+    ),
+    "share of allocation relative to existing stock": (
+        "Proportional-to-stock reasoning protects small jurisdictions as a class. In this region "
+        "small jurisdictions are disproportionately affluent and coastal, so the rule is "
+        "AFFH-regressive by construction."
     ),
 }
 
 
 def check_guardrails() -> list[str]:
-    """Screen every registered capacity indicator against the statutory prohibitions.
+    """Screen every registered indicator against the statutory prohibitions.
 
     Returns:
-        A list of refusal explanations. Empty means every indicator is permissible.
+        Refusal explanations. Empty means every indicator is permissible.
     """
-    refusals = []
-    for indicator in ALL_CAPACITY_INDICATORS:
+    return [
+        refusal.explain()
+        for indicator in ALL_CAPACITY_INDICATORS
         for refusal in screen_factor(
-            indicator.name, source=indicator.source, description=indicator.description
-        ):
-            refusals.append(refusal.explain())
-    return refusals
+            indicator.name, source=indicator.source, description=indicator.measure
+        )
+    ]
 
 
 def check_orientation(table: pd.DataFrame) -> list[str]:
-    """Confirm every indicator column is oriented so that higher means more capacity.
+    """Confirm every share indicator is oriented so higher means more capacity.
 
-    Share indicators are complements of a constraint, so they must lie in ``[0, 1]``. An
-    indicator outside that range is either not a share or has been stored as the constraint
-    rather than its complement, and either way the composite score would come out backwards.
-
-    Args:
-        table: A capacity feature table.
-
-    Returns:
-        A list of problems. Empty means the orientation holds.
+    Share indicators are complements of a constraint, so they must lie in ``[0, 1]``. Anything
+    outside that range has been stored as the constraint rather than its complement, and the
+    composite would come out backwards without any single number looking implausible.
     """
     problems = []
     for indicator in ALL_CAPACITY_INDICATORS:
-        if indicator.name not in table.columns:
-            continue
-        if not indicator.name.startswith("share_"):
+        if indicator.name not in table.columns or not indicator.name.startswith("share_"):
             continue
         column = table[indicator.name].dropna()
         if len(column) and (column.min() < 0 or column.max() > 1):
             problems.append(
                 f"{indicator.name} ranges [{column.min():.3f}, {column.max():.3f}], outside "
-                "[0, 1]. Share indicators must be stored as the complement of the constraint, "
-                "so that higher always means more capacity."
+                "[0, 1]. Share indicators must be stored as the complement of the constraint."
             )
     return problems
 
 
-def availability() -> pd.DataFrame:
-    """Which capacity indicators are built and which are still pending, with the reason.
+def scoring_set(table: pd.DataFrame) -> tuple[list[str], list[str]]:
+    """Split registered scored indicators into those usable for scoring and those excluded.
 
-    This is deliberately a first-class output rather than a footnote. A capacity map missing its
-    evacuation indicator is a different map, and a reader has to be able to see that at a glance.
+    Rule:
+        Only indicators present and complete for **every** tract in the region are scored. A
+        tract scored on four indicators and one scored on six are not comparable, and a
+        fraction-of-available scheme hides that behind a number that looks meaningful.
+
+    Args:
+        table: Candidate capacity feature table.
+
+    Returns:
+        ``(usable, excluded)`` -- lists of indicator names.
     """
+    usable, excluded = [], []
+    for indicator in SCORED_INDICATORS:
+        if indicator.name in table.columns and table[indicator.name].notna().all():
+            usable.append(indicator.name)
+        else:
+            excluded.append(indicator.name)
+    return usable, excluded
+
+
+def availability() -> pd.DataFrame:
+    """Which indicators are built, which are pending, and which are diagnostic only."""
     return pd.DataFrame(
         [
             {
                 "domain": domain.label,
                 "indicator": indicator.label,
+                "measure": indicator.measure,
                 "statutory_basis": indicator.statutory_basis,
                 "source": indicator.source,
+                "scored": indicator.scored,
                 "available": indicator.available,
                 "gap": indicator.gap,
             }
@@ -305,32 +408,29 @@ def availability() -> pd.DataFrame:
 def score_capacity(
     table: pd.DataFrame, *, regional_medians: pd.Series | None = None
 ) -> pd.DataFrame:
-    """Score tracts by the CTCAC/HCD Opportunity Map's own rule, applied to capacity indicators.
+    """Score tracts by the Opportunity Map's own rule, applied to capacity indicators.
 
     Rule:
-        Count the indicators on which the tract is at or above the regional median, and add one::
+        ``capacity_score = count(indicator >= regional median) + 1``
 
-            capacity_score = count(indicator >= regional median) + 1
+        This is the rule TCAC uses, verified exactly against its published output in
+        :func:`metrics.opportunity.replicate_opportunity_score`. There is no capacity equivalent
+        of the environmental burden flag, so nothing is subtracted.
 
-        This is the rule TCAC uses for the Opportunity Map, verified exactly against its published
-        output in :func:`metrics.opportunity.replicate_opportunity_score`. Using it here means the
-        two maps are constructed identically and can be cross-tabulated without any weighting
-        choice standing between the data and the reader.
-
-        There is no capacity equivalent of the environmental burden flag, so nothing is
-        subtracted.
+        Medians are unweighted across tracts, matching TCAC's own basis, and are taken over the
+        same tract population.
 
     Args:
-        table: Tract feature table containing the available capacity indicator columns.
-        regional_medians: Median of each indicator across the region. Computed from ``table`` if
-            omitted. Pass explicitly when scoring a subset against the whole region's medians.
+        table: Tract feature table containing capacity indicator columns.
+        regional_medians: Median of each usable indicator. Computed from ``table`` if omitted.
 
     Returns:
-        The input frame plus ``indicators_scored``, ``capacity_score``, and ``capacity_category``.
+        The input frame plus ``indicators_scored``, ``indicators_excluded``, ``capacity_score``,
+        and ``capacity_category``.
 
     Raises:
-        ValueError: If no registered indicator is present in ``table``, if the guardrail screen
-            refuses an indicator, or if orientation is wrong.
+        ValueError: If an indicator fails the statutory screen, orientation is wrong, or no
+            indicator is usable.
     """
     refusals = check_guardrails()
     if refusals:
@@ -340,24 +440,24 @@ def score_capacity(
     if problems:
         raise ValueError("capacity indicator orientation is wrong:\n" + "\n".join(problems))
 
-    present = [i.name for i in ALL_CAPACITY_INDICATORS if i.name in table.columns]
-    if not present:
-        pending = [i.label for i in ALL_CAPACITY_INDICATORS if not i.available]
+    usable, excluded = scoring_set(table)
+    if not usable:
+        pending = [i.label for i in SCORED_INDICATORS if not i.available]
         raise ValueError(
-            "no capacity indicators are present in the feature table. The Capacity Map cannot be "
-            "scored until at least one indicator is ingested. Pending:\n  - "
-            + "\n  - ".join(pending)
+            "no capacity indicator is complete for every tract, so the Capacity Map cannot be "
+            "scored. Pending ingest:\n  - " + "\n  - ".join(pending)
         )
 
     if regional_medians is None:
-        regional_medians = table[present].median()
+        regional_medians = table[usable].median()
 
     out = table.copy()
-    at_or_above = sum((out[c] >= regional_medians[c]).astype("int64") for c in present)
-    out["indicators_scored"] = len(present)
+    at_or_above = sum((out[c] >= regional_medians[c]).astype("int64") for c in usable)
+    out["indicators_scored"] = len(usable)
+    out["indicators_excluded"] = ", ".join(excluded)
     out["capacity_score"] = at_or_above + 1
     out["capacity_category"] = out["capacity_score"].map(
-        lambda s: capacity_category_from_score(s, len(present))
+        lambda s: capacity_category_from_score(s, len(usable))
     )
     return out
 
@@ -366,18 +466,10 @@ def capacity_category_from_score(score: int, n_indicators: int) -> str:
     """Bin a capacity score into four categories, matching the Opportunity Map's four.
 
     Rule:
-        The score runs from 1 to ``n_indicators + 1``. That range is cut into quarters, so the
-        categories mean the same thing regardless of how many indicators are available -- which
-        matters because the map will gain indicators as Phase 2 and Phase 4 land, and a category
-        that shifted meaning between vintages would make any comparison worthless.
-
-    Args:
-        score: The tract's capacity score.
-        n_indicators: How many indicators were scored.
-
-    Returns:
-        ``"Highest Capacity"``, ``"High Capacity"``, ``"Moderate Capacity"``, or
-        ``"Low Capacity"``.
+        The score runs from 1 to ``n_indicators + 1``. That range is cut into quarters, so a
+        category means the same thing regardless of how many indicators were available -- which
+        matters because the map gains indicators as Phase 2 and Phase 4 land, and a category that
+        shifted meaning between vintages would make any comparison worthless.
     """
     span = n_indicators + 1
     fraction = (score - 1) / span if span else 0.0
@@ -388,3 +480,27 @@ def capacity_category_from_score(score: int, n_indicators: int) -> str:
     if fraction >= 0.25:
         return "Moderate Capacity"
     return "Low Capacity"
+
+
+def cross_tab(opportunity: pd.DataFrame, capacity: pd.DataFrame, *, weight: str) -> pd.DataFrame:
+    """The 4x4 resource-by-capacity matrix that Phase 3 turns on.
+
+    Args:
+        opportunity: Frame with ``tract_geoid`` and ``opportunity_category``.
+        capacity: Frame with ``tract_geoid`` and ``capacity_category``.
+        weight: Column in ``capacity`` to sum in each cell, e.g. 2020 housing units. Pass a
+            column of ones for tract counts.
+
+    Returns:
+        Opportunity categories as rows, capacity categories as columns.
+    """
+    joined = opportunity[["tract_geoid", "opportunity_category"]].merge(
+        capacity[["tract_geoid", "capacity_category", weight]], on="tract_geoid", how="inner"
+    )
+    return joined.pivot_table(
+        index="opportunity_category",
+        columns="capacity_category",
+        values=weight,
+        aggfunc="sum",
+        fill_value=0,
+    )
