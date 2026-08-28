@@ -1,0 +1,246 @@
+<title>The Capacity Gradient</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --sunk:#E8ECEE; --ink:#16232B; --muted:#5A6B74;
+  --rule:#D2DADE; --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F;
+  --signal-soft:#F6E7E1; --ok:#2E6B4F; --ok-soft:#E2EFE8;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+    --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+    --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+  --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+  --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1020px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+h1,h2,h3 { font-family:var(--display); text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2.1rem,5.5vw,3.4rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; }
+h2 { font-size:clamp(1.3rem,2.8vw,1.7rem); font-weight:700; letter-spacing:-.018em; }
+h3 { font-size:1.05rem; font-weight:700; }
+p { margin:0; max-width:66ch; }
+.eyebrow { font-family:var(--mono); font-size:.7rem; font-weight:500; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--muted); }
+.cite,code { font-family:var(--mono); font-size:.855em; color:var(--accent); }
+.masthead { border-bottom:2px solid var(--ink); padding-bottom:2rem; }
+.masthead .eyebrow { display:block; margin-bottom:1rem; }
+.standfirst { font-size:clamp(1.02rem,2vw,1.18rem); color:var(--muted); margin-top:1.2rem; max-width:58ch; }
+.badges { display:flex; flex-wrap:wrap; gap:.55rem 2rem; margin-top:1.8rem;
+  font-family:var(--mono); font-size:.775rem; color:var(--muted); }
+.badges b { color:var(--ink); font-weight:500; }
+section { margin-top:clamp(2.6rem,5.5vw,4rem); }
+.section-head { display:flex; align-items:baseline; gap:1rem; padding-bottom:.65rem;
+  border-bottom:1px solid var(--rule); margin-bottom:1.5rem; }
+.section-head h2 { flex:1; }
+
+/* headline pair */
+.pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1rem; }
+.big { background:var(--surface); border:1px solid var(--rule); padding:1.3rem 1.5rem;
+  display:flex; flex-direction:column; gap:.4rem; }
+.big.a { border-top:3px solid var(--signal); }
+.big.b { border-top:3px solid var(--accent); }
+.big .n { font-family:var(--display); font-size:2.6rem; font-weight:800; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; }
+.big.a .n { color:var(--signal); } .big.b .n { color:var(--accent); }
+.big p { font-size:.9rem; color:var(--muted); }
+
+/* heatmap */
+.heat { background:var(--surface); border:1px solid var(--rule); padding:1.4rem 1.5rem 1.2rem; overflow-x:auto; }
+.heat-inner { min-width:34rem; }
+.hgrid { display:grid; grid-template-columns:9.5rem repeat(4,1fr); gap:4px; }
+.hcell { padding:.55rem .6rem; border-radius:3px; display:flex; flex-direction:column; gap:.1rem; min-height:3.4rem; justify-content:center; }
+.hcell .u { font-family:var(--mono); font-size:.82rem; font-variant-numeric:tabular-nums; font-weight:600; }
+.hcell .pc { font-family:var(--mono); font-size:.68rem; opacity:.75; }
+.hlabel { display:flex; align-items:center; font-size:.8rem; font-weight:600; text-align:right;
+  justify-content:flex-end; padding-right:.6rem; }
+.hhead { font-family:var(--mono); font-size:.63rem; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); display:flex; align-items:flex-end; padding:.2rem .6rem; }
+.heat-note { font-size:.875rem; color:var(--muted); margin-top:1rem; max-width:64ch; }
+
+.verdict { background:var(--signal-soft); border-left:3px solid var(--signal); padding:1.3rem 1.5rem;
+  display:flex; flex-direction:column; gap:.6rem; }
+.verdict .lede { font-family:var(--display); font-size:1.18rem; font-weight:700; line-height:1.35; max-width:52ch; }
+.verdict p { font-size:.92rem; color:var(--muted); }
+.room { background:var(--ok-soft); border-left:3px solid var(--ok); padding:1.2rem 1.4rem; margin-top:1rem; }
+.room p { font-size:.92rem; color:var(--muted); }
+.room p strong { color:var(--ok); }
+
+.caveats { display:flex; flex-direction:column; gap:1.1rem; }
+.cv { display:grid; grid-template-columns:2rem 1fr; gap:0 .85rem; }
+.cv-n { font-family:var(--mono); font-size:.8rem; font-weight:600; color:var(--accent); padding-top:.1rem; }
+.cv p { font-size:.92rem; color:var(--muted); }
+.cv p strong { color:var(--ink); }
+
+.src-table { overflow-x:auto; border:1px solid var(--rule); background:var(--surface); }
+table { border-collapse:collapse; width:100%; font-size:.86rem; min-width:30rem; }
+th,td { text-align:left; padding:.6rem .9rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+tbody tr:last-child td { border-bottom:none; }
+thead th { font-family:var(--mono); font-size:.66rem; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); background:var(--sunk); white-space:nowrap; }
+footer { margin-top:4rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.75rem; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:.5rem 1.8rem; }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important;} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Journal entry · Phase 2 (partial)</span>
+    <h1>The capacity gradient runs backwards</h1>
+    <p class="standfirst">
+      First measurement of physical capacity against the state's fair-housing map, on the land
+      and hazard axes: the region's lower-resource urban core is its least constrained ground,
+      and its high-resource areas carry the fire and protected-land burden.
+    </p>
+    <div class="badges">
+      <span>Commit &nbsp;<b>3f48a04</b></span>
+      <span>Indicators &nbsp;<b>3 of 7 ingested</b></span>
+      <span>Tracts scored &nbsp;<b>737</b></span>
+      <span>Tests &nbsp;<b>117 passing</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>The finding in two numbers</h2></div>
+    <div class="pair">
+      <div class="big a">
+        <span class="eyebrow" style="color:var(--signal)">Highest Resource tracts that are Highest Capacity</span>
+        <span class="n">19.4%</span>
+        <p>The places the fair-housing objective sends lower-income units carry the region's
+        physical constraint — fire hazard and protected land.</p>
+      </div>
+      <div class="big b">
+        <span class="eyebrow" style="color:var(--accent)">Low Resource tracts that are Highest Capacity</span>
+        <span class="n">52.7%</span>
+        <p>The least physically constrained ground in the county is the lower-resource urban
+        core. The gradient is monotonic across all four resource categories.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>The cross-tab</h2><span class="eyebrow">2020 housing units · shading by row share</span></div>
+    <div class="heat"><div class="heat-inner">
+      <div class="hgrid">
+        <div></div>
+        <div class="hhead">Highest Capacity</div><div class="hhead">High Capacity</div><div class="hhead">Moderate Capacity</div><div class="hhead">Low Capacity</div>
+
+        <div class="hlabel">Highest Resource</div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 21%, var(--surface))"><span class="u">71,267</span><span class="pc">19.4%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 33%, var(--surface))"><span class="u">114,569</span><span class="pc">31.2%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 45%, var(--surface))"><span class="u">157,356</span><span class="pc">42.9%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 8%, var(--surface))"><span class="u">23,489</span><span class="pc">6.4%</span></div>
+
+        <div class="hlabel">High Resource</div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 31%, var(--surface))"><span class="u">60,990</span><span class="pc">29.9%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 38%, var(--surface))"><span class="u">74,453</span><span class="pc">36.5%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 31%, var(--surface))"><span class="u">61,107</span><span class="pc">30.0%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 5%, var(--surface))"><span class="u">7,428</span><span class="pc">3.6%</span></div>
+
+        <div class="hlabel">Moderate Resource</div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 30%, var(--surface))"><span class="u">58,744</span><span class="pc">29.1%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 44%, var(--surface))"><span class="u">84,820</span><span class="pc">42.1%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 27%, var(--surface))"><span class="u">52,439</span><span class="pc">26.0%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 4%, var(--surface))"><span class="u">5,545</span><span class="pc">2.8%</span></div>
+
+        <div class="hlabel">Low Resource</div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 55%, var(--surface))"><span class="u">239,511</span><span class="pc">52.7%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 32%, var(--surface))"><span class="u">141,063</span><span class="pc">31.0%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 15%, var(--surface))"><span class="u">66,170</span><span class="pc">14.5%</span></div>
+        <div class="hcell" style="background:color-mix(in srgb, var(--accent) 3%, var(--surface))"><span class="u">8,103</span><span class="pc">1.8%</span></div>
+
+        <div class="hlabel" style="font-weight:400;color:var(--muted)">Not scored by TCAC</div>
+        <div class="hcell" style="background:var(--sunk)"><span class="u">760</span><span class="pc">52.4%</span></div>
+        <div class="hcell" style="background:var(--sunk)"><span class="u">685</span><span class="pc">47.2%</span></div>
+        <div class="hcell" style="background:var(--sunk)"><span class="u">6</span><span class="pc">0.4%</span></div>
+        <div class="hcell" style="background:var(--sunk)"><span class="u">0</span><span class="pc">0.0%</span></div>
+      </div>
+      <p class="heat-note">
+        Every 2020 housing unit lands in exactly one cell (conservation is asserted by a test).
+        The bottom row holds the 10 tracts the state publishes without an Opportunity Score —
+        1,451 real units a methodology must handle explicitly rather than drop. Any cell is
+        recomputable from <code>capacity_by_tract.csv</code>.
+      </p>
+    </div></div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>What it means</h2></div>
+    <div class="verdict">
+      <p class="lede">Capacity-as-reducer is empirically an AFFH regression in this region — not
+      just a legal risk.</p>
+      <p>
+        A methodology that lowered jurisdictions' allocations for physical constraint would move
+        units from high-resource to low-resource areas: the precise opposite of Gov. Code
+        <span class="cite">§65584(d)(5)</span>. Gate A asked whether the orthogonal design —
+        capacity siting units <em>within</em> resource bins, never choosing the bins — is a
+        preference or a requirement. On the axes measured: <strong>a requirement.</strong> The
+        finding is frozen in a test, so a data revision that flips it fails the build loudly.
+      </p>
+    </div>
+    <div class="room">
+      <p><strong>And the orthogonal design has real room to work.</strong> 71,267 housing units
+      sit in tracts that are both Highest Resource and Highest Capacity; the Highest Resource row
+      spreads across all four capacity bins. Capacity-based siting inside the AFFH gate has
+      genuine choices to make — the gate is not a straitjacket.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>What this does not yet say</h2></div>
+    <div class="caveats">
+      <div class="cv"><span class="cv-n">01</span><p><strong>Three of seven indicators.</strong>
+        Fire, floodway, and protected land are measured. Sea level rise awaits the scenario
+        decision; sewer and water await their sources; evacuation is Phase 4.</p></div>
+      <div class="cv"><span class="cv-n">02</span><p><strong>The two missing heavyweights are not
+        alike.</strong> Sea level rise is near-certain to strengthen the gradient — the modelled
+        inundation sits under the expensive coast. <strong>Evacuation is genuinely open in either
+        direction:</strong> it is measured as bottleneck headroom on the road network, not a
+        hazard footprint, and dense urban tracts routing through saturated interchanges could
+        score poorly merely for being dense — which would put evacuation capacity <em>with</em>
+        opportunity, against this gradient. Phase 4 measures it; nothing here assumes the
+        answer.</p></div>
+      <div class="cv"><span class="cv-n">03</span><p><strong>External reconciliation is owed.</strong>
+        Overlay totals against CAL FIRE's county acreage summaries and CPAD's county statistics,
+        before this map goes near a board.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Sources, as verified</h2></div>
+    <div class="src-table">
+      <table>
+        <thead><tr><th>Layer</th><th>Vintage</th><th>Verified by</th></tr></thead>
+        <tbody>
+          <tr><td>CAL FIRE FHSZ, State Responsibility Area</td><td>Adopted 2024-04-01</td><td>Publisher's own item description</td></tr>
+          <tr><td>CAL FIRE FHSZ, Local Responsibility Area</td><td>Map dated 2025-03-24, all phases</td><td>Publisher's own item description</td></tr>
+          <tr><td>FEMA NFHL regulatory floodway</td><td>Live service, fetch date in manifest</td><td>ZONE_SUBTY = FLOODWAY only</td></tr>
+          <tr><td>CPAD protected holdings</td><td>2026a release</td><td>CNRA resource, checksummed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1rem;font-size:.875rem;color:var(--muted)">
+      The stale-service trap, recorded again: the statewide GIS Fire_Severity_Zones service still
+      serves 2007/2011 zones. This work uses the OSFM services whose own descriptions state the
+      current vintages.
+    </p>
+  </section>
+
+  <footer>
+    <span>Journal entry · frozen at commit 3f48a04</span>
+    <span>Report: reports/capacity_map.md · Spec: docs/capacity_indicators.md</span>
+  </footer>
+</div>
