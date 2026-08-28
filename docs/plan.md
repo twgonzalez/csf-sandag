@@ -8,6 +8,11 @@ reproducible by anyone with a laptop.
 [`reports/sixth_cycle_replication.md`](../reports/sixth_cycle_replication.md). This plan covers
 what follows.
 
+**Re-sequencing note (2026-08-28).** The tract-scored allocator and the resource-only baseline
+are pulled forward from Phase 6 into a standalone milestone, **D1**, because they need only
+Phase 1 data — see [workplan_delta.md](workplan_delta.md). The delta-vs-adopted harness gets
+built once, early, and each later phase adds a column to it instead of waiting for Phase 6.
+
 **Effort figures** below are weeks of one analyst working with this repository. They assume no
 parallel staffing; two people would compress phases 4 and 5, which are independent of each other.
 
