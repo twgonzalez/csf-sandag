@@ -87,7 +87,18 @@ def allocate() -> None:
     console.print("[bold]Layer 3: allocation[/bold]")
     result = allocate_sixth_cycle()
     result.to_parquet(PROCESSED / "allocation_sixth_cycle.parquet")
-    console.print(f"  sixth_cycle: {int(result['total'].sum()):,} units across 19 jurisdictions")
+    console.print(f"  sixth_cycle (replication): {int(result['total'].sum()):,} units")
+
+    from allocate.model import allocate as run_model
+    from allocate.model import to_jurisdictions
+    from allocate.params import load_methodology
+    from config import RHND_6TH_CYCLE_BY_CATEGORY
+
+    methodology = load_methodology("resource_only")
+    tracts = run_model(methodology, RHND_6TH_CYCLE_BY_CATEGORY)
+    juris = to_jurisdictions(tracts, RHND_6TH_CYCLE_BY_CATEGORY)
+    juris.to_parquet(PROCESSED / "allocation_resource_only.parquet")
+    console.print(f"  resource_only (tract-scored): {int(juris['total'].sum()):,} units")
 
 
 @cli.command()
@@ -98,6 +109,12 @@ def report() -> None:
     console.print("[bold]Layer 4: reports[/bold]")
     summary = build()
     console.print(f"  {summary['report_path']}")
+
+    from report.delta import build as build_delta
+
+    delta = build_delta()
+    console.print(f"  {delta['report_path']}")
+    console.print(f"  AFFH gate constant: {delta['affh_baseline_share']:.4f}")
 
     from report.opportunity import build as build_opportunity
 

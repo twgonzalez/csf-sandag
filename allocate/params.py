@@ -48,20 +48,28 @@ class Factor:
     """One allocation factor, as declared in a parameter file.
 
     Attributes:
-        name: The factor's key in the file. Must name a column in the tract feature table by the
-            time the allocator runs (checked there, not here -- the loader has no data).
-        weight: Share of the category's units this factor distributes. Weights across factors
-            addressing the same income group must sum to 1; checked by the allocator.
+        name: The factor's key in the file.
+        weight: Share of each applicable category's units this factor distributes. Weights across
+            factors addressing the same income category must sum to 1; checked by the allocator.
         source: Where the underlying data comes from. Required -- an uncited factor is refused,
             because the methodology appendix under Sec. 65584.04(f) is generated from these
             declarations and an empty citation would surface there.
         description: The rule, in a sentence. Required, same reason.
+        column: The tract feature-table column this factor reads as its mass. Required for a
+            tract-scored methodology; the allocator refuses a factor whose column is absent from
+            the feature table. Empty only in the archived jurisdiction-scored file.
+        applies_to: Income categories this factor distributes. ``None`` means all categories.
+        restrict_to_categories: Opportunity Map categories the mass is restricted to; tracts
+            outside them contribute zero. ``None`` means no restriction.
     """
 
     name: str
     weight: float
     source: str
     description: str
+    column: str = ""
+    applies_to: tuple[str, ...] | None = None
+    restrict_to_categories: tuple[str, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -216,12 +224,24 @@ def _parse_factors(raw: dict, path: Path) -> tuple[Factor, ...]:
         weight = spec.get("weight", 0.0)
         if not isinstance(weight, int | float) or isinstance(weight, bool):
             raise InvalidMethodology(f"{path.name}: factor '{name}' weight must be a number")
+        applies_to = spec.get("applies_to")
+        restrict = spec.get("restrict_to_categories")
+        for field_name, value in (("applies_to", applies_to), ("restrict_to_categories", restrict)):
+            if value is not None and not (
+                isinstance(value, list) and all(isinstance(v, str) for v in value)
+            ):
+                raise InvalidMethodology(
+                    f"{path.name}: factor '{name}' {field_name} must be a list of strings"
+                )
         factors.append(
             Factor(
                 name=str(name),
                 weight=float(weight),
                 source=str(spec["source"]),
                 description=str(spec["description"]),
+                column=str(spec.get("column", "")),
+                applies_to=tuple(applies_to) if applies_to is not None else None,
+                restrict_to_categories=tuple(restrict) if restrict is not None else None,
             )
         )
     return tuple(factors)

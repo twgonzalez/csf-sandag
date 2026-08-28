@@ -1,0 +1,40 @@
+# The resource-only baseline -- the AFFH measuring stick, not a proposal.
+#
+# Every methodology this pipeline emits is compared against this run: the share of lower-income
+# units it places in High and Highest Resource tracts is the gate constant no candidate may fall
+# below. The rule is deliberately the simplest thing that answers Gov. Code 65584(d)(5), with
+# every judgement call a named parameter. Specification: docs/workplan_delta.md.
+
+[methodology]
+name = "resource_only"
+label = "Resource-only baseline"
+geography = "tract"
+cycle = 7
+source = "docs/workplan_delta.md, milestone D1.3"
+
+[factors.high_resource_housing]
+weight = 1.0
+applies_to = ["very_low", "low"]
+column = "housing_units_2020"
+restrict_to_categories = ["Highest Resource", "High Resource"]
+source = "CTCAC/HCD Opportunity Map, 2026 edition (adopted December 2025); 2020 Census housing units per block (P.L. 94-171), aggregated to tracts"
+description = "Lower-income units are distributed across High and Highest Resource tracts in proportion to existing housing units, per the AFFH objective in Gov. Code 65584(d)(5)"
+
+[factors.all_tracts_housing]
+weight = 1.0
+applies_to = ["moderate", "above_moderate"]
+column = "housing_units_2020"
+source = "2020 Census housing units per block (P.L. 94-171), aggregated to tracts"
+description = "Moderate and above-moderate units are distributed across all tracts in proportion to existing housing units; the Opportunity Map is an instrument about lower-income siting and is not stretched beyond it"
+
+[parameters]
+# mass_base: the distribution base within a factor's tract set. Housing units is the only base
+# that is public, tract-level, and derived from neither zoning (prohibited) nor uncorrected jobs.
+mass_base = "housing_units_2020"
+# floor_weight: share of each category's seed spread across ALL tracts by mass, so every
+# jurisdiction receives a nonzero allocation in every category (Gov. Code 65584(d)(1)).
+# Structural, not cosmetic: without it a pure High/Highest rule gives El Cajon, Imperial Beach,
+# Lemon Grove and National City approximately zero lower-income units.
+floor_weight = 0.01
+# Rounding happens per category at the jurisdiction level, largest-remainder.
+rounding = "largest_remainder_at_jurisdiction"

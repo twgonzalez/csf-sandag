@@ -61,3 +61,4 @@ select = ["E", "F", "I", "UP", "B"]
 # in the middle of sentences a planner reads.
 "report/replication.py" = ["E501"]
 "report/opportunity.py" = ["E501"]
+"report/delta.py" = ["E501"]
