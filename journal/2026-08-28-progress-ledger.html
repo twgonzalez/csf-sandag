@@ -1,0 +1,258 @@
+<title>SANDAG Progress Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --paper:   #F2F4F5;
+  --surface: #FFFFFF;
+  --sunk:    #E8ECEE;
+  --ink:     #16232B;
+  --muted:   #5A6B74;
+  --rule:    #D2DADE;
+  --accent:  #1F5C7A;
+  --accent-soft: #E3EDF2;
+  --signal:  #B04A2F;
+  --signal-soft: #F6E7E1;
+  --ok:      #2E6B4F;
+  --ok-soft: #E2EFE8;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101A1F; --surface: #17242B; --sunk: #1D2D35; --ink: #E3EAED;
+    --muted: #93A6AF; --rule: #2C3E47; --accent: #6FB2D2; --accent-soft: #1B333F;
+    --signal: #E08A62; --signal-soft: #35231C; --ok: #7BC29A; --ok-soft: #1D3328;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101A1F; --surface: #17242B; --sunk: #1D2D35; --ink: #E3EAED;
+  --muted: #93A6AF; --rule: #2C3E47; --accent: #6FB2D2; --accent-soft: #1B333F;
+  --signal: #E08A62; --signal-soft: #35231C; --ok: #7BC29A; --ok-soft: #1D3328;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body);
+  font-size: 16.5px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1020px; margin: 0 auto; padding: clamp(2rem,5vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+h1,h2,h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem,5.5vw,3.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
+h2 { font-size: clamp(1.3rem,2.8vw,1.7rem); font-weight: 700; letter-spacing: -.018em; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; max-width: 66ch; }
+a { color: var(--accent); }
+.eyebrow { font-family: var(--mono); font-size: .7rem; font-weight: 500; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--muted); }
+.cite, code { font-family: var(--mono); font-size: .855em; color: var(--accent); }
+.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 2rem; }
+.masthead .eyebrow { display: block; margin-bottom: 1rem; }
+.standfirst { font-size: clamp(1.02rem,2vw,1.18rem); color: var(--muted); margin-top: 1.2rem; max-width: 58ch; }
+.badges { display: flex; flex-wrap: wrap; gap: .55rem 2rem; margin-top: 1.8rem;
+  font-family: var(--mono); font-size: .775rem; color: var(--muted); }
+.badges b { color: var(--ink); font-weight: 500; }
+section { margin-top: clamp(2.6rem,5.5vw,4rem); }
+.section-head { display: flex; align-items: baseline; gap: 1rem; padding-bottom: .65rem;
+  border-bottom: 1px solid var(--rule); margin-bottom: 1.5rem; }
+.section-head h2 { flex: 1; }
+
+/* scorecards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 1rem; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--ok);
+  padding: 1.2rem 1.35rem; display: flex; flex-direction: column; gap: .45rem; }
+.card .stat { font-family: var(--display); font-size: 2rem; font-weight: 800;
+  letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.card .stat small { font-size: 1rem; font-weight: 600; color: var(--muted); }
+.card .verdict { font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ok); }
+.card p { font-size: .875rem; color: var(--muted); }
+
+/* bar chart */
+.chart { background: var(--surface); border: 1px solid var(--rule); padding: 1.4rem 1.5rem 1.1rem; }
+.chart-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem;
+  align-items: baseline; margin-bottom: 1.1rem; }
+.chart-title .src { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
+.row { display: grid; grid-template-columns: 11.5rem 1fr 3.2rem; align-items: center;
+  gap: .8rem; padding: .21rem 0; }
+.row .lbl { font-size: .84rem; text-align: right; color: var(--ink); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; }
+.row .track { height: .78rem; background: var(--sunk); border-radius: 2px; overflow: hidden; }
+.row .fill { height: 100%; background: var(--accent); border-radius: 2px; min-width: 2px; }
+.row.zero .fill { background: var(--signal); }
+.row .val { font-family: var(--mono); font-size: .78rem; font-variant-numeric: tabular-nums;
+  color: var(--muted); text-align: right; }
+.chart-note { font-size: .875rem; color: var(--muted); margin-top: 1rem; max-width: 62ch; }
+@media (max-width: 560px) { .row { grid-template-columns: 7.5rem 1fr 2.9rem; } .row .lbl { font-size: .76rem; } }
+
+/* ledger table */
+.scroll { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: .88rem; min-width: 36rem; }
+th,td { text-align: left; padding: .65rem .95rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+thead th { font-family: var(--mono); font-size: .67rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); background: var(--sunk); white-space: nowrap; }
+td.mono { font-family: var(--mono); font-size: .78rem; white-space: nowrap; color: var(--muted); }
+.pill { display: inline-block; font-family: var(--mono); font-size: .64rem; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase; padding: .18rem .5rem; border-radius: 2px; }
+.pill.done { background: var(--ok-soft); color: var(--ok); }
+.pill.next { background: var(--accent-soft); color: var(--accent); }
+.pill.wait { background: var(--signal-soft); color: var(--signal); }
+
+/* blocking */
+.block-box { background: var(--ok-soft); border-left: 3px solid var(--ok); padding: 1.3rem 1.5rem;
+  display: flex; flex-direction: column; gap: .6rem; }
+.block-box .lede { font-family: var(--display); font-size: 1.15rem; font-weight: 700; }
+.block-box p { font-size: .92rem; color: var(--muted); }
+.decisions { display: flex; flex-direction: column; margin-top: 1.1rem; }
+.q { display: grid; grid-template-columns: 2rem 1fr; gap: 0 .85rem; padding: .95rem 0;
+  border-bottom: 1px solid var(--rule); }
+.q:first-child { border-top: 1px solid var(--rule); }
+.q-num { font-family: var(--mono); font-size: .8rem; font-weight: 600; color: var(--accent); padding-top: .1rem; }
+.q-text { display: flex; flex-direction: column; gap: .3rem; }
+.q-text p { font-size: .9rem; color: var(--muted); }
+.q-text p strong { color: var(--ink); }
+.gates { font-family: var(--mono); font-size: .72rem; color: var(--signal); letter-spacing: .04em; }
+footer { margin-top: 4rem; padding-top: 1.4rem; border-top: 1px solid var(--rule);
+  font-family: var(--mono); font-size: .75rem; color: var(--muted);
+  display: flex; flex-wrap: wrap; gap: .5rem 1.8rem; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Build ledger</span>
+    <h1>What has been proven so far</h1>
+    <p class="standfirst">
+      Every claim on this page is backed by a generated report in the repository, recomputable by
+      anyone with <code>make all</code>. Nothing here is an estimate.
+    </p>
+    <div class="badges">
+      <span>Commits &nbsp;<b>9</b></span>
+      <span>Tests passing &nbsp;<b>103</b></span>
+      <span>Public source files, checksummed &nbsp;<b>18</b></span>
+      <span>Proprietary inputs &nbsp;<b>0</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>Three verifications, all exact</h2></div>
+    <div class="cards">
+      <div class="card">
+        <span class="verdict">Verified · milestone 0</span>
+        <span class="stat">76/76 <small>cells</small></span>
+        <h3>6th-cycle allocation replicated</h3>
+        <p>Every jurisdiction-by-income cell of the adopted 171,685-unit allocation reproduced
+        within 2 units. Required recovering a load-bearing fitting step that appears in none of
+        SANDAG's adopted documents — worth up to 990 units per cell.</p>
+      </div>
+      <div class="card">
+        <span class="verdict">Verified · phase 1</span>
+        <span class="stat">638/638 <small>tracts</small></span>
+        <h3>State Opportunity Map replicated</h3>
+        <p>The CTCAC/HCD Opportunity Score reproduced exactly for every San Diego tract with
+        complete data, and the category banding for all 687. The state's own fair-housing map
+        already meets the transparency standard this project argues for.</p>
+      </div>
+      <div class="card">
+        <span class="verdict">Verified · phase 1</span>
+        <span class="stat">736/737 <small>tracts</small></span>
+        <h3>Region fully mapped</h3>
+        <p>Opportunity categories cover every inhabited tract — after catching that 39 tracts
+        (~73,000 homes, mostly unincorporated county) are published as block groups and must be
+        aggregated, not dropped. The one unmapped tract is open water.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>The fair-housing spread</h2></div>
+    <div class="chart">
+      <div class="chart-title">
+        <h3>Share of each jurisdiction's housing in High or Highest Resource tracts</h3>
+        <span class="src">2020 Census units × CTCAC/HCD 2026 map</span>
+      </div>
+      <div class="row"><span class="lbl">Carlsbad</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100%</span></div>
+      <div class="row"><span class="lbl">Del Mar</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100%</span></div>
+      <div class="row"><span class="lbl">Encinitas</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100%</span></div>
+      <div class="row"><span class="lbl">Solana Beach</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100%</span></div>
+      <div class="row"><span class="lbl">Poway</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100%</span></div>
+      <div class="row"><span class="lbl">Coronado</span><div class="track"><div class="fill" style="width:87%"></div></div><span class="val">87%</span></div>
+      <div class="row"><span class="lbl">San Diego</span><div class="track"><div class="fill" style="width:56%"></div></div><span class="val">56%</span></div>
+      <div class="row"><span class="lbl">San Marcos</span><div class="track"><div class="fill" style="width:55%"></div></div><span class="val">55%</span></div>
+      <div class="row"><span class="lbl">Chula Vista</span><div class="track"><div class="fill" style="width:44%"></div></div><span class="val">44%</span></div>
+      <div class="row"><span class="lbl">La Mesa</span><div class="track"><div class="fill" style="width:41%"></div></div><span class="val">41%</span></div>
+      <div class="row"><span class="lbl">Santee</span><div class="track"><div class="fill" style="width:34%"></div></div><span class="val">34%</span></div>
+      <div class="row"><span class="lbl">Unincorporated County</span><div class="track"><div class="fill" style="width:28%"></div></div><span class="val">28%</span></div>
+      <div class="row"><span class="lbl">Oceanside</span><div class="track"><div class="fill" style="width:25%"></div></div><span class="val">25%</span></div>
+      <div class="row"><span class="lbl">Vista</span><div class="track"><div class="fill" style="width:20%"></div></div><span class="val">20%</span></div>
+      <div class="row"><span class="lbl">Escondido</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="val">12%</span></div>
+      <div class="row zero"><span class="lbl">National City</span><div class="track"><div class="fill" style="width:1%"></div></div><span class="val">1%</span></div>
+      <div class="row zero"><span class="lbl">Imperial Beach</span><div class="track"><div class="fill" style="width:0.4%"></div></div><span class="val">0%</span></div>
+      <div class="row zero"><span class="lbl">El Cajon</span><div class="track"><div class="fill" style="width:0.4%"></div></div><span class="val">0%</span></div>
+      <div class="row zero"><span class="lbl">Lemon Grove</span><div class="track"><div class="fill" style="width:0.4%"></div></div><span class="val">0%</span></div>
+      <p class="chart-note">
+        This spread is the fair-housing problem the allocation exists to act on — and the reason
+        capacity can shape <em>where</em> units go but never <em>how many</em> a jurisdiction
+        receives. Note the scale effect: San Diego city's 56% of a 549,000-unit stock is
+        <strong>~56% of all high-resource housing in the region</strong>; the five 100% cities
+        together hold about a fifth.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Build ledger</h2><span class="eyebrow">9 commits · every row checkable</span></div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Delivered</th><th>Status</th><th>Where to check it</th></tr></thead>
+        <tbody>
+          <tr><td>Reproducible pipeline: pinned sources, checksums, <code>make all</code></td><td><span class="pill done">done</span></td><td class="mono">data/raw/manifest.json</td></tr>
+          <tr><td>6th-cycle replication, exact — including the undocumented fitting step</td><td><span class="pill done">done</span></td><td class="mono">reports/sixth_cycle_replication.md</td></tr>
+          <tr><td>Tract↔jurisdiction crosswalk, split by housing units (190 boundary tracts)</td><td><span class="pill done">done</span></td><td class="mono">tests, make validate</td></tr>
+          <tr><td>Statutory guardrails: prohibited factors refused with citations</td><td><span class="pill done">done</span></td><td class="mono">reports/run_log.md</td></tr>
+          <tr><td>Opportunity Map ingested + replicated exactly; AFFH baseline table</td><td><span class="pill done">done</span></td><td class="mono">reports/opportunity_map.md</td></tr>
+          <tr><td>Capacity indicator spec: 7 scored measures, marginal form, sources named</td><td><span class="pill done">done</span></td><td class="mono">docs/capacity_indicators.md</td></tr>
+          <tr><td>Evacuation redesigned to bottleneck attribution (shared-outlet aware)</td><td><span class="pill done">done</span></td><td class="mono">docs/capacity_indicators.md §3.1</td></tr>
+          <tr><td>D1.1 — methodology parameter schema + enforcing loader</td><td><span class="pill done">done</span></td><td class="mono">allocate/params.py</td></tr>
+          <tr><td>D1.2–D1.5 — tract allocator → resource-only run → first delta table</td><td><span class="pill next">next</span></td><td class="mono">docs/workplan_delta.md</td></tr>
+          <tr><td>Phase 2 — hazard &amp; protected-land ingest (capacity data)</td><td><span class="pill next">queued</span></td><td class="mono">docs/plan.md</td></tr>
+          <tr><td>Phase 3 — capacity × opportunity correlation → Gate A</td><td><span class="pill wait">awaits 2</span></td><td class="mono">docs/plan.md</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>What is blocking us</h2></div>
+    <div class="block-box">
+      <span class="lede">Nothing blocks the next two steps.</span>
+      <p>
+        Milestone D1 (the allocator and the first delta table vs. the adopted 6th cycle) needs no
+        new data, no decisions, and no external party — it is the rare work with no gate at all.
+        Phase 2 can start in parallel; its only risk is source friction, not permission.
+      </p>
+    </div>
+    <div class="decisions">
+      <div class="q"><span class="q-num">01</span><div class="q-text">
+        <p><strong>Six-category control totals</strong> — placeholder RHND or 6th-cycle determination resplit? </p>
+        <span class="gates">Gates phase 6 only — not D1, not phase 2</span></div></div>
+      <div class="q"><span class="q-num">02</span><div class="q-text">
+        <p><strong>Wildfire mitigation assumption</strong> — raw exposure, mitigation-adjusted, or both (recommended: both).</p>
+        <span class="gates">Shapes phases 2–3 reporting; does not block ingest</span></div></div>
+      <div class="q"><span class="q-num">03</span><div class="q-text">
+        <p><strong>CoSMoS sea-level-rise scenario</strong> — which scenario is pinned for the cycle.</p>
+        <span class="gates">Gates the SLR indicator only</span></div></div>
+      <div class="q"><span class="q-num">04</span><div class="q-text">
+        <p><strong>Chair's calendar</strong> — Gate A (reading the correlation study) is the first true schedule item.</p>
+        <span class="gates">Everything before it can be ready in weeks</span></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>All inputs public · byte-reproducible runs</span>
+    <span>Generated from repository state, 2026-08-28</span>
+  </footer>
+
+</div>

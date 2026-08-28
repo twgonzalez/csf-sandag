@@ -1,0 +1,821 @@
+<title>SANDAG Seventh-Cycle Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --paper:   #F2F4F5;
+  --surface: #FFFFFF;
+  --sunk:    #E8ECEE;
+  --ink:     #16232B;
+  --muted:   #5A6B74;
+  --rule:    #D2DADE;
+  --accent:  #1F5C7A;
+  --accent-soft: #E3EDF2;
+  --signal:  #B04A2F;
+  --signal-soft: #F6E7E1;
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --measure: 66ch;
+  --shadow: 0 1px 2px rgba(22, 35, 43, .05), 0 8px 24px -12px rgba(22, 35, 43, .12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:   #101A1F;
+    --surface: #17242B;
+    --sunk:    #1D2D35;
+    --ink:     #E3EAED;
+    --muted:   #93A6AF;
+    --rule:    #2C3E47;
+    --accent:  #6FB2D2;
+    --accent-soft: #1B333F;
+    --signal:  #E08A62;
+    --signal-soft: #35231C;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:   #101A1F;
+  --surface: #17242B;
+  --sunk:    #1D2D35;
+  --ink:     #E3EAED;
+  --muted:   #93A6AF;
+  --rule:    #2C3E47;
+  --accent:  #6FB2D2;
+  --accent-soft: #1B333F;
+  --signal:  #E08A62;
+  --signal-soft: #35231C;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 6rem;
+}
+
+/* ---------- type ---------- */
+
+h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; margin: 0; }
+
+h1 {
+  font-size: clamp(2.35rem, 6.2vw, 3.9rem);
+  font-weight: 800;
+  letter-spacing: -.033em;
+  line-height: 1.03;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.14;
+}
+
+h3 { font-size: 1.14rem; font-weight: 700; letter-spacing: -.012em; line-height: 1.3; }
+h4 { font-size: .95rem; font-weight: 600; letter-spacing: -.005em; }
+
+p { margin: 0; max-width: var(--measure); }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+}
+
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: .705rem;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+code, .cite {
+  font-family: var(--mono);
+  font-size: .855em;
+  color: var(--accent);
+  word-break: break-word;
+}
+
+/* ---------- header ---------- */
+
+.masthead { border-bottom: 2px solid var(--ink); padding-bottom: 2.4rem; }
+
+.masthead .eyebrow { display: block; margin-bottom: 1.1rem; }
+
+.standfirst {
+  font-size: clamp(1.06rem, 2.2vw, 1.24rem);
+  line-height: 1.52;
+  color: var(--muted);
+  margin-top: 1.35rem;
+  max-width: 60ch;
+}
+
+.status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem 2.1rem;
+  margin-top: 2.1rem;
+  font-family: var(--mono);
+  font-size: .775rem;
+  color: var(--muted);
+}
+.status-strip b { color: var(--ink); font-weight: 500; }
+
+/* ---------- shared blocks ---------- */
+
+section { margin-top: clamp(3rem, 6vw, 4.6rem); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: .7rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.7rem;
+}
+.section-head h2 { flex: 1; }
+
+.stack { display: flex; flex-direction: column; gap: 1.05rem; }
+
+.rule-box {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 1.5rem 1.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+.rule-box .lede {
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -.017em;
+  line-height: 1.36;
+  max-width: 48ch;
+}
+.rule-box p { font-size: .945rem; color: var(--muted); }
+.rule-box p strong { color: var(--ink); }
+
+.contract {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 1.5rem 1.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.contract ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: .45rem; }
+.contract li { font-size: .945rem; }
+.contract li::marker { color: var(--accent); }
+
+/* ---------- phase spine ---------- */
+
+.spine { display: flex; flex-direction: column; }
+
+.phase {
+  display: grid;
+  grid-template-columns: 3.3rem 1fr;
+  gap: 0 1.5rem;
+  position: relative;
+  padding-bottom: 2.6rem;
+}
+
+.marker { position: relative; display: flex; justify-content: center; }
+
+.marker::before {
+  content: "";
+  position: absolute;
+  top: 2.55rem;
+  bottom: -2.6rem;
+  width: 2px;
+  background: var(--rule);
+}
+.phase:last-child .marker::before { display: none; }
+
+.num {
+  position: relative;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  font-family: var(--mono);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.phase.is-critical .num { border-color: var(--signal); color: var(--signal); }
+.phase.is-critical .marker::before { background: var(--signal); }
+
+.phase-body { display: flex; flex-direction: column; gap: .95rem; padding-top: .25rem; min-width: 0; }
+
+.phase-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .55rem .8rem; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: .665rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .21rem .5rem;
+  border-radius: 2px;
+  background: var(--sunk);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tag.crit { background: var(--signal-soft); color: var(--signal); }
+.tag.eff  { background: transparent; border: 1px solid var(--rule); }
+
+.phase-body > p { font-size: .96rem; }
+
+.output {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .4rem .7rem;
+  font-family: var(--mono);
+  font-size: .8rem;
+  color: var(--muted);
+}
+.output .file { color: var(--accent); font-weight: 500; }
+
+.check {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--accent);
+  padding: 1.05rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.check .eyebrow { color: var(--accent); }
+.check p { font-size: .91rem; max-width: 62ch; }
+
+.phase.is-critical .check { border-top-color: var(--signal); }
+.phase.is-critical .check .eyebrow { color: var(--signal); }
+
+.flag {
+  background: var(--signal-soft);
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+.flag .eyebrow { color: var(--signal); }
+.flag p { font-size: .9rem; max-width: 62ch; }
+
+/* ---------- gates ---------- */
+
+.gate {
+  display: grid;
+  grid-template-columns: 3.3rem 1fr;
+  gap: 0 1.5rem;
+  padding-bottom: 2.6rem;
+}
+
+.gate .marker::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: -2.6rem;
+  width: 2px;
+  background: var(--signal);
+}
+
+.gate-diamond {
+  position: relative;
+  z-index: 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: .62rem;
+  background: var(--signal);
+  transform: rotate(45deg);
+}
+
+.gate-body {
+  border-top: 2px solid var(--signal);
+  border-bottom: 1px solid var(--rule);
+  padding: .95rem 0 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+.gate-body .eyebrow { color: var(--signal); }
+.gate-body h3 { font-size: 1.05rem; }
+.gate-body p { font-size: .92rem; color: var(--muted); }
+
+/* ---------- table ---------- */
+
+.scroll { overflow-x: auto; border: 1px solid var(--rule); background: var(--surface); }
+
+table { border-collapse: collapse; width: 100%; font-size: .9rem; min-width: 34rem; }
+
+th, td { text-align: left; padding: .72rem 1rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+
+thead th {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--sunk);
+  white-space: nowrap;
+}
+
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--muted); }
+tr.gate-row td { background: var(--signal-soft); }
+tr.gate-row td.gate-note { color: var(--signal); font-weight: 600; }
+
+/* ---------- questions ---------- */
+
+.q-list { display: flex; flex-direction: column; gap: 0; }
+
+.q {
+  display: grid;
+  grid-template-columns: 2.1rem 1fr;
+  gap: 0 .9rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.q:first-child { border-top: 1px solid var(--rule); }
+
+.q-num {
+  font-family: var(--mono);
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--accent);
+  padding-top: .12rem;
+}
+.q-text { display: flex; flex-direction: column; gap: .35rem; }
+.q-text p { font-size: .93rem; color: var(--muted); }
+.q-text p strong { color: var(--ink); }
+.blocks {
+  font-family: var(--mono);
+  font-size: .73rem;
+  color: var(--signal);
+  letter-spacing: .04em;
+}
+
+/* ---------- notes ---------- */
+
+.notes { display: flex; flex-direction: column; gap: 1.4rem; }
+.note { display: flex; flex-direction: column; gap: .35rem; }
+.note p { font-size: .945rem; color: var(--muted); }
+.note p strong { color: var(--ink); }
+
+footer {
+  margin-top: 4.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: .755rem;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.8rem;
+}
+
+@media (max-width: 620px) {
+  .phase, .gate { grid-template-columns: 2.3rem 1fr; gap: 0 .95rem; }
+  .num { width: 2rem; height: 2rem; font-size: .82rem; }
+  .marker::before { top: 2.05rem; }
+  body { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Methodology development</span>
+    <h1>An objective methodology, built in the open</h1>
+    <p class="standfirst">
+      Seven phases from a passing replication of the 6th-cycle allocation to a package HCD can
+      review — leaning on true physical capacity constraints as far as the fair-housing objective
+      permits, computed entirely from public data.
+    </p>
+    <div class="status-strip">
+      <span>Milestone 0 &nbsp;<b>complete — replication passing</b></span>
+      <span>Planning period &nbsp;<b>Apr 2029 – Apr 2037</b></span>
+      <span>Draft to HCD &nbsp;<b>late 2027</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>The rule everything follows from</h2></div>
+    <div class="rule-box">
+      <p class="lede">
+        Capacity determines <em>where</em> units go, never <em>how many</em> a jurisdiction receives.
+      </p>
+      <p>
+        Three capacity measures are named in <span class="cite">Gov. Code §65584.04(e)</span> and are
+        therefore not merely permitted but <strong>required to be considered</strong>: sewer and water
+        limits arising from state or federal action; availability of land suitable for development and
+        protected lands; and emergency evacuation route capacity, wildfire risk and sea level rise.
+      </p>
+      <p>
+        Applied as a <strong>reducer</strong> of a jurisdiction's total, capacity collides with the
+        fair-housing objective at <span class="cite">§65584(d)(5)</span>. Applied as a
+        <strong>siting input inside a fixed total</strong>, it satisfies <span class="cite">(e)</span>
+        and <span class="cite">(f)</span> without touching <span class="cite">(d)(5)</span>. Every
+        phase below is built to hold that line.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>What every phase must produce</h2></div>
+    <div class="stack">
+      <p>
+        A phase is not done until a person who has not read the code can check the result. Each ends
+        in a markdown report and its backing CSVs, carrying:
+      </p>
+      <div class="contract">
+        <ul>
+          <li>every number's source, vintage, and the URL it came from;</li>
+          <li>a reconciliation to a figure the publishing agency states independently, wherever one exists;</li>
+          <li>the SHA-256 of every input file actually used;</li>
+          <li>a machine acceptance test that fails the build if the check breaks.</li>
+        </ul>
+        <p style="font-size:.93rem;color:var(--muted)">
+          The <strong style="color:var(--ink)">How a person checks it</strong> note on each phase below
+          is the point of this plan. If a phase cannot offer one, it is not ready to start.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>The phases</h2><span class="eyebrow">7 phases · 2 gates</span></div>
+
+    <div class="spine">
+
+      <article class="phase">
+        <div class="marker"><div class="num">1</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>AFFH backbone</h3><span class="tag" style="background:var(--accent-soft);color:var(--accent)">Complete — replicated exactly</span></div>
+          <p>
+            Establish the fair-housing measuring stick before anything is measured against it. Ingest
+            the TCAC/HCD Opportunity Map at tract level, implement the resource-only allocation as a
+            permanent baseline, and build the AFFH gate — the pipeline refuses to emit any methodology
+            whose share of lower-income units in High and Highest Resource tracts falls below it.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/affh_baseline.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              TCAC publishes its own San Diego County tract counts per resource category. Ours must
+              match exactly, and the report shows both side by side.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="marker"><div class="num">2</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Constraint inventory</h3><span class="tag eff">2–4 sessions</span></div>
+          <p>
+            Get every capacity, safety and health layer onto tracts: CAL FIRE hazard severity zones,
+            FEMA floodway and 100-year flood, USGS sea level rise scenarios, protected lands, and
+            CalEnviroScreen. Shares are of <em>residential</em> land, not raw area, using the
+            block-level housing weights the crosswalk already computes.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/constraint_inventory.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              CAL FIRE publishes hazard acreage by county and CPAD publishes protected acreage. The
+              report reconciles our totals to theirs and shows the difference.
+            </p>
+          </div>
+          <div class="flag">
+            <span class="eyebrow">Known weak point, flagged now</span>
+            <p>
+              The sewer and water measure is the thinnest of the three statutory capacity factors. The
+              statute counts only limits from state or federal action, and there is no clean open
+              dataset of those. <strong>Do not let the weight structure assume this measure lands.</strong>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase is-critical">
+        <div class="marker"><div class="num">3</div></div>
+        <div class="phase-body">
+          <div class="phase-title">
+            <h3>The three-axis correlation study</h3>
+            <span class="tag crit">Critical path</span><span class="tag eff">&lt;1 session</span>
+          </div>
+          <p>
+            Answer, with evidence, the question that determines the entire methodology:
+            <strong>in San Diego, does physical capacity run with or against opportunity?</strong>
+            Cross-tabulate every capacity, safety and health measure against resource category,
+            weighted by housing units.
+          </p>
+          <p>
+            The hypothesis: wildfire and evacuation constraint concentrate in affluent foothill and
+            exurban tracts, and sea level rise on expensive coast — so a capacity-as-reducer
+            methodology would move units <em>out of</em> high-resource areas and <em>into</em> the
+            lower-resource, more segregated urban core.
+          </p>
+          <p>
+            <strong>Safety and health are reported separately and must not be combined.</strong>
+            Health burden is expected to run the opposite way from wildfire. If so, AFFH-compliant
+            siting improves health outcomes while worsening wildfire exposure — a more credible and
+            more useful finding than either alone, which merging them into one index would destroy.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/capacity_opportunity_correlation.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              Every cell is a cross-tab of two published CSVs from Phases 1 and 2 — recomputable in a
+              spreadsheet. No modelling, no weighting, no parameters. This phase deliberately contains
+              no judgement calls, so its results cannot be argued with on methodology grounds.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <div class="gate">
+        <div class="marker"><div class="gate-diamond"></div></div>
+        <div class="gate-body">
+          <span class="eyebrow">Gate A · Chair decision</span>
+          <h3>Is the orthogonal design a preference, or a requirement?</h3>
+          <p>
+            This report goes to the chair before any design commitment. It determines whether capacity
+            can carry weight in a jurisdiction's total at all, and gives evidence to show a mayor who
+            asks why it cannot.
+          </p>
+        </div>
+      </div>
+
+      <article class="phase">
+        <div class="marker"><div class="num">4</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Street network and evacuation capacity</h3><span class="tag eff">2–3 sessions</span></div>
+          <p>
+            Road network from OpenStreetMap, retaining functional class, lane count and intersection
+            geometry. From it: a link and intersection capacity index per tract, a per-tract evacuation
+            capacity and clearance-time estimate, and an explicit, separable calibration step against
+            published traffic counts.
+          </p>
+          <p>
+            The Highway Capacity Manual is a licensed TRB publication and is <strong>not used</strong>.
+            The parameters it is known for are reproduced in free federal documents, and each must cite
+            the public source: <span class="cite">FHWA HPMS Field Manual, Appendix N</span> for
+            capacity parameters, and <span class="cite">NRC NUREG/CR-7002 Rev. 1</span> for the
+            evacuation-time methodology. This is the same discipline applied to methods rather than
+            data — an HCD reviewer can open every source.
+          </p>
+          <div class="output">
+            <span>Output</span>
+            <span class="file">reports/network_capacity.md</span>
+            <span class="file">reports/evacuation_capacity.md</span>
+          </div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              The calibration report lists every public traffic count station in the county with the
+              modeled volume beside the observed count, and the residual. A traffic engineer can audit
+              it station by station. Uncalibrated tracts are labelled uncalibrated rather than quietly
+              carrying a default.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="marker"><div class="num">5</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Jobs adjustments</h3><span class="tag eff">2–3 sessions · parallel</span></div>
+          <p>
+            The three adjustments specified but not yet written, each toggleable and each logged:
+            multi-site employer redistribution, QCEW reconciliation to county sector totals, and
+            seasonal annualisation to full-time equivalents.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/jobs_adjustments.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it — a known-answer test against real history</span>
+            <p>
+              The 6th-cycle appeals process found exactly one error: two Navy installations wrongly
+              treated as remote stations of Naval Base San Diego, and North Island's jobs needing an
+              80.5/19.5 split. It took a phone call to Naval Facilities Engineering Command, surfaced
+              four months after the draft allocation issued, and moved 135 units.
+            </p>
+            <p>
+              <strong>The acceptance test is whether the multi-site detector finds that same error
+              independently, from open data, with no knowledge of the answer.</strong> If it passes,
+              the case for computing this in the open is made in one sentence to any board member.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="marker"><div class="num">6</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>The allocator, six income categories, and the frontier</h3><span class="tag eff">1–2 sessions</span></div>
+          <p>
+            Turn the parameter files into mechanism. Build the general tract-scored allocator; add the
+            six income categories with acutely low and extremely low held within 3% of proportionality
+            to very low; then sweep the AFFH gate from unconstrained to maximum, solving at each level
+            for the allocation that minimises hazard exposure.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/frontier.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              Every point on the curve is a committed parameter file. Rerunning any one reproduces its
+              point byte for byte. The slope at the chosen point is the exchange rate between
+              fair-housing performance and hazard exposure, in units, at the margin — the chair's
+              question answered as a rate rather than a verdict. Where the frontier is flat there is no
+              trade-off at all, and the report says so plainly.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <div class="gate">
+        <div class="marker"><div class="gate-diamond"></div></div>
+        <div class="gate-body">
+          <span class="eyebrow">Gate B · Board decision</span>
+          <h3>The board picks a point on the frontier</h3>
+          <p>
+            Every point on the curve is lawful. The choice among them is political, and it should be
+            made in the open with the numbers visible.
+          </p>
+        </div>
+      </div>
+
+      <article class="phase">
+        <div class="marker"><div class="num">7</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>The HCD package</h3><span class="tag eff">1 session</span></div>
+          <p>
+            The methodology appendix, generated from the code's own docstrings rather than written:
+            every factor, its source URL, vintage and rule, in the format
+            <span class="cite">§65584.04(f)</span> requires — plus how each
+            <span class="cite">§65584.04(e)</span> factor was incorporated and how the methodology
+            furthers each <span class="cite">§65584(d)</span> objective.
+          </p>
+          <div class="output"><span>Output</span><span class="file">reports/methodology_appendix.md</span></div>
+          <div class="check">
+            <span class="eyebrow">How a person checks it</span>
+            <p>
+              Every factor traces to a source URL, a vintage, and a checksum. A reviewer can download
+              any input and confirm the hash matches the one the report was generated against.
+            </p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Sequence</h2><span class="eyebrow">Agent-built · human-gated</span></div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Phase</th><th>Agent effort</th><th>What actually gates it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1 · AFFH backbone</td><td class="n">done</td><td>Opportunity score replicated exactly, 638/638</td></tr>
+          <tr><td>2 · Constraint inventory</td><td class="n">2–4 sessions</td><td>Source discovery; sewer service-area existence</td></tr>
+          <tr><td>3 · Correlation study</td><td class="n">&lt;1 session</td><td>Phase 2 landing</td></tr>
+          <tr class="gate-row"><td><strong>Gate A</strong></td><td class="n">—</td><td class="gate-note">Board leadership review</td></tr>
+          <tr><td>5 · Jobs adjustments</td><td class="n">2–3 sessions</td><td>Public site-roster assembly; parallel with 4</td></tr>
+          <tr><td>4 · Network and evacuation</td><td class="n">2–3 sessions</td><td>OSM lane-tag coverage; calibration counts</td></tr>
+          <tr><td>6 · Allocator and frontier</td><td class="n">1–2 sessions</td><td>Six-category control totals — a human decision</td></tr>
+          <tr class="gate-row"><td><strong>Gate B</strong></td><td class="n">—</td><td class="gate-note">The board's calendar</td></tr>
+          <tr><td>7 · HCD package</td><td class="n">1 session</td><td>Generated from citations already in the code</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1.1rem;font-size:.93rem;color:var(--muted)">
+      The technical critical path is <strong style="color:var(--ink)">weeks of working sessions, not
+      months</strong>. What does not compress: decision gates (the chair, the board, the informal HCD
+      conversation), data friction when a source turns out stale or unpublished, and the statutory
+      clocks — HCD's 60-day review and 45-day revision cycle under
+      <span class="cite">§65584.04(i)</span> are fixed in law. The late-2027 date for a draft reaching
+      HCD is set by the adoption process, not build speed. What changes is the shape of the slack:
+      <strong style="color:var(--ink)">Gate A material can be in board leadership's hands in weeks</strong>,
+      buying a year of lead time instead of analysis arriving just in time to be argued about.
+    </p>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Recommended alongside the technical work</h2></div>
+    <div class="notes">
+      <div class="note">
+        <h4>Talk to HCD informally ahead of formal submission</h4>
+        <p>
+          Hearing "we would have concerns with that" in a staff call costs nothing. Hearing it in the
+          <span class="cite">§65584.04(i)</span> findings letter costs a revision cycle. The concept to
+          test is the orthogonal design: capacity as a siting input inside a fixed total.
+        </p>
+      </div>
+      <div class="note">
+        <h4>Have counsel check one citation</h4>
+        <p>
+          The statutory guardrails cite <span class="cite">§65584.04(e)(2)(B)</span> for the three
+          prohibited justifications, taken from SANDAG's own restatement in its adopted 6th-cycle
+          methodology. The section has been amended repeatedly and that subdivision letter may have
+          moved. The substance is right; the pincite will appear in the appendix HCD reads.
+        </p>
+      </div>
+      <div class="note">
+        <h4>Expect the framing fight</h4>
+        <p>
+          A chart showing hazard exposure rising with fair-housing performance will be quoted without
+          its context. The defences are built into the plan: report both directions of the trade-off,
+          keep safety and health on separate axes, publish the mitigation-adjusted result alongside the
+          raw one, and never emit a single scalar "cost of AFFH". The strongest position — and the true
+          one — is that this reconciles competing factors the statute itself imposes, with the
+          arithmetic open.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Open questions that block work</h2></div>
+    <div class="q-list">
+      <div class="q">
+        <span class="q-num">01</span>
+        <div class="q-text">
+          <p><strong>Six-category control totals.</strong> HCD has not issued a 7th-cycle
+          determination. Until it does, does the pipeline use a placeholder RHND, or the 6th-cycle
+          determination resplit into six categories?</p>
+          <span class="blocks">Blocks Phase 6</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-num">02</span>
+        <div class="q-text">
+          <p><strong>Wildfire mitigation assumption.</strong> A unit built to current WUI standards is
+          not the risk the surrounding older stock is. Does the safety axis report raw exposure,
+          mitigation-adjusted exposure, or both? Recommend both, raw as the headline.</p>
+          <span class="blocks">Shapes Phases 3 and 4</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-num">03</span>
+        <div class="q-text">
+          <p><strong>AMI-based affordability.</strong> The jobs-housing fit metric uses wage bands fixed
+          in nominal dollars, drifting against area median income yearly. Keying it to HCD's State
+          Income Limits would answer the statutory question directly — which vintage gets pinned?</p>
+          <span class="blocks">Shapes Phase 5</span>
+        </div>
+      </div>
+      <div class="q">
+        <span class="q-num">04</span>
+        <div class="q-text">
+          <p><strong>Transit factor.</strong> 65% of the 6th-cycle allocation ran on proprietary model
+          output counting <em>stations</em>. Replicate the station count from open transit feeds
+          (reproducible, keeps a crude measure), or replace it with a jobs-reachable-in-45-minutes
+          accessibility surface (better measure, not comparable to the 6th cycle)?</p>
+          <span class="blocks">Blocks Phase 6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Milestone 0 replication: max error 2 units across 76 cells of 171,685</span>
+    <span>All inputs public · all runs byte-reproducible</span>
+  </footer>
+
+</div>
