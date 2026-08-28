@@ -109,8 +109,10 @@ cross-tabulate without any weighting choice in between.
 current vintages), regulatory floodway (FEMA NFHL), and protected land (CPAD 2026a). Sea level
 rise awaits the scenario decision; sewer, water, and evacuation are their own phases. Every
 number below is therefore a **partial answer on the land and hazard axes**, and is labelled as
-such. The missing indicators are more likely to strengthen than reverse the pattern — sea level
-rise burdens the expensive coast — but that is an expectation, not a measurement.
+such. Sea level rise, when pinned, is likely to strengthen the pattern — the modelled inundation
+sits under the expensive coast. Evacuation, measured as network bottleneck headroom rather than a
+hazard footprint, could land on either side; see the closing section. Neither expectation is a
+measurement.
 
 ## The finding
 
@@ -202,11 +204,23 @@ is open work before this map goes near a board, and is noted in `docs/status.md`
 ## What this means for Gate A
 
 The Phase 3 correlation study needs the health axis (CalEnviroScreen) and per-indicator detail,
-but its central question is answered in preliminary form above, on the axes ingested so far. The
-missing axes — evacuation, sea level rise — are the chair's strongest capacity measures, and
-neither is likely to run *with* opportunity. The working conclusion for the chair: **capacity
-factors are usable exactly as the orthogonal design intended — siting within resource bins —
-and provably unusable as reducers.**
+but its central question is answered in preliminary form above, on the axes ingested so far.
+
+The two missing axes are the chair's strongest capacity measures, and they are **not alike in
+how they will land**:
+
+- **Sea level rise** is near-certain to strengthen the inverse gradient — the modelled
+  inundation sits under the region's most expensive coast.
+- **Evacuation is genuinely open, in either direction.** It is measured as bottleneck headroom
+  on the road network (`docs/capacity_indicators.md` §3.1), not as a hazard footprint, and the
+  indicator's own recorded caution applies: if dense urban tracts route through saturated
+  interchanges they will score poorly merely for being dense — which would make evacuation
+  capacity run *with* opportunity, against the gradient above. The counter-prior is that grids
+  have many outlets and foothills few. Phase 4 measures it; nothing here assumes the answer.
+
+The working conclusion for the chair is unchanged either way: **capacity factors are usable
+exactly as the orthogonal design intended — siting within resource bins — and provably unusable
+as reducers** on the axes measured so far.
 """
     out_path = REPORTS / "capacity_map.md"
     out_path.write_text(body)
