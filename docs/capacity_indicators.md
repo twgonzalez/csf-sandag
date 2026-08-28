@@ -73,48 +73,77 @@ matching construction is that a reader can check any cell from two published CSV
 
 ## 3. The indicators
 
-### 3.1 Evacuation — `egress_headroom`
+### 3.1 Evacuation — `evacuation_units_accommodatable`
 
 **Domain:** Evacuation. **Statutory hook:** §65584.04(e), "emergency evacuation route capacity."
 
-**Objective measure.** Additional clearance time imposed by the next 100 dwelling units:
+**Concept.** Find the geographic bottlenecks a tract's evacuating traffic depends on, attribute
+each bottleneck's load among the tracts that share it, and measure how many dwelling units the
+tract can add before the first bottleneck it depends on saturates. A JOSH-style contribution
+threshold — "no project may consume more than X% of a bottleneck's remaining headroom" — is a
+level set of this same surface, so the indicator supports both a scored factor and, later, a hard
+siting bound in the allocator.
+
+**Objective measure.**
 
 ```
-Δ clearance (minutes per 100 units) = 60 × 100 × vehicles_per_household ÷ egress_capacity_vph
+units_addable(t) = min over bottlenecks b on tract t's evacuation routes of:
 
-egress_headroom  =  egress_capacity_vph ÷ (100 × vehicles_per_household)      [scored form]
+    headroom_share(t, b) × (capacity_b − assigned_load_b)
+    ─────────────────────────────────────────────────────
+    vehicles_per_unit(t) × share_of_t_flow_through_b
 ```
 
-`egress_headroom` is hundreds of units addable per vehicle-hour of egress. Higher is more
-capacity. The report publishes Δ clearance in minutes, which is the number a person can reason
-about; the score uses the headroom.
+Higher is more capacity. Expressed in dwelling units, like the sewer and water measures, so the
+three infrastructure-family indicators read in the same currency.
 
-**Egress capacity is a network flow, not a boundary count.** This is the single most important
-modelling decision in the indicator, and getting it wrong would make the measure useless where it
-matters most.
+**Why bottleneck attribution and not per-tract max flow.** Max flow computed independently per
+tract double-counts shared links: every tract on the Coronado peninsula sees the bridge's full
+capacity in its own max-flow, so summing tract capacities counts the bridge once per tract. The
+measure looks fine tract by tract and overstates aggregate capacity exactly where evacuation
+constraint actually lives — where many tracts share one outlet. Attribution measures the shared
+link once and divides its load among the tracts that depend on it.
 
-A naive measure sums lane capacity on links crossing the tract boundary. That would show central
-Coronado as well served — it has ordinary streets in every direction — and would entirely miss
-that everything funnels to one bridge and one isthmus road two hops away. **Coronado's constraint
-is not at its tract boundaries.**
+**The four steps, all deterministic.**
 
-So `egress_capacity_vph` is the **maximum flow** from the tract to the regional exit set,
-computed on the road graph, where the exit set is the freeway network and the county boundary.
-`networkx` computes this directly. It is more expensive than a boundary sum and it is the only
-form that captures a funnel.
+1. **Route.** Assign every tract's evacuation demand — households × vehicles per household from
+   ACS B25044 — to the road network along free-flow shortest paths to the regional exit set,
+   all tracts simultaneously, all-or-nothing.
+2. **Find bottlenecks.** Every link now has an assigned load and a capacity (lanes × per-lane
+   capacity from the FHWA parameters). A tract's *binding* bottleneck is the link with the worst
+   load-to-capacity ratio along its assigned routes. This is where the bridge appears: it
+   carries the summed load of every peninsula tract against one capacity.
+3. **Attribute.** Tract *t*'s contribution to bottleneck *b* is the share of *b*'s assigned load
+   that is *t*'s vehicles. This falls directly out of step 1 — no additional model.
+4. **Headroom.** Apply the formula above.
 
-**Known simplification.** Max flow to the exit set assumes the receiving network absorbs the
-flow. Region-wide simultaneous evacuation would congest shared corridors, so this measures
-*achievable local egress*, not a full regional evacuation simulation. Stated in every report that
-uses it. A full simulation is out of scope and would introduce modelling choices this project
-exists to avoid.
+**Why all-or-nothing shortest paths and not a congestion equilibrium.** The simple assignment is
+deterministic and — more important — checkable by a person: a fire marshal can look at "tract X's
+traffic goes down Jamacha Road to SR-94" on a map and say whether it is right. An equilibrium
+model's output can only be checked by another equilibrium model, which is the kind of modelling
+opacity this project exists to avoid. The cost is that assignment ignores congestion rerouting;
+stated in every report that uses the indicator.
+
+**Two named parameters**, set in the methodology parameter file and stated in every report:
+
+| Parameter | Default | Notes |
+|---|---|---|
+| `exit_set` | Freeway mainline plus county boundary | What counts as "evacuated" |
+| `headroom_share` | Pro-rata to existing contribution | How a shared bottleneck's remaining room divides among the tracts that depend on it |
+
+`headroom_share` is the one genuine judgement call in the indicator, so it is surfaced rather
+than buried. Three defensible rules: pro-rata to existing contribution (status-quo-weighted,
+stable), equal per dependent tract (favours dispersal), and solo — each tract sees the full
+remaining headroom, which is only honest as an upper bound. **The scored value uses pro-rata; the
+solo upper bound is published beside it.** For most of the region the two will be close; on the
+peninsula they diverge sharply, and that divergence is itself the finding.
 
 **Inputs.**
 
 | Input | Source | Notes |
 |---|---|---|
 | Road network | OpenStreetMap via `osmnx`, San Diego County | Pinned by extract date |
-| Lane count | OSM `lanes`, then `lanes:forward`/`lanes:backward` | See fallback below |
+| Lane count | OSM `lanes`, then `lanes:forward`/`lanes:backward` | Fallback hierarchy below |
 | Street width | OSM `width` ÷ 3.3 m where `lanes` absent | Second choice |
 | Direction | OSM `oneway` | Outbound direction only |
 | Functional class | OSM `highway` | Last-resort lane default |
@@ -124,13 +153,12 @@ exists to avoid.
 | Tract boundaries | TIGER/Line 2020 tracts | Already ingested |
 
 **Vehicles per household is measured, and that matters.** A dense lower-income tract may average
-0.9 vehicles per household where an affluent exurban tract averages 2.4. The exurban tract
-generates nearly three times the evacuation demand per home. Assuming a regional average would
-erase that and would bias the measure against dense urban tracts — which is precisely the
-direction that would cause an AFFH problem.
+0.9 vehicles per household where an affluent exurban tract averages 2.4 — nearly three times the
+evacuation demand per home. Assuming a regional average would erase that and bias the measure
+against dense urban tracts, precisely the direction that would cause an AFFH problem.
 
-**Lane-count fallback hierarchy**, and every report states what share of scored links used each
-tier. OSM lane tagging is good on arterials and thin on residential streets, so this is not a
+**Lane-count fallback hierarchy**, with every report stating what share of scored links used
+each tier — OSM tagging is good on arterials and thin on residential streets, so this is not a
 footnote:
 
 1. `lanes` tag present → use it
@@ -138,14 +166,35 @@ footnote:
 3. Class default by `highway`: motorway 3, trunk 2, primary 2, secondary 2, tertiary 1,
    residential 1, unclassified 1
 
-**Calibration.** Modeled link volumes are compared against published Caltrans and SANDAG traffic
-counts, station by station, with residuals printed. Tracts with no nearby count station are
-labelled uncalibrated rather than silently carrying a default.
+**The auditable output is a bottleneck ledger.** Every identified bottleneck link, its capacity,
+its assigned load, and the contributing tracts with their shares — one row per
+(bottleneck, tract) pair, published as CSV. A traffic engineer can audit it link by link, and a
+resident can find their own street's role in it.
 
-**AFFH caution.** If dense urban tracts score poorly on egress simply for being dense, this
-indicator becomes a mechanism for steering housing away from urban cores — the lower-resource
-areas. Grids typically have many outlets and foothills few, so it may cut the other way. It must
-be measured before it is relied on. This is a Phase 3 question, not an assumption.
+**Calibration.** Modeled link volumes compared against published Caltrans and SANDAG traffic
+counts, station by station, residuals printed. Tracts with no nearby station are labelled
+uncalibrated rather than silently carrying a default.
+
+**Known simplifications, stated in every report.**
+
+* Static all-hazard network. No scenario-specific route closures — a fire-scenario variant is a
+  useful *diagnostic* but scenario choice is a modelling degree of freedom the scored indicator
+  deliberately refuses, the same discipline as the pinned CoSMoS scenario.
+* All-or-nothing assignment ignores congestion rerouting (see above).
+* Saturation of a bottleneck is measured against its free-flow capacity; region-wide simultaneous
+  evacuation would congest shared corridors beyond what any static measure captures.
+
+**What this buys.** Coronado reads correctly: every tract's binding bottleneck is the bridge or
+the Silver Strand, its headroom is a divided share of the room remaining there, and
+`units_addable` is small for a stated physical reason anyone can trace on a map. Santee reads
+correctly: demand spreads across routes to SR-52, SR-67 and SR-125, no single binding cut, large
+headroom. And the indicator is **actionable**, which stock measures never are: a jurisdiction
+that adds egress capacity moves its own number.
+
+**AFFH caution.** If dense urban tracts route through saturated urban interchanges they could
+score poorly merely for being dense — the failure mode survives the reformulation and must be
+measured in Phase 3 before this indicator carries weight. The prior is that it favours grids
+over foothills, but that is a prior, not a result.
 
 ---
 
@@ -338,7 +387,7 @@ technically as well as legally.
 
 | Indicator | Domain | Scored | Marginal | Source | Status |
 |---|---|:--:|:--:|---|---|
-| `egress_headroom` | Evacuation | yes | yes | OSM + ACS B25044 + NUREG/CR-7002 | Phase 4 |
+| `evacuation_units_accommodatable` | Evacuation | yes | yes | OSM + ACS B25044 + NUREG/CR-7002 + FHWA | Phase 4 |
 | `sewer_units_accommodatable` | Infrastructure | yes | yes | EPA ECHO + CIWQS | Phase 2, service areas at risk |
 | `water_units_accommodatable` | Infrastructure | yes | yes | DWR UWMP + SWP/Reclamation | Phase 2, expect near-null |
 | `share_land_unprotected` | Land | yes | n/a | CPAD / CCED | Phase 2 |
@@ -358,3 +407,8 @@ technically as well as legally.
 4. **Power.** Diagnostic, as recommended here, or weighted? Requires an HCD conversation first.
 5. **Sewer service areas.** If SanGIS does not publish district boundaries, does the indicator
    drop out of scoring or fall back to agency level? Recommendation: drop out and say so.
+6. **Evacuation exit set.** Freeway mainline plus county boundary is the default; a stricter
+   definition (named shelter destinations) changes the routing. Shapes §3.1.
+7. **Headroom sharing rule.** Pro-rata scored with the solo bound published alongside is the
+   recommendation; equal-per-tract is the defensible alternative. Shapes §3.1 and, later, the
+   siting bound in the allocator.

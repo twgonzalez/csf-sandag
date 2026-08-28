@@ -82,12 +82,18 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
         statutory_text="Emergency evacuation route capacity",
         indicators=[
             CapacityIndicator(
-                name="egress_headroom",
-                label="Egress headroom",
-                measure="egress_capacity_vph / (100 * vehicles_per_household)",
+                name="evacuation_units_accommodatable",
+                label="Evacuation headroom, in dwelling units",
+                measure=(
+                    "min over bottlenecks b on the tract's evacuation routes of: "
+                    "headroom_share(t, b) * (capacity_b - assigned_load_b) "
+                    "/ (vehicles_per_unit * share_of_tract_flow_through_b)"
+                ),
                 reported_as=(
-                    "Additional clearance time in minutes per 100 dwelling units: "
-                    "60 * 100 * vehicles_per_household / egress_capacity_vph"
+                    "Dwelling units addable before the first bottleneck the tract depends on "
+                    "saturates, under the pro-rata sharing rule; the solo upper bound is "
+                    "published alongside, and the full bottleneck ledger (link, capacity, "
+                    "assigned load, contributing tracts and shares) as CSV"
                 ),
                 statutory_basis="Gov. Code 65584.04(e), emergency evacuation route capacity",
                 source=(
@@ -98,16 +104,22 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                 url="https://www.nrc.gov/docs/ML2101/ML21013A504.pdf",
                 available=False,
                 gap=(
-                    "Phase 4. Egress capacity is a maximum flow from the tract to the regional "
-                    "exit set, not a sum of links crossing the tract boundary -- a boundary sum "
-                    "would show central Coronado as well served and miss entirely that "
-                    "everything funnels to one bridge two hops away."
+                    "Phase 4. Bottleneck attribution, not per-tract max flow: max flow computed "
+                    "independently per tract double-counts shared links -- every Coronado tract "
+                    "sees the bridge's full capacity in its own max-flow -- and so overstates "
+                    "capacity exactly where many tracts share one outlet. All tracts are routed "
+                    "simultaneously (all-or-nothing shortest paths to the exit set), each link's "
+                    "load is attributed to the tracts whose vehicles use it, and a tract's "
+                    "headroom is its share of the remaining room at its binding bottleneck. Two "
+                    "named parameters: exit_set (default freeway mainline plus county boundary) "
+                    "and headroom_share (default pro-rata to existing contribution)."
                 ),
                 caution=(
-                    "If dense urban tracts score poorly on egress merely for being dense, this "
-                    "indicator steers housing away from urban cores, which are the "
-                    "lower-resource areas. Grids usually have many outlets and foothills few, so "
-                    "it may cut the other way. Measure before relying on it."
+                    "If dense urban tracts route through saturated urban interchanges they can "
+                    "score poorly merely for being dense, which would steer housing away from "
+                    "the lower-resource urban cores. Measure in Phase 3 before this carries "
+                    "weight. The static all-hazard network and all-or-nothing assignment are "
+                    "deliberate simplifications, stated in every report."
                 ),
             ),
         ],

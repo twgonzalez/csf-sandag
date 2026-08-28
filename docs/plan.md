@@ -230,13 +230,24 @@ than an argument.
 - The frontier. Sweep the AFFH gate from unconstrained to maximum; at each level solve for the
   allocation minimising hazard exposure. Each point is a committed parameter file.
 
-**Verifiable output.** `reports/frontier.md`
+**Verifiable output.** `reports/frontier.md` and — the headline deliverable —
+`reports/delta_vs_sixth_cycle.md`: every candidate methodology run against the 6th-cycle RHND of
+171,685, side by side with the adopted allocation, deltas by jurisdiction and income category.
+Three columns a board member reads first: what SANDAG adopted, what the resource-only baseline
+produces, what the capacity-plus-opportunity candidate (with the corrected jobs factor from
+Phase 5) produces. Same regional total in every column — the differences are pure redistribution.
+
+Running candidates against the *6th-cycle* determination is deliberate: it is the only RHND that
+exists until HCD issues the 7th-cycle number, and it turns every methodology argument into a
+concrete statement — "under this rule, Santee receives X more and Solana Beach Y fewer" — that
+can be checked against the adopted plan everyone already knows.
 
 **How a person checks it.** Every point on the curve is a parameter file in `params/`. Rerunning
 any one reproduces its point on the curve exactly, byte for byte. The slope at the chosen point is
 the exchange rate between AFFH performance and hazard exposure, in units, at the margin — which is
 the chair's question, answered as a rate rather than a verdict. Where the frontier is flat there
-is no trade-off at all, and the report says so plainly.
+is no trade-off at all, and the report says so plainly. The delta table reconciles: each column
+sums to 171,685, and the adopted column matches the replication already verified in milestone 0.
 
 **Gate B.** The board picks a point on the frontier. Every point is lawful; the choice is
 political, and it should be made in the open with the numbers visible.
