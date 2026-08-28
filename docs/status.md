@@ -65,10 +65,10 @@ data before an allocation is issued. It is not yet built (see below).
 | QCEW / EDD | **not built** | Needed for reconciliation and seasonality curves |
 | HCD Annual Progress Reports | **deliberately not built** | See "Refused inputs" below |
 | DOF E-5 | **not built** | |
-| TCAC/HCD Opportunity Map | **not built** | Required for the AFFH test in Layer 4 |
+| TCAC/HCD Opportunity Map | **built** | Replicated exactly; see reports/opportunity_map.md |
 | OpenStreetMap network | **not built** | |
 | Caltrans / SANDAG traffic counts | **not built** | |
-| Hazard layers (FHSZ, NFHL, CoSMoS, CPAD/CCED) | **not built** | |
+| Hazard layers | **partial** | FHSZ (2024/2025 vintages), NFHL floodway, CPAD 2026a built; CoSMoS awaits the scenario decision; CCED not yet |
 
 ### Layer 2 — Tract metrics
 
@@ -80,10 +80,10 @@ data before an allocation is issued. It is not yet built (see below).
 | Housing by bedroom count | **built** |
 | Cost burden, overcrowding, tenure | **built** |
 | Workforce housing gap | **built** in units; **not built** in bedrooms |
-| Opportunity bin | **not built** |
+| Opportunity bin | **built**, replicated exactly |
 | Transit access (GTFS) | **not built** |
 | Street network capacity | **not built** |
-| Hazard constraint index | **not built** |
+| Hazard constraint index | **partial** — 3 of 7 capacity indicators scored; see reports/capacity_map.md |
 | Evacuation capacity (NUREG/CR-7002 method, in-repo) | **not built** — Phase 4 |
 | Multi-site correction | **not built** |
 | QCEW reconciliation | **not built** |

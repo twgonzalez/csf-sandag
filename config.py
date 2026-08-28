@@ -285,6 +285,74 @@ SOURCES: dict[str, Source] = {
             "publisher's, not ours."
         ),
     ),
+    # ---------------------------------------------------------------- capacity layers
+    "cpad": Source(
+        key="cpad",
+        url=(
+            "https://data.cnra.ca.gov/dataset/0ae3cd9f-0612-4572-8862-9e9a1c41e659/resource/"
+            "cadf9163-aa38-44ae-851a-86b35d4c6c0c/download/cpad_2026a_release.zip"
+        ),
+        vintage="CPAD 2026a release",
+        publisher="GreenInfo Network via California Natural Resources Agency",
+        title="California Protected Areas Database",
+        landing="https://www.calands.org/",
+        verified="2026-08-28",
+        notes=(
+            "Holdings layer: fee-owned protected lands. Used for share_land_unprotected. "
+            "~178 MB statewide; filtered to San Diego County after download."
+        ),
+    ),
+    "fhsz_sra": Source(
+        key="fhsz_sra",
+        url=(
+            "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/"
+            "FHSZSRA_23_3/FeatureServer/0"
+        ),
+        vintage="SRA Fire Hazard Severity Zones as adopted 2024-04-01",
+        publisher="CAL FIRE Office of the State Fire Marshal",
+        title="Fire Hazard Severity Zones, State Responsibility Area",
+        landing=(
+            "https://osfm.fire.ca.gov/what-we-do/"
+            "community-wildfire-preparedness-and-mitigation/fire-hazard-severity-zones"
+        ),
+        verified="2026-08-28",
+        notes=(
+            "Feature service, fetched as a paginated county-scoped query and recorded as an "
+            "assembled file. The item snippet states 'as adopted on April 1, 2024', confirming "
+            "the current vintage. The older statewide GIS service (2007 SRA / 2011 LRA) must "
+            "not be used; see docs/capacity_indicators.md 3.6."
+        ),
+    ),
+    "fhsz_lra": Source(
+        key="fhsz_lra",
+        url=(
+            "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/"
+            "FHSALRA25_v1_All/FeatureServer/0"
+        ),
+        vintage="LRA Fire Hazard Severity Zones, map dated 2025-03-24, all rollout phases",
+        publisher="CAL FIRE Office of the State Fire Marshal",
+        title="Fire Hazard Severity Zones, Local Responsibility Area",
+        landing=(
+            "https://osfm.fire.ca.gov/what-we-do/"
+            "community-wildfire-preparedness-and-mitigation/fire-hazard-severity-zones"
+        ),
+        verified="2026-08-28",
+        notes="Feature service, paginated county-scoped query, recorded as an assembled file.",
+    ),
+    "nfhl_flood_zones": Source(
+        key="nfhl_flood_zones",
+        url="https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28",
+        vintage="National Flood Hazard Layer, live service (fetch date pins the vintage)",
+        publisher="Federal Emergency Management Agency",
+        title="NFHL Flood Hazard Zones (regulatory floodway subset)",
+        landing="https://www.fema.gov/flood-maps/national-flood-hazard-layer",
+        verified="2026-08-28",
+        notes=(
+            "Layer 28. Only features whose ZONE_SUBTY contains FLOODWAY are fetched -- the "
+            "regulatory floodway, not the 100-year floodplain, per "
+            "docs/capacity_indicators.md 3.5."
+        ),
+    ),
     # ---------------------------------------------------------------- jobs
     "lodes_wac": Source(
         key="lodes_wac",

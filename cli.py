@@ -61,6 +61,14 @@ def ingest(refresh: bool) -> None:
         f"({cover['block_group_aggregated']} aggregated from block groups)"
     )
 
+    from ingest.hazards import build_hazard_shares
+
+    hazard = build_hazard_shares(refresh=refresh)
+    console.print(
+        f"  hazard layers: FHSZ + floodway + CPAD -> {len(hazard)} tracts "
+        f"({int((hazard['share_in_vhfhsz'] > 0).sum())} with VHFHSZ housing exposure)"
+    )
+
     console.print(f"  raw cache: {len(cache.manifest_rows())} files, checksums recorded")
 
 
@@ -120,6 +128,15 @@ def report() -> None:
 
     opportunity = build_opportunity()
     console.print(f"  {opportunity['report_path']}")
+
+    from report.capacity_map import build as build_capacity
+
+    capacity = build_capacity()
+    console.print(f"  {capacity['report_path']}")
+    console.print(
+        f"  capacity x opportunity gradient: inverse = {capacity['inverse_gradient']} "
+        f"({capacity['indicators_used']}/{capacity['indicators_total']} indicators)"
+    )
     console.print(
         f"  capacity indicators ingested: "
         f"{opportunity['capacity_indicators_available']}/"

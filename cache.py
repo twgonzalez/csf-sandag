@@ -151,6 +151,27 @@ def fetch_url(key: str, url: str, *, refresh: bool = False, timeout: int = 120) 
     )
 
 
+def record_assembled(key: str, path: Path, *, url: str, vintage: str, notes: str = "") -> None:
+    """Record a file assembled from multiple requests (e.g. a paginated ArcGIS query).
+
+    ``fetch`` handles single-URL downloads; a feature service answers in pages, so the fetcher
+    assembles them into one file and records the result here. The manifest entry has the same
+    shape either way, so an assembled file is exactly as auditable as a plain download: URL
+    template, vintage, SHA-256 of the assembled bytes, size, and fetch time.
+    """
+    manifest = _load_manifest()
+    manifest[key] = {
+        "url": url,
+        "vintage": vintage,
+        "sha256": sha256_of(path),
+        "bytes": path.stat().st_size,
+        "fetched_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "path": path.name,
+        "notes": notes or "assembled from paginated requests; sha256 is of the assembled file",
+    }
+    _save_manifest(manifest)
+
+
 def unzip(path: Path, *, into: Path | None = None) -> Path:
     """Extract a cached zip archive once, into a sibling directory named after it.
 

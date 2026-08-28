@@ -200,8 +200,8 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                     "Easement Database (CCED), GreenInfo Network"
                 ),
                 url="https://www.calands.org/",
-                available=False,
-                gap="Phase 2.",
+                available=True,
+                gap="",
                 caution=(
                     "Protection means a federal, state or private conservation instrument. A "
                     "local open-space designation is not protection for this purpose; counting "
@@ -216,8 +216,8 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                 statutory_basis="Gov. Code 65584.04(e), land suitable for urban development",
                 source="FEMA National Flood Hazard Layer, zone designation FLOODWAY",
                 url="https://www.fema.gov/flood-maps/national-flood-hazard-layer",
-                available=False,
-                gap="Phase 2.",
+                available=True,
+                gap="",
                 caution=(
                     "The regulatory floodway, not the 100-year floodplain. The floodplain is "
                     "buildable with mitigation and holds a great deal of existing California "
@@ -247,12 +247,8 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                     "https://osfm.fire.ca.gov/what-we-do/"
                     "community-wildfire-preparedness-and-mitigation/fire-hazard-severity-zones"
                 ),
-                available=False,
-                gap=(
-                    "Phase 2. Do NOT use the statewide GIS Fire_Severity_Zones service: it still "
-                    "serves 2007 SRA and 2011 LRA zones, confirmed 2026-08-27, and anything "
-                    "built on it would be silently eighteen years stale."
-                ),
+                available=True,
+                gap="",
                 caution=(
                     "Hazard is the one family where stock and marginal converge: because units "
                     "are allocated to tracts, a tract 80% in VHFHSZ gives an added unit roughly "
@@ -494,6 +490,27 @@ def capacity_category_from_score(score: int, n_indicators: int) -> str:
     return "Low Capacity"
 
 
+def capacity_feature_table() -> pd.DataFrame:
+    """Tract capacity features from every ingested indicator, ready for :func:`score_capacity`.
+
+    Grows a column per phase: today the three hazard/land indicators from
+    :mod:`ingest.hazards`; sea level rise waits on the scenario decision, sewer and water on
+    their source work, evacuation on Phase 4.
+    """
+    from ingest.hazards import load_hazard_shares
+
+    shares = load_hazard_shares()
+    return shares[
+        [
+            "tract_geoid",
+            "share_outside_vhfhsz",
+            "share_outside_floodway",
+            "share_land_unprotected",
+            "exposure_basis",
+        ]
+    ].copy()
+
+
 def cross_tab(opportunity: pd.DataFrame, capacity: pd.DataFrame, *, weight: str) -> pd.DataFrame:
     """The 4x4 resource-by-capacity matrix that Phase 3 turns on.
 
@@ -507,8 +524,12 @@ def cross_tab(opportunity: pd.DataFrame, capacity: pd.DataFrame, *, weight: str)
         Opportunity categories as rows, capacity categories as columns.
     """
     joined = opportunity[["tract_geoid", "opportunity_category"]].merge(
-        capacity[["tract_geoid", "capacity_category", weight]], on="tract_geoid", how="inner"
+        capacity[["tract_geoid", "capacity_category", weight]], on="tract_geoid", how="right"
     )
+    # Tracts TCAC publishes without a score (incomplete indicator data) and any tract absent
+    # from the map entirely must appear as their own row, not silently drop out of the pivot --
+    # they hold real housing units, and a cross-tab that loses units cannot be reconciled.
+    joined["opportunity_category"] = joined["opportunity_category"].fillna("Not scored by TCAC")
     return joined.pivot_table(
         index="opportunity_category",
         columns="capacity_category",

@@ -191,3 +191,52 @@ def test_one_row_per_tract() -> None:
 
     table = load_opportunity_map()
     assert not table["tract_geoid"].duplicated().any()
+
+
+# ------------------------------------------------------------------ network: hazard layers
+
+
+@pytest.mark.network
+def test_hazard_shares_cover_every_tract_in_unit_interval() -> None:
+    from ingest.crosswalk import load_crosswalk
+    from ingest.hazards import load_hazard_shares
+
+    shares = load_hazard_shares()
+    assert set(shares["tract_geoid"]) == set(load_crosswalk()["tract_geoid"])
+    for column in ("share_outside_vhfhsz", "share_outside_floodway", "share_land_unprotected"):
+        assert shares[column].between(0, 1).all(), column
+        assert shares[column].notna().all(), column
+
+
+@pytest.mark.network
+def test_capacity_map_scores_all_tracts_on_ingested_indicators() -> None:
+    from metrics.capacity import capacity_feature_table, score_capacity
+
+    scored = score_capacity(capacity_feature_table())
+    assert len(scored) == 737
+    assert (scored["indicators_scored"] == 3).all()
+    assert scored["capacity_score"].between(1, 4).all()
+
+
+@pytest.mark.network
+def test_cross_tab_conserves_housing_units() -> None:
+    """Every housing unit lands in exactly one cell; the water tract is the only loss."""
+    from ingest.crosswalk import load_crosswalk
+    from ingest.opportunity_map import load_opportunity_map
+    from metrics.capacity import capacity_feature_table, cross_tab, score_capacity
+
+    units = load_crosswalk().groupby("tract_geoid", as_index=False)["housing_units_2020"].sum()
+    capacity = score_capacity(capacity_feature_table()).merge(units, on="tract_geoid")
+    matrix = cross_tab(load_opportunity_map(), capacity, weight="housing_units_2020")
+    assert int(matrix.to_numpy().sum()) == int(units["housing_units_2020"].sum())
+    # The tracts TCAC publishes without a score hold real units and must appear, not vanish.
+    assert "Not scored by TCAC" in matrix.index
+
+
+@pytest.mark.network
+def test_inverse_gradient_is_present_on_land_hazard_axes() -> None:
+    """The Gate A finding: freeze it in a test so a data revision that flips it fails loudly."""
+    from report.capacity_map import build
+
+    summary = build(write=False)
+    assert summary["inverse_gradient"]
