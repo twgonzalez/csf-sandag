@@ -1,0 +1,232 @@
+<title>Evacuation, Measured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --sunk:#E8ECEE; --ink:#16232B; --muted:#5A6B74;
+  --rule:#D2DADE; --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F;
+  --signal-soft:#F6E7E1; --ok:#2E6B4F; --ok-soft:#E2EFE8;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+    --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+    --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+  --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+  --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1020px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+h1,h2,h3 { font-family:var(--display); text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2.1rem,5.5vw,3.4rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; }
+h2 { font-size:clamp(1.3rem,2.8vw,1.7rem); font-weight:700; letter-spacing:-.018em; }
+h3 { font-size:1.02rem; font-weight:700; }
+p { margin:0; max-width:66ch; }
+.eyebrow { font-family:var(--mono); font-size:.7rem; font-weight:500; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--muted); }
+.cite,code { font-family:var(--mono); font-size:.855em; color:var(--accent); }
+.masthead { border-bottom:2px solid var(--ink); padding-bottom:2rem; }
+.masthead .eyebrow { display:block; margin-bottom:1rem; }
+.standfirst { font-size:clamp(1.02rem,2vw,1.18rem); color:var(--muted); margin-top:1.2rem; max-width:58ch; }
+.badges { display:flex; flex-wrap:wrap; gap:.55rem 2rem; margin-top:1.8rem;
+  font-family:var(--mono); font-size:.775rem; color:var(--muted); }
+.badges b { color:var(--ink); font-weight:500; }
+section { margin-top:clamp(2.6rem,5.5vw,4rem); }
+.section-head { display:flex; align-items:baseline; gap:1rem; padding-bottom:.65rem;
+  border-bottom:1px solid var(--rule); margin-bottom:1.5rem; }
+.section-head h2 { flex:1; }
+
+/* plain-english mechanics */
+.mech { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1rem; }
+.mcard { background:var(--surface); border:1px solid var(--rule); padding:1.25rem 1.4rem;
+  display:flex; flex-direction:column; gap:.5rem; }
+.mcard.up { border-top:3px solid var(--ok); }
+.mcard.down { border-top:3px solid var(--signal); }
+.mcard.never { border-top:3px solid var(--ink); }
+.mcard h3.up { color:var(--ok); } .mcard h3.down { color:var(--signal); }
+.mcard p { font-size:.92rem; color:var(--muted); }
+.mcard p strong { color:var(--ink); }
+.example { background:var(--accent-soft); border-left:3px solid var(--accent);
+  padding:1.3rem 1.5rem; margin-top:1rem; display:flex; flex-direction:column; gap:.55rem; }
+.example p { font-size:.93rem; color:var(--muted); }
+.example p strong { color:var(--ink); }
+.example .lede { font-family:var(--display); font-size:1.08rem; font-weight:700; color:var(--ink); }
+
+/* stats */
+.pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+.big { background:var(--surface); border:1px solid var(--rule); border-top:3px solid var(--accent);
+  padding:1.15rem 1.3rem; display:flex; flex-direction:column; gap:.3rem; }
+.big .n { font-family:var(--display); font-size:2rem; font-weight:800; letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums; }
+.big p { font-size:.85rem; color:var(--muted); }
+
+/* tables */
+.scroll { overflow-x:auto; border:1px solid var(--rule); background:var(--surface); }
+table { border-collapse:collapse; width:100%; font-size:.87rem; min-width:32rem; }
+th,td { text-align:left; padding:.6rem .9rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+tbody tr:last-child td { border-bottom:none; }
+thead th { font-family:var(--mono); font-size:.66rem; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); background:var(--sunk); white-space:nowrap; }
+td.n { font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+td.hit { color:var(--ok); font-weight:600; } td.miss { color:var(--signal); font-weight:600; }
+.moves td.up { color:var(--ok); font-weight:600; } .moves td.down { color:var(--signal); font-weight:600; }
+.note { font-size:.875rem; color:var(--muted); margin-top:1rem; max-width:64ch; }
+.caveat { background:var(--signal-soft); border-left:3px solid var(--signal); padding:1.1rem 1.3rem; }
+.caveat p { font-size:.9rem; color:var(--muted); }
+.caveat p strong { color:var(--signal); }
+footer { margin-top:4rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.75rem; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:.5rem 1.8rem; }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important;} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Journal entry · Phase 4</span>
+    <h1>Evacuation, measured</h1>
+    <p class="standfirst">
+      The fourth capacity dimension — the one every hard question in this project kept returning
+      to — computed from one county road network, with every bottleneck's load attributed among
+      the neighborhoods that share it.
+    </p>
+    <div class="badges">
+      <span>Commit &nbsp;<b>8ad46f1</b></span>
+      <span>Network &nbsp;<b>87,069 nodes · 205,361 edges</b></span>
+      <span>Tracts routed &nbsp;<b>737 of 737</b></span>
+      <span>Tests &nbsp;<b>126 passing</b></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head"><h2>What evacuation does to an allocation, in plain English</h2></div>
+    <p style="margin-bottom:1.1rem">
+      Every neighborhood now has a measured number: how many homes it can empty through the worst
+      chokepoint on its way out — its <strong>discharge rate</strong>, in dwelling units per hour.
+      A tract that takes nine hours to clear discharges one-ninth of its homes each hour. In a
+      capacity-weighted methodology, that number tilts where units land. Three rules cover it:
+    </p>
+    <div class="mech">
+      <div class="mcard up">
+        <h3 class="up">It increases a share when the roads can absorb more</h3>
+        <p>Within the group of neighborhoods already chosen on fair-housing grounds, the ones
+        that drain well take a larger slice. A city whose good-school neighborhoods sit on a
+        street grid with several ways out — <strong>gains</strong>, because its tracts win those
+        comparisons. National City's grid posts the county's best discharge: 398 units/hr.</p>
+      </div>
+      <div class="mcard down">
+        <h3 class="down">It decreases a share where everyone shares one way out</h3>
+        <p>A neighborhood behind a funnel — one bridge, one highway out — takes a smaller slice,
+        and the difference flows to better-drained neighborhoods <em>of the same fair-housing
+        standing</em>. Imperial Beach discharges 100 units/hr through the Palm Avenue funnel,
+        second-worst in the county; Coronado's bridge now shows in its number.</p>
+      </div>
+      <div class="mcard never">
+        <h3>Three things it can never do</h3>
+        <p>It never changes the regional total — 171,685 units get placed, always. It never
+        decides <em>which kind</em> of neighborhood gets lower-income homes — the fair-housing
+        gate fixes that first. And it never zeroes out a city — every jurisdiction keeps a
+        nonzero allocation in every income category, by statute
+        (<span class="cite">§65584(d)(1)</span>).</p>
+      </div>
+    </div>
+    <div class="example">
+      <p class="lede">Worked example</p>
+      <p>Say 1,000 lower-income units are bound for Highest Resource neighborhoods — the gate
+      decided that, and evacuation cannot undo it. Two such neighborhoods compete: a coastal
+      tract discharging <strong>350 units/hr</strong> onto I-5, and a peninsula tract behind a
+      bridge discharging <strong>90 units/hr</strong>. A capacity-weighted rule sends more of the
+      1,000 to the first and fewer to the second. If the two sit in different cities, the first
+      city's total rises and the second's falls — <strong>as an output of where the roads are,
+      not as a judgment about either city</strong>.</p>
+      <p>Which is also why the number is actionable: build a second way out, and the tract's
+      discharge rate — and its share — moves. No other kind of allocation factor gives a city
+      something to <em>do</em>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Headline measurements</h2></div>
+    <div class="pair">
+      <div class="big"><span class="eyebrow">Median clearance, binding bottleneck</span>
+        <span class="n">6.6 h</span><p>Simultaneous departure — an upper bound; the ranking, not the clock, is the signal.</p></div>
+      <div class="big"><span class="eyebrow">Best discharge (National City)</span>
+        <span class="n">398 <small style="font-size:1rem">u/hr</small></span><p>Urban grids evacuate well — even under routing that understates their redundancy.</p></div>
+      <div class="big"><span class="eyebrow">Second-worst (Imperial Beach)</span>
+        <span class="n">100 <small style="font-size:1rem">u/hr</small></span><p>The SR-75 / Palm Avenue funnel. Poway is last at 137 u/hr on its arterials — with the county's worst fire exposure on top.</p></div>
+      <div class="big"><span class="eyebrow">Capacity–opportunity gradient</span>
+        <span class="n">3.3×</span><p>Low Resource tracts are now 3.3× likelier to be Highest Capacity than Highest Resource tracts (was 2.7× on three indicators). Evacuation <em>strengthened</em> the inverse gradient.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Predictions vs. measurements</h2><span class="eyebrow">priors recorded before the run</span></div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Prior</th><th>Measured</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>Coronado falls hard, bottom 3</td><td class="n">#6 → #9 · 254 u/hr</td><td class="hit">Direction right, magnitude soft — county-wide saturation mutes the bridge, and NASNI workforce demand is not yet counted</td></tr>
+          <tr><td>Urban core holds or strengthens</td><td class="n">National City #5 → #3 · best discharge</td><td class="hit">Right</td></tr>
+          <tr><td>Solana Beach roughly holds</td><td class="n">#8 → #5 · 336 u/hr</td><td class="hit">Right — the narrow-roads worry did not bind; Lomas Santa Fe to I-5 is short</td></tr>
+          <tr><td>Santee partial recovery</td><td class="n">281 u/hr, held #14 on fire</td><td class="hit">Right</td></tr>
+          <tr><td>Coastal I-5 cities fine</td><td class="n">Carlsbad 310 · Encinitas 282</td><td class="hit">Right</td></tr>
+          <tr><td><em>(no prediction)</em></td><td class="n">Imperial Beach #2 → #6 · 100 u/hr</td><td class="miss">Missed — the coastal-funnel instinct was right, one city south of where it was aimed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">The priors were written down before the computation ran, and the miss is kept
+    on the record beside the hits. A pipeline that only reports its correct predictions is
+    advertising, not measurement.</p>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Ranking moves, four indicators vs. three</h2></div>
+    <div class="scroll">
+      <table class="moves">
+        <thead><tr><th>Jurisdiction</th><th>3-indicator rank</th><th>With evacuation</th><th>Evac u/hr (wtd)</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>San Diego</td><td class="n">12</td><td class="n up">8 ▲</td><td class="n">350</td><td>The grid discharges well at scale</td></tr>
+          <tr><td>Solana Beach</td><td class="n">8</td><td class="n up">5 ▲</td><td class="n">336</td><td>Short run to I-5; small demand</td></tr>
+          <tr><td>National City</td><td class="n">5</td><td class="n up">3 ▲</td><td class="n">398</td><td>Best discharge in the county</td></tr>
+          <tr><td>Imperial Beach</td><td class="n">2</td><td class="n down">6 ▼</td><td class="n">100</td><td>The Palm Avenue funnel</td></tr>
+          <tr><td>Coronado</td><td class="n">6</td><td class="n down">9 ▼</td><td class="n">254</td><td>The bridge — understated until NASNI demand lands</td></tr>
+          <tr><td>Unincorporated County</td><td class="n">15</td><td class="n down">17 ▼</td><td class="n">334</td><td>Fire and distance compound; empty roads flatter the evac number</td></tr>
+          <tr><td>Poway</td><td class="n">19</td><td class="n">19 —</td><td class="n">137</td><td>Last on every axis measured</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Read before quoting</h2></div>
+    <div class="caveat">
+      <p><strong>v1, uncalibrated, and it says so.</strong> Link capacities are federal defaults
+      (FHWA HPMS App. N) not yet calibrated against Caltrans count stations; everyone departs at
+      once, so clearance hours are upper bounds; each tract's traffic takes one shortest path, so
+      street grids read <em>worse</em> than reality — a bias that runs against the urban cores,
+      the direction that matters for fair housing. The measure is congestion-based, not
+      distance-based: an hour on an empty desert road scores well. Five military-base tracts
+      (Camp Pendleton, MCAS Miramar among them) have restricted road networks absent from the
+      public map and snap to the freeway directly — flagged per tract. The scored form is a
+      recorded amendment to the spec (§3.1): pro-rata discharge rate now, the headroom form and
+      the contribution cap return with staged departures in v2.</p>
+    </div>
+    <p class="note">Every number traces to <code>reports/evacuation/evacuation_by_tract.csv</code>
+    and the bottleneck ledger — every loaded link, its capacity, its load, and the neighborhoods
+    that share it. A traffic engineer can audit it link by link.</p>
+  </section>
+
+  <footer>
+    <span>Journal entry · frozen at commit 8ad46f1</span>
+    <span>Report: reports/evacuation_capacity.md · Spec: docs/capacity_indicators.md §3.1</span>
+  </footer>
+</div>
