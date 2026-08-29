@@ -82,18 +82,17 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
         statutory_text="Emergency evacuation route capacity",
         indicators=[
             CapacityIndicator(
-                name="evacuation_units_accommodatable",
+                name="evacuation_units_per_hour",
                 label="Evacuation headroom, in dwelling units",
                 measure=(
-                    "min over bottlenecks b on the tract's evacuation routes of: "
-                    "headroom_share(t, b) * (capacity_b - assigned_load_b) "
-                    "/ (vehicles_per_unit * share_of_tract_flow_through_b)"
+                    "households / clearance_hours at the binding shared bottleneck "
+                    "(= pro-rata share of the bottleneck's hourly discharge, in dwelling units; "
+                    "v1 amendment in docs/capacity_indicators.md 3.1)"
                 ),
                 reported_as=(
-                    "Dwelling units addable before the first bottleneck the tract depends on "
-                    "saturates, under the pro-rata sharing rule; the solo upper bound is "
-                    "published alongside, and the full bottleneck ledger (link, capacity, "
-                    "assigned load, contributing tracts and shares) as CSV"
+                    "Dwelling units per hour the tract can discharge through its binding shared "
+                    "bottleneck; clearance hours and delta-clearance minutes per 100 added units "
+                    "published alongside, with the full bottleneck ledger as CSV"
                 ),
                 statutory_basis="Gov. Code 65584.04(e), emergency evacuation route capacity",
                 source=(
@@ -102,9 +101,11 @@ CAPACITY_DOMAINS: list[CapacityDomain] = [
                     "Appendix N capacity parameters"
                 ),
                 url="https://www.nrc.gov/docs/ML2101/ML21013A504.pdf",
-                available=False,
+                available=True,
                 gap=(
-                    "Phase 4. Bottleneck attribution, not per-tract max flow: max flow computed "
+                    "Built, v1: uncalibrated (Caltrans count calibration owed); exit set is "
+                    "freeway mainline only; simultaneous departure. See "
+                    "reports/evacuation_capacity.md honesty accounting. Design rationale: "
                     "independently per tract double-counts shared links -- every Coronado tract "
                     "sees the bridge's full capacity in its own max-flow -- and so overstates "
                     "capacity exactly where many tracts share one outlet. All tracts are routed "
@@ -498,9 +499,9 @@ def capacity_feature_table() -> pd.DataFrame:
     their source work, evacuation on Phase 4.
     """
     from ingest.hazards import load_hazard_shares
+    from metrics.evacuation import load_evacuation
 
-    shares = load_hazard_shares()
-    return shares[
+    shares = load_hazard_shares()[
         [
             "tract_geoid",
             "share_outside_vhfhsz",
@@ -508,7 +509,9 @@ def capacity_feature_table() -> pd.DataFrame:
             "share_land_unprotected",
             "exposure_basis",
         ]
-    ].copy()
+    ]
+    evacuation = load_evacuation()[["tract_geoid", "evacuation_units_per_hour"]]
+    return shares.merge(evacuation, on="tract_geoid", how="left", validate="one_to_one")
 
 
 def cross_tab(opportunity: pd.DataFrame, capacity: pd.DataFrame, *, weight: str) -> pd.DataFrame:

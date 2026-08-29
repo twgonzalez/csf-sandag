@@ -73,7 +73,18 @@ matching construction is that a reader can check any cell from two published CSV
 
 ## 3. The indicators
 
-### 3.1 Evacuation — `evacuation_units_accommodatable`
+### 3.1 Evacuation — `evacuation_units_per_hour`
+
+> **v1 amendment (2026-08-28).** The headroom form specified below degenerates under the v1
+> simultaneous-departure loading: the county's median binding bottleneck takes 6.5 hours to
+> clear, so `capacity − load` against hourly capacity is negative almost everywhere and
+> discriminates nothing. v1 therefore scores the **pro-rata discharge rate**,
+> `evacuation_units_per_hour = households ÷ clearance hours at the binding shared bottleneck` —
+> algebraically the tract's pro-rata share of its bottleneck's hourly discharge, converted to
+> dwelling units. It is marginal, shared-bottleneck-aware, and robust to the departure-curve
+> assumption. The headroom form below returns with a staged-departure v2, at which point the
+> clearance-time threshold becomes the JOSH-style contribution cap. Δ-clearance per 100 units is
+> published alongside, as originally specified.
 
 **Domain:** Evacuation. **Statutory hook:** §65584.04(e), "emergency evacuation route capacity."
 

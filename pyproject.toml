@@ -23,6 +23,7 @@ dependencies = [
     "rich==13.9.4",
     "pypdf==5.1.0",
     "openpyxl==3.1.5",
+    "scipy==1.14.1",
 ]
 
 [project.optional-dependencies]
@@ -64,3 +65,4 @@ select = ["E", "F", "I", "UP", "B"]
 "report/delta.py" = ["E501"]
 "report/capacity_map.py" = ["E501"]
 "report/capacity_jurisdiction.py" = ["E501"]
+"report/evacuation.py" = ["E501"]

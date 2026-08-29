@@ -26,9 +26,13 @@ CAPACITY_ORDER = ["Highest Capacity", "High Capacity", "Moderate Capacity", "Low
 
 def _tract_pieces() -> pd.DataFrame:
     """One row per (tract, jurisdiction) piece with its housing units and tract capacity values."""
+    from metrics.evacuation import load_evacuation
+
     shares = load_hazard_shares()[
         ["tract_geoid", "share_in_vhfhsz", "share_in_floodway", "share_protected"]
     ]
+    evac = load_evacuation()[["tract_geoid", "evacuation_units_per_hour", "clearance_hours"]]
+    shares = shares.merge(evac, on="tract_geoid", how="left")
     scored = score_capacity(capacity_feature_table())[
         ["tract_geoid", "capacity_score", "capacity_category"]
     ]
@@ -53,6 +57,8 @@ def build(*, write: bool = True) -> dict:
             "% housing in VHFHSZ": weighted(group, "share_in_vhfhsz") * 100,
             "% housing in floodway": weighted(group, "share_in_floodway") * 100,
             "% land protected (unit-wtd)": weighted(group, "share_protected") * 100,
+            "Evac units/hr (wtd)": weighted(group, "evacuation_units_per_hour"),
+            "Evac clearance hrs (wtd)": weighted(group, "clearance_hours"),
             "Mean capacity score": weighted(group, "capacity_score"),
             "Tracts": int(group.loc[group["housing_units_2020"] > 0, "tract_geoid"].nunique()),
         }
@@ -92,7 +98,15 @@ def build(*, write: bool = True) -> dict:
     display.index = display_names(display.index)
 
     csv_dir = REPORTS / "capacity_by_jurisdiction"
-    dim_cols = ["Rank", "Housing units", *dims, "Dominant constraint", "Mean capacity score"]
+    dim_cols = [
+        "Rank",
+        "Housing units",
+        *dims,
+        "Evac units/hr (wtd)",
+        "Evac clearance hrs (wtd)",
+        "Dominant constraint",
+        "Mean capacity score",
+    ]
     dist_cols = ["Rank", *(f"% units {c.split()[0]}" for c in CAPACITY_ORDER), "Tracts"]
     dims_md = write_pair(display[dim_cols].round(1), csv_dir / "dimensions.csv")
     dist_md = write_pair(display[dist_cols].round(1), csv_dir / "distribution.csv")
@@ -101,7 +115,7 @@ def build(*, write: bool = True) -> dict:
     generated = datetime.now(UTC).strftime("%Y-%m-%d")
     body = f"""# Capacity by jurisdiction
 
-*Generated {generated} · tract-computed, rolled up by housing-unit share · 3 of 7 indicators*
+*Generated {generated} · tract-computed, rolled up by housing-unit share · 4 of 7 indicators (evacuation v1: uncalibrated)*
 
 ## How to read this
 
@@ -114,10 +128,10 @@ parkland and one constrained by fire hazard are different conversations: parklan
 land-supply fact with no safety content; fire is the safety axis. A composite rank merges them,
 which is exactly why the dimensions are published side by side.
 
-Partial-evidence caveat, as everywhere: fire, floodway, and protected land only. Evacuation, sea
-level rise, sewer and water are not yet measured, and evacuation in particular could reorder
-this table — Coronado ranks well on land and hazard axes precisely because its binding
-constraint (one bridge, one road) is not yet in the data.
+Partial-evidence caveat: fire, floodway, protected land, and **evacuation v1** — uncalibrated,
+simultaneous-departure, freeway-mainline exit set; see `reports/evacuation_capacity.md` for the
+honesty accounting. Sea level rise, sewer and water are still unmeasured. Evacuation figures are
+meaningful as *rankings*, not absolute clearance capability.
 
 ## The dimensions matrix
 

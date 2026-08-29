@@ -214,8 +214,8 @@ def test_capacity_map_scores_all_tracts_on_ingested_indicators() -> None:
 
     scored = score_capacity(capacity_feature_table())
     assert len(scored) == 737
-    assert (scored["indicators_scored"] == 3).all()
-    assert scored["capacity_score"].between(1, 4).all()
+    assert (scored["indicators_scored"] == 4).all()  # fire, floodway, protected, evacuation
+    assert scored["capacity_score"].between(1, 5).all()
 
 
 @pytest.mark.network
