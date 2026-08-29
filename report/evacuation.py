@@ -120,9 +120,18 @@ departure-curve assumption. Δ-clearance per 100 added units is published per tr
 1. **Uncalibrated.** The separable calibration against Caltrans/SANDAG count stations has not
    yet run. Link capacities are FHWA HPMS Appendix N class defaults; **rankings between tracts
    are the meaningful output, not absolute clearance times.**
-2. **Simultaneous departure.** Everyone leaves at once — the most conservative loading.
-   NUREG/CR-7002 stages departures over hours, so absolute clearance figures here are upper
-   bounds.
+2. **Simultaneous departure — but NOT an upper bound overall.** Everyone leaves at once, which
+   inflates loads; NUREG/CR-7002 stages departures over hours. But the model also assumes a
+   saturated bottleneck keeps discharging at full paper capacity indefinitely, and real jammed
+   roads do not — throughput drops under jam conditions, and in real fire evacuations
+   (Paradise 2018, Palisades 2025) abandoned vehicles closed lanes outright. One assumption is
+   pessimistic, the other optimistic, and they do not cancel: for single-corridor communities,
+   whose routing the model already gets roughly right, the true bad day is plausibly *worse*
+   than the figure printed here. Quote rankings and discharge rates; do not quote the clearance
+   clocks as predictions.
+   **For fast-moving fire, the discharge rate is the decision-relevant number**: with one hour
+   of warning, a 400 units/hr tract empties ~400 households; a 100 units/hr tract empties 100.
+   Total clearance time answers a question no wildfire grants the time to ask.
 3. **All-or-nothing routing.** Each tract's whole demand takes its single shortest path; a grid's
    parallel-street redundancy is invisible, so dense urban tracts read *worse* than reality.
    This inflation runs **against** high-opportunity urban cores — the direction that matters for
@@ -131,9 +140,14 @@ departure-curve assumption. Δ-clearance per 100 added units is published per tr
 4. **Lane-tag coverage:** {coverage.get("lanes_tag", 0):.1%} of edges carry a real OSM `lanes`
    tag; {coverage.get("class_default", 0):.1%} rest on class defaults. Defaults dominate
    residential streets; arterials and freeways — where bottlenecks live — are the best-tagged.
-5. **Exit set v1** is freeway mainline only; county-boundary exits are not yet included, which
+5. **County-wide loading is not the wildfire scenario.** A real fire evacuates one zone while
+   the rest of the county drives normally — so shared freeways are less contested than modelled,
+   and a corridor town is more alone on its own arterials. The planned zonal stress test (one
+   jurisdiction evacuating at a time on an otherwise empty network) is the wildfire-realistic
+   complement to these county-wide figures.
+6. **Exit set v1** is freeway mainline only; county-boundary exits are not yet included, which
    overstates constraint in the far-east unincorporated communities.
-6. **Five tracts snap directly to the freeway mainline** — military installations (Camp
+7. **Five tracts snap directly to the freeway mainline** — military installations (Camp
    Pendleton, MCAS Miramar among them) whose restricted internal road networks are absent from
    the public drive graph. Their egress is treated as one three-lane mainline, stated per tract
    in the CSV (`bottleneck_name = "at freeway mainline"`, with `origin_snap_km` recording every
