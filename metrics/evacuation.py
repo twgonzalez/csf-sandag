@@ -36,6 +36,8 @@ from __future__ import annotations
 import pandas as pd
 
 from config import INTERIM
+from ingest.acs import load_table
+from ingest.hazards import _block_points
 
 #: Freeway and expressway mainline classes. A tract's *binding* bottleneck is searched over
 #: everything else -- local roads and ramps, the links its evacuation shed owns -- because a
@@ -78,9 +80,6 @@ def binding_edge(graph, path: list, load: dict) -> dict:
         "regional_contention": (worst_all_edge != worst_local_edge and worst_all > worst_local),
     }
 
-
-from ingest.acs import load_table
-from ingest.hazards import _block_points
 
 #: B25044 estimate variables: households by vehicles available, owner then renter tenure.
 #: The top bin ("5 or more") is counted as 5, slightly understating exurban demand.

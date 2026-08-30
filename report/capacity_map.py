@@ -51,7 +51,6 @@ def build(*, write: bool = True) -> dict:
 
     n_used = int(scored["indicators_scored"].iloc[0])
     highest_resource_highest_capacity = int(matrix.loc["Highest Resource", "Highest Capacity"])
-    hh_units = int(matrix.loc[["Highest Resource", "High Resource"]].to_numpy().sum())
 
     summary = {
         "tracts_scored": int(len(scored)),
