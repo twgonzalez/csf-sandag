@@ -1,0 +1,121 @@
+<title>The Wildcat Canyon Validation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --sunk:#E8ECEE; --ink:#16232B; --muted:#5A6B74;
+  --rule:#D2DADE; --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F;
+  --signal-soft:#F6E7E1; --ok:#2E6B4F; --ok-soft:#E2EFE8;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+    --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+    --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --sunk:#1D2D35; --ink:#E3EAED; --muted:#93A6AF;
+  --rule:#2C3E47; --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62;
+  --signal-soft:#35231C; --ok:#7BC29A; --ok-soft:#1D3328;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:820px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,4vw,2.5rem) 5rem; }
+h1,h2 { font-family:var(--display); text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2rem,5vw,3rem); font-weight:800; letter-spacing:-.028em; line-height:1.07; }
+h2 { font-size:1.25rem; font-weight:700; letter-spacing:-.015em; }
+p { margin:0; max-width:64ch; }
+.eyebrow { font-family:var(--mono); font-size:.7rem; font-weight:600; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--muted); }
+code,.cite { font-family:var(--mono); font-size:.855em; color:var(--accent); }
+.masthead { border-bottom:2px solid var(--ink); padding-bottom:1.8rem; }
+.masthead .eyebrow { display:block; margin-bottom:1rem; }
+.standfirst { font-size:1.08rem; color:var(--muted); margin-top:1.1rem; max-width:56ch; }
+section { margin-top:2.6rem; display:flex; flex-direction:column; gap:.9rem; }
+.hero { background:var(--signal-soft); border-left:4px solid var(--signal); padding:1.5rem 1.7rem;
+  display:flex; flex-direction:column; gap:.7rem; }
+.hero .big { font-family:var(--display); font-size:clamp(1.25rem,3vw,1.6rem); font-weight:800;
+  line-height:1.3; letter-spacing:-.018em; }
+.hero p { font-size:.95rem; color:var(--muted); }
+.facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:.8rem; }
+.fact { background:var(--surface); border:1px solid var(--rule); padding:.9rem 1rem; }
+.fact .n { font-family:var(--display); font-size:1.5rem; font-weight:800; font-variant-numeric:tabular-nums; }
+.fact .l { font-size:.78rem; color:var(--muted); }
+p.body { font-size:.97rem; }
+p.body strong { font-weight:600; }
+ul { margin:.2rem 0 0; padding-left:1.15rem; max-width:64ch; }
+li { font-size:.95rem; color:var(--muted); margin-bottom:.35rem; }
+li strong { color:var(--ink); }
+footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.74rem; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:.5rem 1.6rem; }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important;} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-Cycle RHNA · Journal entry · Evacuation sheds</span>
+    <h1>The Wildcat Canyon validation</h1>
+    <p class="standfirst">
+      The evacuation standard now has zones nobody drew, tested against fires nobody chose — and
+      it found the road where the Cedar Fire killed.
+    </p>
+  </header>
+
+  <section>
+    <div class="hero">
+      <p class="big">Replaying the 2003 Cedar Fire as an evacuation, the model's binding
+      chokepoint is Wildcat Canyon Road — where most of that fire's civilian deaths occurred.</p>
+      <p>The model was built from OpenStreetMap geometry, Census vehicle counts, and federal
+      capacity defaults. It contains no fire-specific tuning and no knowledge of the fire's
+      history. Its other Cedar corridors — Ashwood, Mapleview, San Vicente — are the
+      Lakeside–Ramona roads of the historical record. This is now a permanent known-answer test:
+      any change that stops surfacing Wildcat Canyon fails the build.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The standard, in one paragraph</h2>
+    <p class="body">
+      An <strong>evacuation shed</strong> is the set of neighborhoods whose escape routes
+      converge on the same bottleneck — watershed logic applied to roads. Nobody draws the
+      sheds: they are implied by the public road network, measured vehicle ownership, and a
+      stated routing rule, so there is no boundary an analyst chose and nothing discretionary to
+      defend. Fire ignores city lines; so do sheds. Each tract's score is its shed's discharge
+      rate — homes out per hour through the shared bottleneck — which is the number that decides
+      outcomes when a fast fire allows an hour, not an afternoon.
+    </p>
+    <div class="facts">
+      <div class="fact"><span class="n">451</span><br><span class="l">sheds, endogenous — none drawn</span></div>
+      <div class="fact"><span class="n">10</span><br><span class="l">historical fires ≥15k acres replayed</span></div>
+      <div class="fact"><span class="n">63%</span><br><span class="l">household-weighted corridor match</span></div>
+      <div class="fact"><span class="n">100%</span><br><span class="l">tracts assigned; membership published by street name</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why it is defensible</h2>
+    <ul>
+      <li><strong>"Who drew these zones?"</strong> Nobody — the road network implies them, from the same public inputs as everything else.</li>
+      <li><strong>"Why these test scenarios?"</strong> They are fires that actually happened, from CAL FIRE's own perimeter database.</li>
+      <li><strong>"Can I check it?"</strong> Every bottleneck's load, capacity, and contributing neighborhoods are published; a fire marshal can audit the routing on a map, and a resident can find their evacuation community by street name.</li>
+    </ul>
+    <p class="body" style="color:var(--muted);font-size:.9rem">
+      Stated limits stand: v1 capacities are uncalibrated federal defaults; the match is
+      strongest for the large fires where stakes are highest and weakest for small rural burns;
+      all clearance clocks are model quantities, never predictions. Details in
+      <code>reports/evacuation_sheds.md</code>.
+    </p>
+  </section>
+
+  <footer>
+    <span>Journal entry · frozen at commit 9254da7</span>
+    <span>Known-answer test: tests/test_sheds.py</span>
+  </footer>
+</div>

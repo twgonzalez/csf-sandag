@@ -47,11 +47,16 @@ def allocation_feature_table() -> pd.DataFrame:
     Columns:
         ``tract_geoid``; ``housing_units_2020`` (2020 Census, summed from the block geography
         the crosswalk is built on, so the allocator and the roll-up share one unit count);
-        ``opportunity_category`` (CTCAC/HCD 2026, null only for the all-water tract).
+        ``opportunity_category`` (CTCAC/HCD 2026, null only for the all-water tract);
+        ``capacity_score`` (the Capacity Map composite over the four measured indicators) and
+        ``capacity_weighted_units`` = housing units x capacity score, the orthogonal design's
+        siting mass.
 
     Grows as later phases land: each capacity indicator becomes a column here, and parameter
     files reference it by name.
     """
+    from metrics.capacity import capacity_feature_table, score_capacity
+
     crosswalk = load_crosswalk()
     units = (
         crosswalk.groupby("tract_geoid", as_index=False)["housing_units_2020"]
@@ -59,7 +64,16 @@ def allocation_feature_table() -> pd.DataFrame:
         .sort_values("tract_geoid", ignore_index=True)
     )
     opportunity = load_opportunity_map()[["tract_geoid", "opportunity_category"]]
-    return units.merge(opportunity, on="tract_geoid", how="left", validate="one_to_one")
+    out = units.merge(opportunity, on="tract_geoid", how="left", validate="one_to_one")
+
+    capacity = score_capacity(capacity_feature_table())[["tract_geoid", "capacity_score"]]
+    out = out.merge(capacity, on="tract_geoid", how="left", validate="one_to_one")
+    # The orthogonal design's siting mass: existing housing units scaled by the Capacity Map
+    # score (1..n+1, the state's own at-or-above-median counting rule applied to the four
+    # measured capacity indicators). Within a resource bin, a tract with twice the capacity
+    # score carries twice the weight per existing unit -- capacity decides siting, never bins.
+    out["capacity_weighted_units"] = out["housing_units_2020"] * out["capacity_score"].fillna(1)
+    return out
 
 
 def _category_seed(features: pd.DataFrame, methodology: Methodology, category: str) -> pd.Series:
@@ -220,3 +234,22 @@ def affh_share(
     lower = joined[list(lower_income)].sum(axis=1)
     in_target = joined["opportunity_category"].isin(["High Resource", "Highest Resource"])
     return float(lower[in_target].sum() / lower.sum())
+
+
+class AffhGateViolation(ValueError):
+    """A candidate methodology fell below the resource-only baseline's AFFH share."""
+
+
+def enforce_affh_gate(candidate_share: float, baseline_share: float, name: str) -> None:
+    """Refuse any allocation whose lower-income High/Highest share falls below the baseline.
+
+    The gate from plan.md Phase 1, as machinery: the pipeline is structurally incapable of
+    emitting an AFFH-regressive methodology. Tolerance covers float noise only.
+    """
+    if candidate_share < baseline_share - 1e-9:
+        raise AffhGateViolation(
+            f"methodology '{name}' places {candidate_share:.4f} of lower-income units in "
+            f"High/Highest Resource tracts, below the resource-only baseline of "
+            f"{baseline_share:.4f}. The AFFH gate (Gov. Code 65584(d)(5); plan.md Phase 1) "
+            "refuses this allocation."
+        )

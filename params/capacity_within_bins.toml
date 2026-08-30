@@ -1,0 +1,38 @@
+# The first capacity-weighted candidate -- the orthogonal design made runnable.
+#
+# Identical to the resource-only baseline in every bin decision: lower-income units go to High
+# and Highest Resource tracts, the same statutory floor applies, moderate and above-moderate
+# span all tracts. The ONLY change is the siting mass within those sets: existing housing units
+# scaled by the tract's Capacity Map score (fire, floodway, protected land, evacuation --
+# scored by the state's own at-or-above-median rule, evacuation validated against historical
+# fire replays). Capacity decides WHERE within a bin; never which bins, never how many.
+#
+# Because bins and floor match the baseline exactly, this candidate meets the AFFH gate by
+# construction; report/delta.py asserts it anyway.
+
+[methodology]
+name = "capacity_within_bins"
+label = "Capacity-weighted within resource bins"
+geography = "tract"
+cycle = 7
+source = "docs/capacity_indicators.md; docs/workplan_delta.md"
+
+[factors.high_resource_capacity_siting]
+weight = 1.0
+applies_to = ["very_low", "low"]
+column = "capacity_weighted_units"
+restrict_to_categories = ["Highest Resource", "High Resource"]
+source = "CTCAC/HCD Opportunity Map 2026; 2020 Census housing units; Capacity Map composite (CAL FIRE FHSZ 2024/2025, FEMA NFHL floodway, CPAD 2026a, evacuation sheds per NUREG/CR-7002-family method)"
+description = "Lower-income units distributed across High and Highest Resource tracts in proportion to existing housing units scaled by physical capacity, so siting favours the safer, better-drained ground within the same fair-housing standing"
+
+[factors.all_tracts_capacity_siting]
+weight = 1.0
+applies_to = ["moderate", "above_moderate"]
+column = "capacity_weighted_units"
+source = "2020 Census housing units; Capacity Map composite as above"
+description = "Moderate and above-moderate units distributed across all tracts in proportion to existing housing units scaled by physical capacity"
+
+[parameters]
+mass_base = "housing_units_2020"
+floor_weight = 0.01
+rounding = "largest_remainder_at_jurisdiction"
