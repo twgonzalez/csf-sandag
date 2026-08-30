@@ -36,6 +36,49 @@ from __future__ import annotations
 import pandas as pd
 
 from config import INTERIM
+
+#: Freeway and expressway mainline classes. A tract's *binding* bottleneck is searched over
+#: everything else -- local roads and ramps, the links its evacuation shed owns -- because a
+#: mainline's load mixes many sheds under the county-wide assumption and a real zonal
+#: evacuation would not contest it that way. Tracts whose overall worst ratio sits on a
+#: mainline are flagged ``regional_contention`` rather than silently mixed in.
+MAINLINE_CLASSES = {"motorway", "trunk"}
+
+
+def _edge_highway(data: dict) -> str:
+    value = data.get("highway", "unclassified")
+    return str(value[0] if isinstance(value, list) else value)
+
+
+def binding_edge(graph, path: list, load: dict) -> dict:
+    """The shed-local binding bottleneck for one routed path.
+
+    Returns the worst load-to-capacity edge among non-mainline links (falling back to the
+    overall worst if the path is somehow all mainline), the overall-worst comparison for the
+    ``regional_contention`` flag, and the path's minimum capacity for the marginal figures.
+    """
+    worst_all, worst_all_edge = -1.0, path[0]
+    worst_local, worst_local_edge = -1.0, None
+    min_cap = float("inf")
+    for edge in path:
+        data = graph.edges[edge]
+        capacity = float(data["capacity_vph"])
+        ratio = load.get(edge, 0.0) / capacity
+        if ratio > worst_all:
+            worst_all, worst_all_edge = ratio, edge
+        if _edge_highway(data) not in MAINLINE_CLASSES and ratio > worst_local:
+            worst_local, worst_local_edge = ratio, edge
+        min_cap = min(min_cap, capacity)
+    if worst_local_edge is None:
+        worst_local, worst_local_edge = worst_all, worst_all_edge
+    return {
+        "edge": worst_local_edge,
+        "ratio": max(worst_local, 0.0),
+        "min_cap": min_cap,
+        "regional_contention": (worst_all_edge != worst_local_edge and worst_all > worst_local),
+    }
+
+
 from ingest.acs import load_table
 from ingest.hazards import _block_points
 
@@ -272,16 +315,10 @@ def build_evacuation(*, refresh: bool = False, write: bool = True) -> pd.DataFra
             )
             continue
 
-        worst_ratio, worst_edge, min_cap = -1.0, path[0], float("inf")
-        for edge in path:
-            data = graph.edges[edge]
-            capacity = float(data["capacity_vph"])
-            ratio = load[edge] / capacity
-            if ratio > worst_ratio:
-                worst_ratio, worst_edge = ratio, edge
-            min_cap = min(min_cap, capacity)
+        bind = binding_edge(graph, path, load)
+        worst_edge, min_cap = bind["edge"], bind["min_cap"]
 
-        clearance_hours = max(worst_ratio, 0.0)
+        clearance_hours = bind["ratio"]
         vph = float(row.vehicles_per_household)
         # Pro-rata discharge rate at the binding shared bottleneck. Algebra worth seeing once:
         # the tract's share of the bottleneck's hourly discharge is veh_t/load_b x cap_b, and
@@ -314,7 +351,8 @@ def build_evacuation(*, refresh: bool = False, write: bool = True) -> pd.DataFra
                     else data.get("name")[0]
                 ),
                 "bottleneck_capacity_vph": float(data["capacity_vph"]),
-                "bottleneck_load": round(load[worst_edge], 1),
+                "bottleneck_load": round(load.get(worst_edge, 0.0), 1),
+                "regional_contention": bool(bind["regional_contention"]),
                 "evacuation_units_per_hour": round(float(uph), 1),
                 "evacuation_units_per_hour_solo": round(min_cap / vph, 1),
                 "delta_clearance_min_per_100_units": round(100 * vph / min_cap * 60, 2),

@@ -129,6 +129,16 @@ def report() -> None:
     opportunity = build_opportunity()
     console.print(f"  {opportunity['report_path']}")
 
+    from report.evacuation import build as build_evac_report
+
+    evac = build_evac_report()
+    console.print(f"  {evac['report_path']}")
+
+    from report.sheds import build as build_sheds_report
+
+    sheds_summary = build_sheds_report()
+    console.print(f"  {sheds_summary['report_path']}")
+
     from report.capacity_jurisdiction import build as build_capacity_juris
 
     juris_matrix = build_capacity_juris()

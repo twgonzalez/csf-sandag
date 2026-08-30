@@ -353,6 +353,23 @@ SOURCES: dict[str, Source] = {
             "docs/capacity_indicators.md 3.5."
         ),
     ),
+    "fire_perimeters": Source(
+        key="fire_perimeters",
+        url=(
+            "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/arcgis/rest/services/"
+            "California_Historic_Fire_Perimeters/FeatureServer/0"
+        ),
+        vintage="CAL FIRE FRAP historical fire perimeters, live service (fetch date pins it)",
+        publisher="CAL FIRE Fire and Resource Assessment Program",
+        title="California Historical Fire Perimeters",
+        landing="https://gis.data.cnra.ca.gov/datasets/CALFIRE-Forestry::california-historical-fire-perimeters",
+        verified="2026-08-28",
+        notes=(
+            "Validation layer only, never an indicator: large fires (>= 15,000 acres, year "
+            ">= 2000) intersecting San Diego County are replayed as evacuation scenarios to "
+            "test the shed measure against zones nobody chose -- fires that actually happened."
+        ),
+    ),
     # ---------------------------------------------------------------- jobs
     "lodes_wac": Source(
         key="lodes_wac",

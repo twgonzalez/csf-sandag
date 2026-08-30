@@ -137,10 +137,21 @@ def load_table(
             "the pipeline needs it, so it appears in the methodology appendix."
         )
 
+    # A table already tidied this run or a prior one is read from disk: every successful load
+    # writes the interim parquet, so downstream rebuilds are offline. refresh=True bypasses.
+    cached = INTERIM / f"acs{vintage}_{table.lower()}.parquet"
+    if cached.exists() and not refresh:
+        return pd.read_parquet(cached)
+
     if not (prefer_api and census_api.is_available()):
         return load_table_from_bulk(table, vintage=vintage, refresh=refresh)
 
-    df = census_api.acs_table(table, vintage=vintage)
+    try:
+        df = census_api.acs_table(table, vintage=vintage)
+    except census_api.CensusApiError:
+        # The key is a speed-up, never a dependency: a flaky or unreachable API falls back to
+        # the keyless bulk path, which the equivalence tests prove returns identical numbers.
+        return load_table_from_bulk(table, vintage=vintage, refresh=refresh)
     df.to_parquet(INTERIM / f"acs{vintage}_{table.lower()}.parquet", index=False)
     _record_provenance(table, "api")
     return df
