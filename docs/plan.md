@@ -4,6 +4,11 @@
 capacity constraints as far as the AFFH objective permits, computed entirely from public data, and
 reproducible by anyone with a laptop.
 
+**Working assumption, adopted 2026-08-31: HCD reviews everything.** Every file in this
+repository — code, reports, journal pages, commit messages — is written on the assumption that
+the Department of Housing and Community Development will read it during methodology review.
+Nothing goes in the record that we would not defend to the reviewer.
+
 **Status.** Milestone 0 (replicate the adopted 6th-cycle allocation) is complete and passing. See
 [`reports/sixth_cycle_replication.md`](../reports/sixth_cycle_replication.md). This plan covers
 what follows.
