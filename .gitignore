@@ -16,6 +16,11 @@ reports/
 .env
 .env.*
 !.env.example
+
+# Private working materials: briefing drafts, meeting preparation, pre-publication archives.
+# Never committed, never part of the public record. Note the limit of this protection: it
+# guards git only -- a manual zip or copy of the working directory would still include it.
+private/
 __pycache__/
 *.pyc
 .pytest_cache/
