@@ -24,7 +24,7 @@ import pandas as pd
 
 from allocate.model import allocate, allocation_feature_table
 from allocate.params import load_methodology
-from config import RHND_6TH_CYCLE_BY_CATEGORY, REPORTS
+from config import REPORTS, RHND_6TH_CYCLE_BY_CATEGORY
 from ingest.crosswalk import load_crosswalk
 from ingest.opportunity_map import load_opportunity_map
 from metrics.housing import bedrooms, housing_units
