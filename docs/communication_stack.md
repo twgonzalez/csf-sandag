@@ -20,6 +20,11 @@ is the spec; artifacts get built against it.
    stack reads as one body of work.
 7. **"Questions worth asking us" is a first-class element** in every layer. The goal is better
    questions, not finished arguments; we seed them explicitly.
+8. **Copy explains the visual — orient, point, conclude.** Every graphic gets three beats of
+   copy: what you're looking at, the thing to notice in it, what it means. Visuals display the
+   actual finding (the real numbers, large), never a stylized metaphor of the claim. Reading
+   level: a high schooler follows it cold. Added 2026-08-31 after the first walkthrough draft
+   failed this test.
 
 ## Layer 1 — the one-pager (leave-behind)
 
@@ -41,19 +46,24 @@ is the spec; artifacts get built against it.
 
 ## Layer 2 — the walkthrough (presented, ~10 minutes)
 
-- **Job:** what [name withheld] presents. Question-titled frames; one visual and one sentence of answer
-  per frame; presenter notes under each.
-- **Frame list (draft):**
-  1. Why we did this (the 45-day appeal problem)
-  2. "Didn't we already do fair housing in 2019?" (percentages → totals, credit the 2019 team)
-  3. "Why do coastal numbers go up?" (the movement picture)
-  4. "Can fire risk lower a city's number?" (the 3.3× overlap, one map-style graphic)
-  5. "Then what is safety data for?" (placement; the 7,300-home shift at identical fair housing)
-  6. "How do we know the evacuation model is any good?" (Wildcat Canyon)
-  7. "What did it get wrong?" (the coastal-funnel miss — credibility through candor)
-  8. "What about smaller totals with more affordable?" (the option and its catch)
-  9. "What has to be decided, and when?" (the four decisions on the statutory clock)
-  10. "Questions worth asking us" (closing frame)
+- **Job:** what [name withheld] presents. A story told in order — each frame creates the need
+  for the next — with one visual per frame, copy that explains it (principle 8), and presenter
+  notes under each.
+- **Frame list (as built, 2026-08-31; supersedes the earlier question-titled draft):**
+  - *Part 1 — We checked the last plan:* (1) we rebuilt the 2020 plan, 76/76 matched;
+    (2) but nobody outside could have checked it (the hidden step, the 45-day window, the
+    Navy error's lawyer-and-four-months path).
+  - *Part 2 — The rules are changing:* (3) 2019 shaped the mix, and the state approved;
+    (4) 2028 expects fair housing to shape the totals; (5) we ran the same 171,685 homes
+    under the new rules — the movement picture, grouped into "goes up under every formula"
+    and "goes down."
+  - *Part 3 — What safety data can do:* (6) first, what it can't do — lower a total (the
+    3.3× overlap, shown as the real 52.7%/19.4% bars); (7) evacuation measured and tested
+    on real fires (Wildcat Canyon; the published miss); (8) safety data can **balance** the
+    2028 numbers — diverging bars vs. the fairness-only version, fairness score pinned,
+    with sewer/flood/sea-level noted as factors that plug into the same slot.
+  - *Part 4 — What happens next:* (9) the open standard (an afternoon, for free — bookends
+    frame 2); (10) four decisions on the statutory clock; (11) questions worth asking us.
 - **Format:** self-contained HTML slides (arrow keys / swipe), printable as a handout list.
 
 ## Layer 3 — the explorer (the differentiator)
