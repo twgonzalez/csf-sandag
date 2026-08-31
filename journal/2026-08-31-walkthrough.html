@@ -292,37 +292,64 @@ body.show-notes .notes { display:block; }
     <h1>In 2019, fair housing shaped each city's mix</h1>
     <p class="orient">
       Fair-housing law says homes for lower-income families should go where the schools and
-      jobs are good — not pile up where poverty already is. The bar below is one city in the
-      2020 plan. Its <strong>height</strong> (the total) was set by train stations and jobs.
-      The <strong>colored part</strong> (the share for lower-income families) is what the 2019
-      fairness rule adjusted.
+      jobs are good. The 2020 plan handled that in two steps, <strong>in this order</strong>:
+      first, train stations and job counts set each city's total. Only then did the fairness
+      rule act — adjusting the <strong>income mix inside</strong> each total. Watch three
+      cities go through both steps below.
     </p>
     <figure class="viz">
-      <svg viewBox="0 0 680 232" role="img" aria-label="One city's bar: total height fixed by stations and jobs; the affordable share inside it adjusted by the 2019 fairness rule; the state approved.">
+      <svg viewBox="0 0 720 312" role="img" aria-label="The 2019 order of operations: stations and jobs set city totals, then the fairness rule adjusts the income mix inside each total. Three city bars keep their heights in step two; only the colored affordable share changes, largest in the best-schools city.">
         <defs><marker id="ah3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
-        <rect x="290" y="40" width="80" height="150" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <rect x="290" y="128" width="80" height="62" fill="var(--accent)"/>
-        <line x1="268" y1="40" x2="268" y2="190" stroke="currentColor" stroke-width="1"/>
-        <line x1="262" y1="40" x2="274" y2="40" stroke="currentColor" stroke-width="1"/>
-        <line x1="262" y1="190" x2="274" y2="190" stroke="currentColor" stroke-width="1"/>
-        <text x="252" y="108" text-anchor="end">the total —</text>
-        <text x="252" y="124" text-anchor="end" class="dim">set by stations &amp; jobs</text>
-        <line x1="384" y1="172" x2="384" y2="140" stroke="var(--accent)" stroke-width="2" marker-end="url(#ah3)"/>
-        <text x="396" y="150">the mix — homes for</text>
-        <text x="396" y="166">lower-income families</text>
-        <text x="396" y="182" class="dim">this is what 2019's fairness rule moved</text>
-        <text x="330" y="216" text-anchor="middle" class="dim">the state reviewed this approach and approved it</text>
+        <text x="40" y="12" class="dim" font-size="11">the 2019 order of operations</text>
+        <rect x="40" y="20" width="132" height="28" rx="4" fill="none" stroke="currentColor"/>
+        <text x="106" y="38" text-anchor="middle">stations &amp; jobs</text>
+        <line x1="176" y1="34" x2="200" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah3)"/>
+        <rect x="208" y="20" width="104" height="28" rx="4" fill="none" stroke="currentColor"/>
+        <text x="260" y="38" text-anchor="middle">city totals</text>
+        <line x1="316" y1="34" x2="340" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah3)"/>
+        <rect x="348" y="20" width="118" height="28" rx="4" fill="var(--accent)"/>
+        <text x="407" y="38" text-anchor="middle" fill="var(--paper)">fairness rule</text>
+        <line x1="470" y1="34" x2="494" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah3)"/>
+        <rect x="502" y="20" width="110" height="28" rx="4" fill="none" stroke="currentColor"/>
+        <text x="557" y="38" text-anchor="middle">income mix</text>
+        <!-- step 1 panel -->
+        <text x="196" y="88" text-anchor="middle" font-weight="600">Step 1 — the totals get set</text>
+        <rect x="96" y="182" width="46" height="70" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="173" y="102" width="46" height="150" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="250" y="142" width="46" height="110" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <text x="119" y="270" text-anchor="middle" class="dim">best schools</text>
+        <text x="196" y="270" text-anchor="middle" class="dim">big city</text>
+        <text x="273" y="270" text-anchor="middle" class="dim">struggling</text>
+        <text x="196" y="296" text-anchor="middle" class="dim">few stations → the best-schools city gets a small total</text>
+        <!-- step 2 panel -->
+        <text x="526" y="88" text-anchor="middle" font-weight="600">Step 2 — fairness adjusts the mix inside</text>
+        <rect x="426" y="182" width="46" height="70" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="426" y="220" width="46" height="32" fill="var(--accent)"/>
+        <rect x="503" y="102" width="46" height="150" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="503" y="202" width="46" height="50" fill="var(--accent)"/>
+        <rect x="580" y="142" width="46" height="110" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="580" y="226" width="46" height="26" fill="var(--accent)"/>
+        <text x="498" y="176" text-anchor="end" font-size="11" fill="var(--accent)">largest share of its total</text>
+        <text x="603" y="136" text-anchor="middle" font-size="11" class="dim">smallest share</text>
+        <text x="449" y="270" text-anchor="middle" class="dim">best schools</text>
+        <text x="526" y="270" text-anchor="middle" class="dim">big city</text>
+        <text x="603" y="270" text-anchor="middle" class="dim">struggling</text>
+        <text x="526" y="296" text-anchor="middle" class="dim">heights unchanged — only the coloring moves</text>
       </svg>
+      <figcaption>colored = homes for lower-income families · bars are schematic, not to scale</figcaption>
     </figure>
-    <p class="takeaway">2019 did address fair housing — through the mix. The state said yes.</p>
+    <p class="takeaway">In 2019, fairness came second. It could change each city's recipe — but
+    by then the totals were already set. The state approved this.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Give the 2019 team full credit here. Their adopted document reviewed the state's
       neighborhood scorecard by name and showed that the cities with the best schools and jobs
       received the highest affordable <em>percentages</em>. The state approved without changes —
       weeks after the fairness requirement entered the law, before the state had written any
       guidance on how to meet it.</p>
-      <p>One line to keep handy: fair housing shaped the percentages; stations and jobs shaped
-      the totals.</p>
+      <p>The bars are schematic, but the pattern is the real one: the best-schools beach cities
+      had few or no stations, so they ended up with small totals <em>and</em> the largest
+      affordable percentages at the same time. One line to keep handy: fair housing shaped the
+      percentages; stations and jobs shaped the totals.</p>
     </div>
   </div>
 </section>
@@ -333,27 +360,58 @@ body.show-notes .notes { display:block; }
     <span class="eyebrow">Part 2 · The rules are changing</span>
     <h1>For 2028, the state expects fair housing to shape the totals</h1>
     <p class="orient">
-      Same picture as before — but with the rules the state has been applying since its 2021
-      guidance. Now fair housing doesn't just recolor the bar. It <strong>changes the bar's
-      height</strong>: cities with good schools and jobs are expected to receive bigger totals.
+      Under the rules the state has applied since 2021, fairness moves to the
+      <strong>front of the line</strong>: the same scorecard that used to adjust the recipe now
+      helps decide the totals themselves. Here are the same three cities. The dashed marks show
+      their old, 2019-style totals; the solid bars are what fairness-first produces.
     </p>
     <figure class="viz">
-      <svg viewBox="0 0 680 232" role="img" aria-label="The same city bar, under 2028 rules: the total itself grows for a high-scoring city, shown as a dashed extension with an arrow.">
-        <defs><marker id="ah4" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
-        <rect x="200" y="40" width="80" height="150" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/>
-        <rect x="200" y="128" width="80" height="62" fill="var(--accent)" opacity=".4"/>
-        <text x="240" y="216" text-anchor="middle" class="dim">2019 rules: mix only</text>
-        <rect x="380" y="88" width="80" height="102" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <rect x="380" y="128" width="80" height="62" fill="var(--accent)"/>
-        <rect x="380" y="40" width="80" height="48" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <line x1="474" y1="92" x2="474" y2="52" stroke="var(--accent)" stroke-width="2" marker-end="url(#ah4)"/>
-        <text x="486" y="62">for a city with good schools</text>
-        <text x="486" y="78">and jobs, the total itself rises</text>
-        <text x="420" y="216" text-anchor="middle" class="dim">2028 rules: mix and total</text>
+      <svg viewBox="0 0 720 312" role="img" aria-label="The 2028 order of operations: the fairness map comes first and helps set city totals. The same three cities now change height — the best-schools city grows past its old dashed mark; the big city and the struggling city shrink below theirs.">
+        <defs>
+          <marker id="ah4" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker>
+          <marker id="ah4a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker>
+          <marker id="ah4s" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--signal)"/></marker>
+        </defs>
+        <text x="40" y="12" class="dim" font-size="11">the 2028 order of operations</text>
+        <rect x="40" y="20" width="132" height="28" rx="4" fill="var(--accent)"/>
+        <text x="106" y="38" text-anchor="middle" fill="var(--paper)">fairness map</text>
+        <text x="106" y="62" text-anchor="middle" font-size="11" class="dim">+ jobs, safety, and more</text>
+        <line x1="176" y1="34" x2="200" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah4)"/>
+        <rect x="208" y="20" width="104" height="28" rx="4" fill="none" stroke="currentColor"/>
+        <text x="260" y="38" text-anchor="middle">city totals</text>
+        <line x1="316" y1="34" x2="340" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah4)"/>
+        <rect x="348" y="20" width="110" height="28" rx="4" fill="none" stroke="currentColor"/>
+        <text x="403" y="38" text-anchor="middle">income mix</text>
+        <!-- best schools: grows -->
+        <rect x="150" y="102" width="46" height="150" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="150" y="192" width="46" height="60" fill="var(--accent)"/>
+        <line x1="142" y1="182" x2="204" y2="182" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
+        <text x="136" y="186" text-anchor="end" font-size="11" class="dim">2019</text>
+        <line x1="216" y1="178" x2="216" y2="108" stroke="var(--accent)" stroke-width="2" marker-end="url(#ah4a)"/>
+        <text x="226" y="142" fill="var(--accent)" font-size="11">grows</text>
+        <text x="173" y="270" text-anchor="middle" class="dim">best schools</text>
+        <!-- big city: shrinks a little -->
+        <rect x="330" y="112" width="46" height="140" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="330" y="207" width="46" height="45" fill="var(--accent)"/>
+        <line x1="322" y1="82" x2="384" y2="82" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
+        <text x="316" y="86" text-anchor="end" font-size="11" class="dim">2019</text>
+        <line x1="396" y1="86" x2="396" y2="106" stroke="var(--signal)" stroke-width="2" marker-end="url(#ah4s)"/>
+        <text x="406" y="100" fill="var(--signal)" font-size="11">shrinks</text>
+        <text x="353" y="270" text-anchor="middle" class="dim">big city</text>
+        <!-- struggling: shrinks a lot -->
+        <rect x="510" y="197" width="46" height="55" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="510" y="240" width="46" height="12" fill="var(--accent)"/>
+        <line x1="502" y1="142" x2="564" y2="142" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity=".6"/>
+        <text x="496" y="146" text-anchor="end" font-size="11" class="dim">2019</text>
+        <line x1="576" y1="146" x2="576" y2="190" stroke="var(--signal)" stroke-width="2" marker-end="url(#ah4s)"/>
+        <text x="586" y="170" fill="var(--signal)" font-size="11">shrinks</text>
+        <text x="533" y="270" text-anchor="middle" class="dim">struggling</text>
+        <text x="360" y="296" text-anchor="middle" class="dim">same three cities — now the heights move too, and the struggling city's mix turns mostly market-rate</text>
       </svg>
+      <figcaption>dashed mark = the 2019-style total · colored = homes for lower-income families · real numbers on the next frame</figcaption>
     </figure>
-    <p class="takeaway">That's the change: fairness used to shape the mix. Now it also shapes
-    how many homes each city gets.</p>
+    <p class="takeaway">One move — fairness from step two to step one — resizes every bar.
+    The next frame shows that run on the real numbers.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The measuring stick behind "good schools and jobs" is the state's official
       neighborhood scorecard — the CTCAC/HCD "opportunity map," updated every year. It rates
