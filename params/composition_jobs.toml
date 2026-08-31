@@ -1,0 +1,35 @@
+# The composition option, priced: fairness places the affordable homes, jobs place the rest.
+#
+# Lower-income placement is IDENTICAL to the resource-only baseline (the fairness map and
+# existing housing decide), so this file meets the fairness gate with equality by
+# construction. Moderate and above-moderate units follow the corrected open jobs count
+# instead of housing. This is the structure floated as a way to lower high-resource coastal
+# headline totals while honoring fair housing; the run exists to measure whether it actually
+# does. Predictions committed before first run: docs/predictions_jobs_runs.md.
+
+[methodology]
+name = "composition_jobs"
+label = "Composition: affordable by fairness, market-rate by jobs"
+geography = "tract"
+cycle = 7
+source = "docs/predictions_jobs_runs.md; staff paper 'An option to evaluate'"
+
+[factors.high_resource_housing]
+weight = 1.0
+applies_to = ["very_low", "low"]
+column = "housing_units_2020"
+restrict_to_categories = ["Highest Resource", "High Resource"]
+source = "CTCAC/HCD Opportunity Map, 2026 edition; 2020 Census housing units per block (P.L. 94-171)"
+description = "Lower-income units exactly as the resource-only baseline: High and Highest Resource tracts in proportion to existing housing units"
+
+[factors.all_tracts_jobs_siting]
+weight = 1.0
+applies_to = ["moderate", "above_moderate"]
+column = "jobs_total_corrected"
+source = "LODES8 2023 WAC with corrections (2020 Census P.L. 94-171 military quarters; SDMAC MEIR 2024 Exhibit 6; ACS B08604; California School Directory)"
+description = "Moderate and above-moderate units distributed across all tracts in proportion to corrected workplace jobs, pulling market-rate homes toward job centers"
+
+[parameters]
+mass_base = "housing_units_2020"
+floor_weight = 0.01
+rounding = "largest_remainder_at_jurisdiction"

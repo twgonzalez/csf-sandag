@@ -79,6 +79,7 @@ where open data puts the installations. The known-answer test passes; see
 |---|---|
 | Jobs by wage band and sector | **built**, unadjusted Q2 counts |
 | Jobs corrections: uniformed-military layer + multi-site HQ detector | **built** — Navy known-answer test passes; see reports/jobs_adjustments.md |
+| Employment-weighted candidate runs (jobs_within_bins, composition_jobs, composition_jobs_capacity) | **built and run** — predictions committed first (18b1a8c) scored 8/8; gate held at 0.9946 for all five runs; see reports/jobs_runs.md |
 | Jobs-housing balance | **built** |
 | Jobs-housing fit | **built**, with two documented limitations (below) |
 | Housing by bedroom count | **built** |

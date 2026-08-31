@@ -154,6 +154,15 @@ def report() -> None:
         f"{jobs_adj['districts_flagged']} flagged"
     )
 
+    from report.jobs_runs import write as build_jobs_runs
+
+    jobs_runs = build_jobs_runs()
+    console.print(
+        f"  employment-weighted runs: predictions "
+        f"{jobs_runs['predictions_hit']}/{jobs_runs['predictions_total']} hit, "
+        f"gate held at {jobs_runs['gate_shares']['resource_only']:.4f} for all five runs"
+    )
+
     from report.capacity_map import build as build_capacity
 
     capacity = build_capacity()

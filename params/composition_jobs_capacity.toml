@@ -1,0 +1,33 @@
+# The composition option with safety-aware siting: the full stack.
+#
+# As composition_jobs -- fairness places the affordable homes, jobs place the market-rate --
+# with both siting masses scaled by the Capacity Map score, so physical safety chooses among
+# tracts of equal standing in both halves. Bins, floor, and the fairness gate are unchanged.
+# Predictions committed before first run: docs/predictions_jobs_runs.md.
+
+[methodology]
+name = "composition_jobs_capacity"
+label = "Composition with capacity-weighted siting"
+geography = "tract"
+cycle = 7
+source = "docs/predictions_jobs_runs.md; docs/capacity_indicators.md"
+
+[factors.high_resource_capacity_siting]
+weight = 1.0
+applies_to = ["very_low", "low"]
+column = "capacity_weighted_units"
+restrict_to_categories = ["Highest Resource", "High Resource"]
+source = "CTCAC/HCD Opportunity Map 2026; 2020 Census housing units; Capacity Map composite (CAL FIRE FHSZ 2024/2025, FEMA NFHL floodway, CPAD 2026a, evacuation sheds)"
+description = "Lower-income units across High and Highest Resource tracts in proportion to housing units scaled by physical capacity"
+
+[factors.all_tracts_jobs_capacity_siting]
+weight = 1.0
+applies_to = ["moderate", "above_moderate"]
+column = "jobs_capacity_weighted"
+source = "LODES8 2023 WAC with corrections (military quarters, SDMAC, ACS B08604, CDE roster); Capacity Map composite as above"
+description = "Moderate and above-moderate units across all tracts in proportion to corrected workplace jobs scaled by physical capacity"
+
+[parameters]
+mass_base = "housing_units_2020"
+floor_weight = 0.01
+rounding = "largest_remainder_at_jurisdiction"

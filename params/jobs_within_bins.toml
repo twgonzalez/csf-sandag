@@ -1,0 +1,35 @@
+# Employment-weighted siting within the fairness bins.
+#
+# Identical to the resource-only baseline in every bin decision: lower-income units go to High
+# and Highest Resource tracts, the same statutory floor applies, moderate and above-moderate
+# span all tracts. The ONLY change is the siting mass: the corrected open jobs count (LODES
+# plus the uniformed-military layer and the multi-site correction, reports/jobs_adjustments.md)
+# instead of existing housing units. Jobs decide WHERE within a bin; never which bins, never
+# how many. Predictions committed before this file was first run: docs/predictions_jobs_runs.md.
+
+[methodology]
+name = "jobs_within_bins"
+label = "Jobs-weighted within resource bins"
+geography = "tract"
+cycle = 7
+source = "docs/predictions_jobs_runs.md; reports/jobs_adjustments.md"
+
+[factors.high_resource_jobs_siting]
+weight = 1.0
+applies_to = ["very_low", "low"]
+column = "jobs_total_corrected"
+restrict_to_categories = ["Highest Resource", "High Resource"]
+source = "CTCAC/HCD Opportunity Map 2026; LODES8 2023 WAC with corrections (2020 Census P.L. 94-171 military quarters; SDMAC MEIR 2024 Exhibit 6; ACS B08604; California School Directory)"
+description = "Lower-income units distributed across High and Highest Resource tracts in proportion to corrected workplace jobs, so lower-income homes land near the work within the same fair-housing standing"
+
+[factors.all_tracts_jobs_siting]
+weight = 1.0
+applies_to = ["moderate", "above_moderate"]
+column = "jobs_total_corrected"
+source = "LODES8 2023 WAC with corrections, as above"
+description = "Moderate and above-moderate units distributed across all tracts in proportion to corrected workplace jobs"
+
+[parameters]
+mass_base = "housing_units_2020"
+floor_weight = 0.01
+rounding = "largest_remainder_at_jurisdiction"

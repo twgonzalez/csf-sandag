@@ -73,6 +73,18 @@ def allocation_feature_table() -> pd.DataFrame:
     # measured capacity indicators). Within a resource bin, a tract with twice the capacity
     # score carries twice the weight per existing unit -- capacity decides siting, never bins.
     out["capacity_weighted_units"] = out["housing_units_2020"] * out["capacity_score"].fillna(1)
+
+    # The corrected open jobs count (Phase 5, partial): LODES plus the uniformed-military
+    # layer and the multi-site headquarters redistribution. This is the first jobs column fit
+    # to carry weight in a candidate methodology; the uncorrected LODES count still is not
+    # (docs/status.md). jobs_capacity_weighted composes it with the Capacity Map score the
+    # same way capacity_weighted_units composes housing.
+    from metrics.jobs import corrected_workplace_jobs
+
+    jobs, _ = corrected_workplace_jobs()
+    out = out.merge(jobs[["tract_geoid", "jobs_total_corrected"]], on="tract_geoid", how="left")
+    out["jobs_total_corrected"] = out["jobs_total_corrected"].fillna(0.0)
+    out["jobs_capacity_weighted"] = out["jobs_total_corrected"] * out["capacity_score"].fillna(1)
     return out
 
 
