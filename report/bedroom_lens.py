@@ -131,7 +131,8 @@ def write() -> dict:
         },
         {
             "n": 3,
-            "claim": "four-city studio loophole >= 20,000 bedrooms and small-unit <= half of local mix",
+            "claim": "four-city studio loophole >= 20,000 bedrooms; "
+            "small-unit <= half of local mix",
             "measured": f"local mix {gap_local:,.0f} bedrooms · small-unit {gap_small:,.0f} · "
             f"gap {gap:,.0f}",
             "hit": gap >= 20_000 and gap_small <= 0.5 * gap_local,
