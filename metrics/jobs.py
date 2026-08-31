@@ -120,3 +120,91 @@ def jobs_by_sector() -> pd.DataFrame:
     """Workplace jobs by NAICS sector group, for QCEW reconciliation and seasonality curves."""
     wac = workplace_jobs()
     return wac[["tract_geoid", *SECTORS.values()]].copy()
+
+
+def corrected_workplace_jobs(*, refresh: bool = False) -> tuple[pd.DataFrame, dict]:
+    """Jobs per tract with the two built corrections applied: multi-site and military.
+
+    Rule:
+        Start from the raw LODES tract counts. Apply the school-district headquarters
+        redistribution (zero-sum moves within districts,
+        :func:`metrics.adjustments.multi_site.school_district_correction`). Add the
+        uniformed-military layer (:func:`metrics.adjustments.military.military_jobs`), which
+        LODES cannot see at all. The QCEW reconciliation and seasonal annualisation specified
+        by Phase 5 are **not yet applied**; until they are, these counts remain Q2 snapshots.
+
+    Returns:
+        ``(tracts, log)``. One row per tract with ``jobs_total_uncorrected``,
+        ``jobs_multisite_delta``, ``jobs_military``, and ``jobs_total_corrected`` = the sum of
+        the three. ``log`` carries both corrections' full derivation logs.
+    """
+    from ingest.crosswalk import load_block_geography
+    from metrics.adjustments.military import military_jobs
+    from metrics.adjustments.multi_site import school_district_correction
+
+    base = workplace_jobs()[["tract_geoid", "jobs_total"]].rename(
+        columns={"jobs_total": "jobs_total_uncorrected"}
+    )
+    multisite, multisite_log = school_district_correction(refresh=refresh)
+    military, military_log = military_jobs(refresh=refresh)
+
+    out = (
+        base.merge(
+            multisite.rename(columns={"jobs_delta": "jobs_multisite_delta"}),
+            on="tract_geoid",
+            how="outer",
+        )
+        .merge(
+            military.rename(columns={"military_jobs": "jobs_military"}),
+            on="tract_geoid",
+            how="outer",
+        )
+        .fillna(0.0)
+        .sort_values("tract_geoid", ignore_index=True)
+    )
+    out["jobs_total_corrected"] = (
+        out["jobs_total_uncorrected"] + out["jobs_multisite_delta"] + out["jobs_military"]
+    )
+    if (out["jobs_total_corrected"] < -1e-6).any():
+        raise ValueError("a correction drove a tract's job count negative")
+
+    # Jurisdiction view for the report: raw LODES straight from blocks (no tract-splitting
+    # judgement), military from its own jurisdiction-level derivation, multi-site deltas
+    # assigned to each tract's dominant jurisdiction by housing units (moves are within a
+    # school district, which only rarely crosses a city line; the approximation is logged).
+    blocks = load_block_geography()
+    dominant = (
+        blocks.groupby(["tract_geoid", "jurisdiction"])["housing_units_2020"]
+        .sum()
+        .reset_index()
+        .sort_values("housing_units_2020")
+        .drop_duplicates("tract_geoid", keep="last")[["tract_geoid", "jurisdiction"]]
+    )
+    delta_by_juris = (
+        multisite.merge(dominant, on="tract_geoid", how="left")
+        .groupby("jurisdiction")["jobs_delta"]
+        .sum()
+        .to_dict()
+    )
+    military_by_juris = {
+        r["jurisdiction"]: r["military_jobs"] for r in military_log["by_jurisdiction"]
+    }
+    lodes_by_juris = {r["jurisdiction"]: r["lodes_jobs"] for r in military_log["by_jurisdiction"]}
+    jurisdiction = pd.DataFrame(
+        {
+            "jurisdiction": sorted(lodes_by_juris),
+            "lodes_jobs": [lodes_by_juris[j] for j in sorted(lodes_by_juris)],
+            "multisite_delta": [round(delta_by_juris.get(j, 0.0)) for j in sorted(lodes_by_juris)],
+            "military_jobs": [round(military_by_juris.get(j, 0.0)) for j in sorted(lodes_by_juris)],
+        }
+    )
+    jurisdiction["jobs_corrected"] = (
+        jurisdiction["lodes_jobs"] + jurisdiction["multisite_delta"] + jurisdiction["military_jobs"]
+    )
+
+    log = {
+        "multi_site": multisite_log,
+        "military": military_log,
+        "by_jurisdiction": jurisdiction.to_dict(orient="records"),
+    }
+    return out, log

@@ -15,6 +15,8 @@ reissue of that PDF fails the run loudly.
 | `sixth_cycle_jobs.csv` | SANDAG, *6th Cycle RHNA Methodology* (Final, 2019-11-22), Table 2: Jobs Data, p. 5 |
 | `sixth_cycle_households.csv` | SANDAG, *6th Cycle RHNA Methodology* (Final, 2019-11-22), Table 4: Households per Income Category, p. 7 |
 | `jurisdictions.csv` | Canonical jurisdiction keys, names, and Census place GEOIDs |
+| `sdmac_direct_employment.csv` | SDMAC, *Military Economic Impact Report 2024*, Exhibit 6: 373K Jobs Supported in San Diego, p. 14 (FY 2019–2024, direct employment by category) |
+| `military_installations.csv` | Roster of major DoD installations in the county with their host jurisdictions — assembled from the installations' public pages and the adopted 6th-cycle Plan p. 14; documentation and sanity checks only, never counts |
 
 ## A note on what is and is not open here
 

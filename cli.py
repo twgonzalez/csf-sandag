@@ -144,6 +144,16 @@ def report() -> None:
     juris_matrix = build_capacity_juris()
     console.print(f"  {juris_matrix['report_path']}")
 
+    from report.jobs_adjustments import write as build_jobs_adjustments
+
+    jobs_adj = build_jobs_adjustments()
+    console.print(
+        f"  jobs corrections: Navy known-answer "
+        f"{'PASS' if jobs_adj['known_answer_passed'] else 'FAIL'}, "
+        f"{jobs_adj['districts_moved']} district HQ pileups redistributed, "
+        f"{jobs_adj['districts_flagged']} flagged"
+    )
+
     from report.capacity_map import build as build_capacity
 
     capacity = build_capacity()

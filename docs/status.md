@@ -44,8 +44,11 @@ moved 135 units.
 
 It surfaced in February 2020, through a conversation with Naval Facilities Engineering Command,
 four months after the draft allocation was issued, and only because Coronado could afford to
-appeal. `metrics/adjustments/multi_site.py` is specified to detect this class of error from open
-data before an allocation is issued. It is not yet built (see below).
+appeal. `metrics/adjustments/multi_site.py` detects this class of error from open data, and the
+uniformed-military layer (`metrics/adjustments/military.py`) makes the specific Navy version of
+it impossible by construction: the satellite sites carry no workforce, and military jobs land
+where open data puts the installations. The known-answer test passes; see
+`reports/jobs_adjustments.md`.
 
 ---
 
@@ -75,6 +78,7 @@ data before an allocation is issued. It is not yet built (see below).
 | Metric | Status |
 |---|---|
 | Jobs by wage band and sector | **built**, unadjusted Q2 counts |
+| Jobs corrections: uniformed-military layer + multi-site HQ detector | **built** — Navy known-answer test passes; see reports/jobs_adjustments.md |
 | Jobs-housing balance | **built** |
 | Jobs-housing fit | **built**, with two documented limitations (below) |
 | Housing by bedroom count | **built** |
@@ -203,9 +207,15 @@ their fit ratio is undefined rather than zero. That is a real feature of the reg
 gap, but any methodology weighting this metric must decide explicitly what an undefined fit means
 before it can be used.
 
-**LODES jobs are unadjusted.** They are Q2 snapshots, geocoded to the employer's reporting unit,
-and not reconciled to QCEW. The three corrections that would fix this are specified and not yet
-built. Until they are, `jobs_total` should not carry weight in any candidate methodology.
+**LODES jobs are partially corrected.** Two of the three Phase 5 corrections are built and
+applied in `metrics.jobs.corrected_workplace_jobs`: the uniformed-military layer (SDMAC county
+level, ACS-minus-LODES jurisdiction split, Census military-quarters placement) and the
+multi-site headquarters detector (school districts, from the CDE roster; other pileups flagged
+by the concentration screen but not yet moved for lack of rosters). QCEW reconciliation and
+seasonal annualisation remain unbuilt, so the corrected counts are still Q2 snapshots. The
+San Diego / unincorporated military split is the least certain corrected number — it inherits
+LODES's remaining HQ geocoding — and is documented in the report. `jobs_total_corrected` is fit
+for candidate-methodology trials; `jobs_total` (uncorrected) still is not.
 
 ---
 

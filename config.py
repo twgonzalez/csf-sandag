@@ -416,6 +416,80 @@ SOURCES: dict[str, Source] = {
         verified="2026-08-27",
         notes="Commute flows into California from out of state. Q2 reference period.",
     ),
+    # ------------------------------------------------- jobs corrections (Phase 5, partial)
+    "census_pl94171_ca": Source(
+        key="census_pl94171_ca",
+        url=(
+            "https://www2.census.gov/programs-surveys/decennial/2020/data/"
+            "01-Redistricting_File--PL_94-171/California/ca2020.pl.zip"
+        ),
+        vintage="2020 Census P.L. 94-171 Redistricting File, California",
+        publisher="U.S. Census Bureau",
+        title="2020 Census Redistricting Data (P.L. 94-171), California",
+        landing="https://www.census.gov/programs-surveys/decennial-census/about/rdo/summary-files.html",
+        verified="2026-08-31",
+        notes=(
+            "Used for one table only: P5, group quarters population by major type, at census "
+            "block level. The 'military quarters' category counts people living in barracks "
+            "and aboard military ships, which the Census counts at the ship's HOMEPORT -- the "
+            "same billets-at-homeport concept the 6th-cycle jobs blend used. This is the "
+            "distribution signal for the uniformed-military jobs layer; see ingest/military.py."
+        ),
+    ),
+    "dmdc_location_report": Source(
+        key="dmdc_location_report",
+        url=(
+            "https://dwp.dmdc.osd.mil/dwp/api/download"
+            "?fileName=DMDC_Website_Location_Report_2603.xlsx&groupName=milRegionCountry"
+        ),
+        vintage="As of 2026-03-31 (file 2603)",
+        publisher="Defense Manpower Data Center",
+        title=(
+            "Number of Military and DoD Appropriated Fund Civilian Personnel "
+            "Permanently Assigned, by Duty State and Service"
+        ),
+        landing="https://dwp.dmdc.osd.mil/dwp/app/dod-data-reports/workforce-reports",
+        verified="2026-08-31",
+        sha256="b7ebfa97b683282ec43459ce5c405e37432bd40f16c4b7d6098a07dbe5e89fa4",
+        notes=(
+            "State-level only -- DMDC no longer publishes per-installation counts. Used as a "
+            "sanity ceiling (California active duty) for the county military layer, never as "
+            "a distribution. Quarterly file; the pinned name is the 2026 Q1 release."
+        ),
+    ),
+    "sdmac_meir_2024": Source(
+        key="sdmac_meir_2024",
+        url="https://sdmac.org/wp-content/uploads/2024/10/SDMAC-2024-MEIR.pdf",
+        vintage="2024 report; Exhibit 6 covers FY 2019-2024",
+        publisher="San Diego Military Advisory Council",
+        title="Military Economic Impact Report 2024",
+        landing="https://sdmac.org/reports/",
+        verified="2026-08-31",
+        sha256="163335a82be4bf8e02418e03616bdf507affcc3666a17bbbb612d5a87e2fd5b1",
+        notes=(
+            "Exhibit 6 (p. 14) is the county-level control total for uniformed military "
+            "direct employment by service and fiscal year. Transcribed to "
+            "data/reference/sdmac_direct_employment.csv and verified against this checksum. "
+            "SDMAC is the same organisation whose counts supplemented the 6th-cycle jobs "
+            "blend, so using its published figures keeps the replacement comparable."
+        ),
+    ),
+    "cde_school_directory": Source(
+        key="cde_school_directory",
+        url="https://www.cde.ca.gov/schooldirectory/report?rid=dl1&tp=txt",
+        vintage="Live directory export (fetch date pins the vintage)",
+        publisher="California Department of Education",
+        title="California School Directory, full export",
+        landing="https://www.cde.ca.gov/schooldirectory/",
+        verified="2026-08-31",
+        notes=(
+            "Every public school and district office with status, address, and coordinates. "
+            "The roster behind the multi-site employer correction for school districts: "
+            "LODES geocodes a district's payroll to its reporting address, which is often the "
+            "district office; the roster says where the schools actually are. Live export, so "
+            "no pinned checksum -- the fetched bytes are recorded in the run manifest."
+        ),
+    ),
 }
 
 # The segment-specific WAC/RAC files (ca_wac_SE01_*, etc.) are deliberately NOT fetched. The
@@ -442,6 +516,14 @@ ACS_TABLES: dict[str, str] = {
     "B25056": "Contract rent (affordability level of the existing stock)",
     "B25077": "Median home value",
     "B25044": "Tenure by vehicles available (evacuation demand per household)",
+    "B08604": (
+        "Total workers by WORKPLACE geography (place/county level, not tract). The only ACS "
+        "table in the pipeline counted where people work rather than live; its universe "
+        "includes armed forces and the self-employed, which LODES excludes. The military jobs "
+        "layer measures uniformed presence as the gap between this table and LODES; see "
+        "metrics/adjustments/military.py. Loaded by ingest/military.py, not ingest/acs.py, "
+        "because its geography differs."
+    ),
 }
 
 
