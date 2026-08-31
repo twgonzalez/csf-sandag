@@ -473,8 +473,8 @@ body.show-notes .notes { display:block; }
         <span class="fig">~5,400 → 1,400–1,800</span></div>
     </figure>
     <p class="takeaway">Look at the top four rows: every box sits to the right of its tick.
-    <strong>None of the five formulas we tested lowers them</strong> — including the one
-    designed to try. That test is the next frame.</p>
+    <strong>None of the five formulas tested lowers them.</strong> The employment-weighted
+    ones are the next frame.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Each box spans five runs: the fairness scorecard alone; fairness plus safety data;
       jobs-weighted siting; the "composition" structure (fairness places lower-income homes,
@@ -488,11 +488,10 @@ body.show-notes .notes { display:block; }
       fairness rules stop steering affordable homes toward it. Its mix shifts toward
       market-rate even as its total drops. Figures are rounded and illustrative; the direction
       and rough size are the point, not the digits.</p>
-      <p>Precision on "we tested": five formulas is still not every design the law allows —
-      but the set now covers the factor families any real 2028 methodology would draw from
-      (fairness, safety, employment, and their combinations), and every one of them was run
-      with predictions committed first. The formula built specifically to lower coastal
-      headlines is the next frame's story.</p>
+      <p>Precision on "tested": five formulas is still not every design the law allows, but
+      the set covers the factor families any real 2028 methodology would draw from — fairness,
+      safety, employment, and their combinations. The employment results are the next
+      frame.</p>
     </div>
   </div>
 </section>
@@ -501,16 +500,16 @@ body.show-notes .notes { display:block; }
 <section class="frame" id="f5b">
   <div class="inner">
     <span class="eyebrow">Part 3 · What the data can do</span>
-    <h1>We tested the idea that promised smaller coastal numbers</h1>
+    <h1>The jobs data points the same direction</h1>
     <p class="orient">
-      One structure looked like coastal relief: let the fairness map place the homes for
-      lower-income families, and let <strong>job locations</strong> place the rest. Smaller
-      coastal totals, more affordable share — that was the promise. We built the open jobs
-      count, wrote our predictions down first, then ran it. Each bar below is a coastal
-      city's change from its fairness-baseline number.
+      Any realistic 2028 formula will also weigh employment, so we added the region's job
+      locations — including a structure sometimes suggested for reducing coastal totals, where
+      the fairness map places the homes for lower-income families and <strong>job
+      locations</strong> place the rest. Each bar below is a coastal city's change from its
+      fairness-baseline number under that structure.
     </p>
     <figure class="viz">
-      <div class="cap">change vs. the fairness baseline under the "coastal relief" structure</div>
+      <div class="cap">change vs. the fairness baseline when job locations place the market-rate homes</div>
       <div class="divrow"><span class="lbl">Coastal City, Fire at its Back</span>
         <div class="dtrack"><span class="zero"></span><span class="dbar dn" style="left:50%;right:auto;background:var(--signal);width:47.9%"></span></div>
         <span class="fig dn">+11% · 9,728 → 10,846</span></div>
@@ -520,14 +519,13 @@ body.show-notes .notes { display:block; }
       <div class="divrow"><span class="lbl">the one job-light coastal city</span>
         <div class="dtrack"><span class="zero"></span><span class="dbar up" style="right:50%;left:auto;background:var(--accent);width:37.5%"></span></div>
         <span class="fig up">−9% · 5,382 → 4,898</span></div>
-      <div class="pinned">And the "mostly affordable" promise? The Enclave's affordable share
-        went <strong>down</strong>: 59% → 57%. The fairness score held at
-        <strong>99.5%</strong> on every run.</div>
-      <figcaption>predictions committed before computing — 8 of 8 hit · all runs split the same 171,685</figcaption>
+      <div class="pinned">The Coastal Enclave's affordable share edges down as well
+        (59% → 57%). The fairness score is <strong>99.5%</strong> in every run.</div>
+      <figcaption>all runs split the same 171,685 homes</figcaption>
     </figure>
-    <p class="takeaway">The relief idea <strong>raises</strong> coastal numbers — these cities
-    hold too many jobs per home for it to work. Every formula we have now run points the same
-    way: the coast rises. The 2028 question is how to balance that, not how to escape it.</p>
+    <p class="takeaway">Job-rich coastal cities <strong>rise</strong> under employment
+    weighting too; only a job-light one falls. Every lawful combination tested moves coastal
+    numbers up, so the working question for 2028 is how the increases are balanced.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Why it backfires, in one breath: sending market-rate homes to "where the jobs are"
       sends them to the coast, because our coastal cities hold more jobs per existing home
@@ -535,14 +533,13 @@ body.show-notes .notes { display:block; }
       their housing weight, and the military-heavy coastal city at 2.8 (its base jobs are now
       correctly counted). Only one mid-size coastal city is genuinely job-light, and it is the
       only one this structure lowers.</p>
-      <p>Discipline to cite: eight predictions were committed to the public record before any
-      of these allocations ran, and all eight hit — including the prediction that this idea
-      would fail. Had it gone the other way, the misses would be published just the same.</p>
+      <p>For the record: the expected results were written down before the runs and scored
+      after (docs/predictions_jobs_runs.md); the full tables are in reports/jobs_runs.md.</p>
       <p>If a board member raises the economist's objection — "coastal land is close to fixed;
       supply there barely responds; these numbers cannot physically be absorbed" — give the
       honest boundary: these are planning obligations (what must be zoned for), not
-      construction forecasts, and state law expressly bars build-out and stable-population
-      arguments from the formula — our software refuses them with the statute cited. The
+      construction forecasts, and state law expressly excludes build-out and stable-population
+      arguments from allocation factors. The
       absorption question is real economics, but its proper address is the state's regional
       total and the state's rules, not the regional split. What the split CAN do about
       physical reality is exactly Part 3: place the obligation on the safest, most absorbable
@@ -575,17 +572,14 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">The total is fixed. Cut a fire-zone city's number, and those homes
     reappear on the safest land — which mostly means struggling neighborhoods. That's the exact
-    outcome fair-housing law forbids. So our software refuses to compute it, for anyone.</p>
+    outcome fair-housing law forbids.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>How measured: we crossed the state's neighborhood scorecard with fire severity zones,
       floodways, protected land, and our evacuation measure, for every neighborhood in the
       county. The pattern is strong and unwelcome: safety and opportunity point in opposite
       directions here.</p>
       <p>What stays legal: safety can decide <em>where within and among cities of equal
-      fairness standing</em> homes go. It cannot decide how many a city gets. We were asked at
-      one point whether the model could be tuned until certain cities' numbers fell; we
-      declined and wrote down why. A formula aimed at an answer is the closed-model problem all
-      over again.</p>
+      fairness standing</em> homes go. It cannot decide how many a city gets.</p>
     </div>
   </div>
 </section>
@@ -624,7 +618,7 @@ body.show-notes .notes { display:block; }
         <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the pinch point the model picked</text>
         <text x="170" y="251" class="dim">dots = neighborhoods evacuating · the model was told nothing about the fire</text>
       </svg>
-      <figcaption>across all replayed fires, the model's pinch points matched 63% of the time · we called 3 results in advance, got 2, and published the miss</figcaption>
+      <figcaption>across all replayed fires, the model's pinch points matched 63% of the time · one of three advance calls was wrong — a funnel road we underrated</figcaption>
     </figure>
     <p class="takeaway">The model picked Wildcat Canyon Road — the road where most of the Cedar
     Fire's victims died. It was never told about the fire. This data is real enough to use.</p>
@@ -674,8 +668,7 @@ body.show-notes .notes { display:block; }
         <div class="dtrack"><span class="zero"></span><span class="dbar up" style="width:3.8%"></span></div>
         <span class="fig up">+300</span></div>
       <div class="pinned">Fairness score, both versions: <strong>99.5% — identical.</strong>
-        The software refuses any result that scores lower. About <strong>7,300 homes</strong>
-        end up on safer ground.</div>
+        About <strong>7,300 homes</strong> end up on safer ground.</div>
     </figure>
     <p class="takeaway">Fire country gives back part of its increase; safe street grids absorb
     it; the fairness score doesn't move. Safety — and the law's other factors, like sewer
@@ -683,17 +676,64 @@ body.show-notes .notes { display:block; }
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Say the boundary out loud: this is balancing <em>within</em> the fairness rules, not
       escaping them. Fire-heavy communities keep an increase — they give back roughly a fifth
-      to a half of it. The fairness floor is enforced in code: no result may place a smaller
-      share of lower-income homes in high-scoring neighborhoods than the fairness-only version
-      does, and the two versions here tie to four decimal places.</p>
+      to a half of it. Nothing shown here scores below the fairness-only version; the two
+      versions tie on the fairness test to four decimal places.</p>
       <p>The other statutory factors — sewer and water capacity, floodways, sea-level rise —
       plug into the same slot: they help choose where, never how many. Sea-level rise needs a
       board decision on which scenario to use; sewer data is specified but not yet built.</p>
       <p>If asked about lowering coastal headline totals: we tested the one legal structure
-      that promised it — see the frame that opened this part. It raises job-rich coastal
-      totals instead; only a genuinely job-light coastal city falls. On current data,
-      composition is not a coastal relief valve, and it is better that our own run
-      established that than the state's reviewers.</p>
+      sometimes suggested for it — the jobs frame earlier in this part. It raises job-rich
+      coastal totals; only a genuinely job-light coastal city falls. On current data it is not
+      a coastal relief valve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 8b ================= -->
+<section class="frame" id="f8b">
+  <div class="inner">
+    <span class="eyebrow">Part 3 · What the data can do</span>
+    <h1>A studio and a four-bedroom house count the same</h1>
+    <p class="orient">
+      The state's ledger counts <strong>units</strong> — it does not record their size. Below,
+      the combined fairness-baseline obligation of four high-scoring coastal cities (about
+      17,000 units) is converted to <strong>bedrooms</strong> two ways: built at the mix those
+      neighborhoods have today, and built at the small-unit mix that tends to pencil on
+      expensive coastal land. The ledger records both as complete.
+    </p>
+    <figure class="viz">
+      <div class="cap">four high-scoring coastal cities combined · the same 17,067-unit obligation · bedrooms delivered</div>
+      <div class="fatrow"><span class="lbl">built at today's neighborhood mix</span>
+        <div><div class="fatbar" style="width:100%;background:var(--accent)"></div></div>
+        <span class="pct">49,536</span></div>
+      <div class="fatrow"><span class="lbl">built as studios &amp; one-bedrooms</span>
+        <div><div class="fatbar" style="width:34.4%;background:var(--signal)"></div></div>
+        <span class="pct">17,067</span></div>
+      <div class="xtag">difference: <strong>32,469</strong> bedrooms — and the ledger cannot see it</div>
+      <figcaption>neither mix is a forecast; together they bracket what the unit count leaves undecided · conversions from ACS bedroom data, assumptions in reports/bedroom_lens.md</figcaption>
+    </figure>
+    <p class="takeaway">The state decides how many units and, increasingly, where. Whether
+    those units can hold a family is decided by <strong>local zoning and housing-element
+    policy</strong> — a lever the region's cities still fully control.</p>
+    <div class="notes"><span class="n-lbl">Presenter notes</span>
+      <p>Conversion conventions, if asked: ACS bedroom counts, a studio counted as one sleeping
+      room and "five or more" as five — both choices shrink the measured gap, so 32,469 is the
+      conservative figure. The gap barely moves across the five formula runs (28,000–37,000
+      across the sensitivity band), because it lives in the unit-counting rule, not in any
+      allocation choice.</p>
+      <p>Two measured results worth volunteering: the family-size premium of high-scoring
+      neighborhoods is thinner than assumed (2.79 bedrooms per unit vs 2.62 countywide, about
+      7%), and two of the five high-scoring coastal cities already average county-level or
+      smaller homes (2.61 and 2.59). The small-unit tilt at the coast is not a projection; it
+      is underway. Both figures ran against written-down expectations and one of them
+      surprised us — the record is in reports/bedroom_lens.md.</p>
+      <p>Where the lever actually sits: allocation formulas cannot count bedrooms (the statute
+      fixes the unit ledger), but family-need factors such as overcrowding are on the
+      statute's own factor list, cities can adopt bedroom-mix standards in zoning and
+      inclusionary ordinances, and a housing element's fair-housing program can commit to
+      family-sized units near good schools — which is squarely what the state's own guidance
+      says fair housing is for. A regional bedroom-mix dashboard published beside the unit
+      ledger needs no one's approval at all.</p>
     </div>
   </div>
 </section>
@@ -706,7 +746,7 @@ body.show-notes .notes { display:block; }
     <p class="orient">
       Remember the start: the 2020 plan could only be checked by reverse-engineering it, and
       its one error took a lawyer four months. Here is the standard we're proposing for 2028,
-      and already meeting ourselves:
+      for 2028:
     </p>
     <figure class="viz">
       <div class="openrow"><span class="k">2020 plan</span>
@@ -786,14 +826,15 @@ body.show-notes .notes { display:block; }
     <span class="eyebrow">Part 4 · What happens next</span>
     <h1>Questions worth asking us</h1>
     <p class="orient">
-      This work is built to be questioned — a hard question becomes a computer run, and the run
-      becomes a published answer. These four are good places to start:
+      A hard question here becomes a computer run, and the run becomes a published answer.
+      Good places to start:
     </p>
     <ol class="bigqs">
       <li>Which of your evacuation assumptions, if wrong, would change the answer?</li>
       <li>What happens to every number if the state's next total is 30% smaller?</li>
       <li>Walk us through where your system would have caught the Navy jobs error.</li>
       <li>What exactly would have to change in state law for fire risk to lower a city's total?</li>
+      <li>A studio and a four-bedroom count the same in the state's ledger — does that serve the families the fairness law is written for?</li>
     </ol>
     <p class="pointer">
       Shorter: the one-pager. Deeper: the staff paper, then the public repository — where every
@@ -802,7 +843,7 @@ body.show-notes .notes { display:block; }
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Close on the standard, not a summary: a city should be able to recompute its own
       number in an afternoon, for free. Every number in this deck already meets that standard.
-      If a question stumps us, that's the system working — we'll run it and publish the
+      If a question stumps us, we'll run it and publish the
       answer.</p>
     </div>
   </div>
