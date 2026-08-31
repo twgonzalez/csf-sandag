@@ -83,7 +83,7 @@ is the spec; artifacts get built against it.
 | Layer | Status | Estimate |
 |---|---|---|
 | Design brief (this document) | done | — |
-| One-pager | build now | part of a session |
-| Walkthrough | next | one session |
-| Explorer v1 (sweep job + page) | after walkthrough | one session |
+| One-pager | done — journal 2026-08-31 | — |
+| Walkthrough | done — journal 2026-08-31 | — |
+| Explorer v1 (sweep job + page) | next | one session |
 | Staff paper | done — becomes the reference layer | — |
