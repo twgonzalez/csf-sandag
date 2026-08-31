@@ -306,7 +306,7 @@ body.show-notes .notes { display:block; }
       <strong>downtown</strong> city, and a struggling <strong>urban-core</strong> suburb.
     </p>
     <figure class="viz">
-      <svg viewBox="0 0 720 312" role="img" aria-label="The 2019 order of operations: stations and jobs set city totals, then the fairness rule adjusts the income mix inside each total. Three city bars keep their heights in step two; only the colored affordable share changes, largest in the coastal city.">
+      <svg viewBox="0 0 720 312" role="img" aria-label="The 2019 order of operations: stations and jobs set city totals, then the fairness rule adjusts the income mix inside each total. Each bar's height is the number of homes assigned to that city. The bars keep their totals in step two; only the colored affordable share changes, largest in the coastal city.">
         <defs><marker id="ah3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
         <text x="40" y="12" class="dim" font-size="11">the 2019 order of operations</text>
         <rect x="40" y="20" width="132" height="28" rx="4" fill="none" stroke="currentColor"/>
@@ -320,6 +320,9 @@ body.show-notes .notes { display:block; }
         <line x1="470" y1="34" x2="494" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah3)"/>
         <rect x="502" y="20" width="110" height="28" rx="4" fill="none" stroke="currentColor"/>
         <text x="557" y="38" text-anchor="middle">income mix</text>
+        <!-- axis: what the bars measure -->
+        <line x1="64" y1="252" x2="64" y2="98" stroke="currentColor" stroke-width="1.5" opacity=".55" marker-end="url(#ah3)"/>
+        <text x="50" y="175" transform="rotate(-90 50 175)" text-anchor="middle" font-size="11" class="dim">homes assigned</text>
         <!-- step 1 panel -->
         <text x="196" y="88" text-anchor="middle" font-weight="600">Step 1 — the totals get set</text>
         <rect x="96" y="182" width="46" height="70" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -342,7 +345,7 @@ body.show-notes .notes { display:block; }
         <text x="449" y="270" text-anchor="middle" class="dim">coastal</text>
         <text x="526" y="270" text-anchor="middle" class="dim">downtown</text>
         <text x="603" y="270" text-anchor="middle" class="dim">urban core</text>
-        <text x="526" y="296" text-anchor="middle" class="dim">heights unchanged — only the coloring moves</text>
+        <text x="526" y="296" text-anchor="middle" class="dim">totals unchanged — only the mix inside moves</text>
       </svg>
       <figcaption>colored = homes for lower-income families · bars are schematic, not to scale</figcaption>
     </figure>
@@ -374,7 +377,7 @@ body.show-notes .notes { display:block; }
       their old, 2019-style totals; the solid bars are what fairness-first produces.
     </p>
     <figure class="viz">
-      <svg viewBox="0 0 720 312" role="img" aria-label="The 2028 order of operations: the fairness map comes first and helps set city totals. The same three cities now change height — the coastal city grows past its old dashed mark; downtown and the urban core shrink below theirs.">
+      <svg viewBox="0 0 720 312" role="img" aria-label="The 2028 order of operations: the fairness map comes first and helps set city totals. The same three cities' totals now change — the coastal city grows past its old dashed mark; downtown and the urban core shrink below theirs.">
         <defs>
           <marker id="ah4" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker>
           <marker id="ah4a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker>
@@ -390,6 +393,9 @@ body.show-notes .notes { display:block; }
         <line x1="316" y1="34" x2="340" y2="34" stroke="currentColor" stroke-width="1.5" marker-end="url(#ah4)"/>
         <rect x="348" y="20" width="110" height="28" rx="4" fill="none" stroke="currentColor"/>
         <text x="403" y="38" text-anchor="middle">income mix</text>
+        <!-- axis: what the bars measure -->
+        <line x1="104" y1="252" x2="104" y2="98" stroke="currentColor" stroke-width="1.5" opacity=".55" marker-end="url(#ah4)"/>
+        <text x="90" y="175" transform="rotate(-90 90 175)" text-anchor="middle" font-size="11" class="dim">homes assigned</text>
         <!-- best schools: grows -->
         <rect x="150" y="102" width="46" height="150" fill="none" stroke="currentColor" stroke-width="1.5"/>
         <rect x="150" y="192" width="46" height="60" fill="var(--accent)"/>
@@ -414,7 +420,7 @@ body.show-notes .notes { display:block; }
         <line x1="576" y1="146" x2="576" y2="190" stroke="var(--signal)" stroke-width="2" marker-end="url(#ah4s)"/>
         <text x="586" y="170" fill="var(--signal)" font-size="11">shrinks</text>
         <text x="533" y="270" text-anchor="middle" class="dim">urban core</text>
-        <text x="360" y="296" text-anchor="middle" class="dim">same three cities — now the heights move too, and the urban core's mix turns mostly market-rate</text>
+        <text x="360" y="296" text-anchor="middle" class="dim">same three cities — now the totals themselves move, and the urban core's mix turns mostly market-rate</text>
       </svg>
       <figcaption>dashed mark = the 2019-style total · colored = homes for lower-income families · real numbers on the next frame</figcaption>
     </figure>
