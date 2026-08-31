@@ -36,8 +36,8 @@ body { background:var(--paper); color:var(--ink); font-family:var(--body);
   text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.7rem; }
 h1 { font-family:var(--display); font-weight:800; letter-spacing:-.025em; line-height:1.06;
   font-size:clamp(1.6rem,4.2vw,2.6rem); margin:0 0 .8rem; text-wrap:balance; }
-.answer { font-size:clamp(1rem,1.9vw,1.14rem); max-width:46rem; margin:0 0 1.3rem;
-  padding-left:.9rem; border-left:3px solid var(--accent); }
+.answer { font-size:clamp(1.08rem,2.2vw,1.32rem); line-height:1.45; max-width:44rem;
+  margin:0 0 1.3rem; padding-left:.9rem; border-left:3px solid var(--accent); }
 .answer strong { font-weight:600; }
 figure { margin:0; }
 .viz { border:1px solid var(--rule); background:var(--surface); padding:1rem 1.2rem .8rem; }
@@ -148,11 +148,10 @@ body.show-notes .notes { display:block; }
       <span class="eyebrow">SANDAG · 7th-cycle housing methodology · ten-minute walkthrough · August 2026</span>
       <h1>The Seventh Cycle in Ten&nbsp;Questions</h1>
       <p class="bg">
-        Every eight years the state assigns the region a housing number — last time,
-        <strong>171,685 homes</strong> — and SANDAG divides it among 19 cities. The total never
-        changes, only the split. We built and tested an allocation system that anyone can check,
-        using only public data. What follows is one question per frame, one picture, and one
-        sentence of answer.
+        Every eight years the state hands this region a housing number — last time,
+        <strong>171,685 homes</strong>. SANDAG splits it among 19 cities. The total never
+        changes; only the split does. We rebuilt the split so anyone can check it, using only
+        public data. Ten questions, ten pictures, short answers.
       </p>
       <p class="cover hint">→ or swipe to advance · N shows presenter notes · printing produces the handout</p>
     </div>
@@ -172,9 +171,8 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">01 / 10</span>
     <h1>Why did we do this?</h1>
-    <p class="answer">The 2020 plan's arithmetic is sound — but no city could recompute its own
-    number during its 45-day appeal window, and the one error ever found took a formal appeal
-    and four months to surface.</p>
+    <p class="answer">Cities had <strong>45 days</strong> to appeal numbers they could not
+    check. The one real error took a lawyer and four months to surface.</p>
     <figure class="viz">
       <svg viewBox="0 0 720 160" role="img" aria-label="Timeline: the draft allocation issued, the 45-day appeal window closed, and the one error was corrected about four months after the draft — through a formal appeal.">
         <defs><marker id="ah1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
@@ -183,19 +181,20 @@ body.show-notes .notes { display:block; }
         <text x="60" y="126" text-anchor="middle">Draft issued</text>
         <rect x="60" y="60" width="120" height="24" fill="var(--accent-soft)" stroke="var(--accent)"/>
         <text x="120" y="76" text-anchor="middle" class="m" fill="var(--accent)">45-day appeal window</text>
-        <text x="60" y="46" text-anchor="start" class="dim">a city could not recompute its own number in it</text>
+        <text x="60" y="46" text-anchor="start" class="dim">no way to check the number inside it</text>
         <line x1="470" y1="76" x2="470" y2="108" stroke="var(--signal)" stroke-width="3"/>
         <text x="470" y="126" text-anchor="middle" fill="var(--signal)">≈ 4 months after the draft</text>
-        <text x="470" y="143" text-anchor="middle" class="dim">the one error (Navy jobs, 135 homes) surfaces — via counsel and a phone call</text>
+        <text x="470" y="143" text-anchor="middle" class="dim">the Navy-jobs error surfaces — a lawyer and a phone call</text>
         <text x="470" y="46" text-anchor="middle" class="dim">the only correction ever made</text>
       </svg>
-      <figcaption>The error-correction mechanism was a formal appeal. An open system checks before the draft goes out.</figcaption>
+      <figcaption>An open system checks before the draft goes out.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Land the credit first: we rebuilt the adopted 2020 allocation from its published
       documents and matched all 76 line items to within two homes. The adopted arithmetic is
       internally sound. But the match required reconstructing a reconciliation step that appears
-      in no adopted document — worth up to 990 homes on a single city's income-mix line.</p>
+      in no adopted document — worth up to 990 homes on a single city's income-mix line. The
+      error itself was naval-installation jobs credited to the wrong cities, worth 135 homes.</p>
       <p>This is not a criticism of the team that produced the 6th cycle with 2019's tools and
       timelines; it is a statement about what any team can defend without published code. If
       asked "so was the plan wrong?" — no; it reconciles exactly. The exposure is procedural,
@@ -209,9 +208,8 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">02 / 10</span>
     <h1>Didn't we already do fair housing in 2019?</h1>
-    <p class="answer">Yes — 2019 applied it to each city's income <strong>mix</strong>, and the
-    state approved; the state now expects it to shape <strong>how many homes</strong> each city
-    gets.</p>
+    <p class="answer">Yes. 2019 used it to set each city's <strong>mix</strong>. The state now
+    expects it to set each city's <strong>total</strong>.</p>
     <figure class="viz">
       <svg viewBox="0 0 680 250" role="img" aria-label="Two panels. In 2019, a city's total was fixed and fair housing shifted the affordable share inside it. Next cycle, fair housing also raises or lowers the total itself.">
         <defs><marker id="ah2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
@@ -235,11 +233,10 @@ body.show-notes .notes { display:block; }
         <rect x="480" y="52" width="64" height="40" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
         <line x1="466" y1="96" x2="466" y2="58" stroke="var(--accent)" stroke-width="2" marker-end="url(#ah2)"/>
         <text x="454" y="66" text-anchor="end">high-opportunity totals rise</text>
-        <text x="454" y="82" text-anchor="end" class="dim">the opportunity map, or</text>
-        <text x="454" y="98" text-anchor="end" class="dim">something like it, as an input</text>
+        <text x="454" y="82" text-anchor="end" class="dim">the map helps set how many</text>
         <text x="512" y="218" text-anchor="middle" class="dim">what the state now expects</text>
       </svg>
-      <figcaption>Fair housing shaped the percentages then; the question now is whether it also shapes the totals.</figcaption>
+      <figcaption>The state approved that approach then. It expects more now.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Credit the 2019 team explicitly. The 2019 methodology reviewed the state's opportunity
@@ -262,11 +259,10 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">03 / 10</span>
     <h1>Why do coastal numbers go up?</h1>
-    <p class="answer">High-opportunity cities hold the neighborhoods fair-housing law points to,
-    so they rise under <strong>any lawful formula we ran</strong> — the movement comes from the
-    law, not from a factor we chose.</p>
+    <p class="answer">Coastal cities have the schools and jobs the law points to.
+    <strong>Every lawful formula we ran</strong> raises them.</p>
     <figure class="viz">
-      <div class="cap">Six city archetypes · | = the 2020 plan (each city's own figure = 1×) · box = range across lawful next-cycle formulas</div>
+      <div class="cap">| = the 2020 plan · box = range across lawful formulas</div>
       <div class="vrow"><span class="lbl">The Metropolis</span>
         <div class="track"><span class="baseline" style="left:28.6%"></span><span class="range dn" style="left:22%;width:1.2%"></span></div>
         <span class="fig">~108,000 → 83–87,000</span></div>
@@ -285,7 +281,7 @@ body.show-notes .notes { display:block; }
       <div class="vrow"><span class="lbl">The Back Country</span>
         <div class="track"><span class="baseline" style="left:28.6%"></span><span class="range" style="left:73.4%;width:16.6%"></span></div>
         <span class="fig">~6,700 → 17,200–21,100</span></div>
-      <figcaption>Scaled to each archetype's own 2020 figure. All runs divide the 6th-cycle total of 171,685 so they can be checked against the adopted plan.</figcaption>
+      <figcaption>Each row scaled to its own 2020 figure. Every run splits the same 171,685.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The range for each archetype spans the two ends of the lawful dial: affordable homes
@@ -306,13 +302,12 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">04 / 10</span>
     <h1>Can fire risk lower a city's number?</h1>
-    <p class="answer">Not lawfully — the least-constrained land and the region's struggling
-    neighborhoods are largely <strong>the same land</strong>, so cutting a fire-exposed city's
-    total pushes homes exactly where fair-housing law says they must not concentrate.</p>
+    <p class="answer">No. The total is fixed, so homes cut from fire country reappear in
+    <strong>struggling neighborhoods</strong> — the outcome the law forbids.</p>
     <figure class="viz">
       <svg viewBox="0 0 660 262" role="img" aria-label="Two stylized maps of the same region. The cells marked as least-constrained land and the cells marked as lowest-scoring neighborhoods form nearly the same shape.">
-        <text x="159" y="20" text-anchor="middle" font-weight="600">Where the least-constrained land is</text>
-        <text x="501" y="20" text-anchor="middle" font-weight="600">Where the lowest-scoring neighborhoods are</text>
+        <text x="159" y="20" text-anchor="middle" font-weight="600">Where it is safest to build</text>
+        <text x="501" y="20" text-anchor="middle" font-weight="600">Where the struggling neighborhoods are</text>
         <!-- left panel grid: 7x5, cell 38, gap 4, origin (20,34) -->
         <g fill="currentColor" opacity=".1">
           <rect x="20" y="34" width="38" height="38"/><rect x="62" y="34" width="38" height="38"/><rect x="104" y="34" width="38" height="38"/><rect x="146" y="34" width="38" height="38"/><rect x="188" y="34" width="38" height="38"/><rect x="230" y="34" width="38" height="38"/><rect x="272" y="34" width="38" height="38"/>
@@ -340,10 +335,9 @@ body.show-notes .notes { display:block; }
           <rect x="404" y="160" width="38" height="38"/><rect x="530" y="160" width="38" height="38"/><rect x="404" y="202" width="38" height="38"/>
         </g>
         <text x="330" y="130" text-anchor="middle" class="m" font-weight="600">≈</text>
-        <text x="159" y="256" text-anchor="middle" class="dim">safe to build on</text>
-        <text x="501" y="256" text-anchor="middle" class="dim">where reductions would push the homes</text>
+        <text x="501" y="256" text-anchor="middle" class="dim">where the cut homes would go</text>
       </svg>
-      <figcaption>Illustrative geometry — the measured version: the lowest-scoring neighborhoods are 3.3× as likely to sit on the least-constrained land (52.7% vs 19.4%).</figcaption>
+      <figcaption>Stylized, not the real map. The measured overlap: 3.3 to 1.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The engine is zero-sum: the regional total never changes, only the split, so a reduction
@@ -365,9 +359,8 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">05 / 10</span>
     <h1>Then what is safety data for?</h1>
-    <p class="answer">Placement: among neighborhoods of equal fair-housing standing, it chooses
-    the safer ground — moving roughly <strong>7,300 homes</strong> at an identical fair-housing
-    score.</p>
+    <p class="answer">Placing homes, not counting them. It moved <strong>7,300 homes</strong>
+    to safer ground. The fairness score did not budge.</p>
     <figure class="viz">
       <svg viewBox="0 0 680 210" role="img" aria-label="About 7,300 homes move from fire-country land to safe urban street grids while the fair-housing score stays at 99.5 percent, unchanged.">
         <defs><marker id="ah5" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--accent)"/></marker></defs>
@@ -381,9 +374,9 @@ body.show-notes .notes { display:block; }
         <text x="340" y="58" text-anchor="middle" class="m" font-weight="600" fill="var(--accent)">≈ 7,300 homes</text>
         <rect x="40" y="140" width="600" height="40" fill="var(--accent-soft)" stroke="var(--accent)"/>
         <text x="340" y="159" text-anchor="middle" font-weight="600">Fair-housing score: 99.5% → 99.5%</text>
-        <text x="340" y="175" text-anchor="middle" class="dim">identical to four decimal places — and enforced in code, not promised</text>
+        <text x="340" y="175" text-anchor="middle" class="dim">unchanged — the software refuses anything lower</text>
       </svg>
-      <figcaption>The software refuses to emit any split that scores below the fair-housing benchmark. The refusal cannot be aimed at, or for, any city.</figcaption>
+      <figcaption>The refusal is code, not policy — it cannot be aimed at any city.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The 7,300 figure compares two runs: affordable homes follow the opportunity map and
@@ -405,15 +398,15 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">06 / 10</span>
     <h1>How do we know the evacuation model is any good?</h1>
-    <p class="answer">We replayed every 15,000-plus-acre fire since 2000 as an evacuation — and
-    the 2003 Cedar Fire replay's binding chokepoint is <strong>Wildcat Canyon Road, where most
-    of that fire's victims died</strong>.</p>
+    <p class="answer">We replayed the 2003 Cedar Fire. The model flagged
+    <strong>Wildcat Canyon Road</strong> — where most of its victims died — knowing nothing
+    about the fire.</p>
     <figure class="viz">
       <svg viewBox="0 0 680 256" role="img" aria-label="Inside a replayed fire perimeter, neighborhood traffic converges onto a single road: Wildcat Canyon Road, the binding chokepoint the model identified with no knowledge of the fire.">
         <defs><marker id="ah6" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
         <polygon points="380,44 520,32 622,82 640,160 558,218 428,210 368,140" fill="none"
           stroke="var(--signal)" stroke-width="2" stroke-dasharray="7 5"/>
-        <text x="505" y="22" text-anchor="middle" fill="var(--signal)">2003 Cedar Fire perimeter — replayed as an evacuation</text>
+        <text x="505" y="22" text-anchor="middle" fill="var(--signal)">the 2003 Cedar Fire, replayed</text>
         <g stroke="currentColor" stroke-width="1.5">
           <line x1="450" y1="92" x2="416" y2="142" marker-end="url(#ah6)"/>
           <line x1="502" y1="122" x2="422" y2="148" marker-end="url(#ah6)"/>
@@ -428,10 +421,9 @@ body.show-notes .notes { display:block; }
         <line x1="410" y1="150" x2="150" y2="192" stroke="var(--signal)" stroke-width="5" stroke-linecap="round"/>
         <line x1="150" y1="192" x2="56" y2="150" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
         <line x1="150" y1="192" x2="70" y2="226" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-        <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the binding chokepoint</text>
-        <text x="170" y="251" class="dim">the model had no knowledge of the fire</text>
+        <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the chokepoint it found</text>
       </svg>
-      <figcaption>Across all replayed fires: predicted chokepoints matched the fire replays 63% of the time, household-weighted — strongest on the largest fires.</figcaption>
+      <figcaption>Every big fire since 2000, replayed: 63% of chokepoints matched.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Method in one breath: we grouped neighborhoods by the escape routes they share — derived
@@ -451,26 +443,27 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">07 / 10</span>
     <h1>What did it get wrong?</h1>
-    <p class="answer">One of the three predictions we logged before computing missed — a small
-    coastal city we expected to hold measured <strong>second-most constrained in the county</strong>,
-    because of a single funnel road.</p>
+    <p class="answer">We called three results in advance and got two. <strong>The miss is
+    published</strong> next to the hits.</p>
     <figure class="viz">
-      <div class="cap">Predictions committed before the model ran · results published either way</div>
+      <div class="cap">Called before the model ran · published either way</div>
       <div class="pred"><span class="mk ok">✓</span>
-        <p><span class="p-lbl">Predicted</span>The peninsula city will measure worse — one bridge out.</p>
-        <p><span class="p-lbl">Measured</span>It fell, though less than predicted; its naval commuters are not counted yet.</p>
+        <p><span class="p-lbl">Predicted</span>The peninsula city drops — one bridge out.</p>
+        <p><span class="p-lbl">Measured</span>Dropped — less than we said.</p>
       </div>
       <div class="pred"><span class="mk ok">✓</span>
-        <p><span class="p-lbl">Predicted</span>The dense urban street grids will hold up.</p>
-        <p><span class="p-lbl">Measured</span>They held — the county's best evacuation discharge.</p>
+        <p><span class="p-lbl">Predicted</span>The dense urban grids hold.</p>
+        <p><span class="p-lbl">Measured</span>Held — best in the county.</p>
       </div>
       <div class="pred"><span class="mk miss">✗</span>
-        <p><span class="p-lbl">Predicted</span>The small coastal cities will hold up.</p>
-        <p><span class="p-lbl">Measured</span>One measured second-most constrained in the county — a single funnel road we underrated.</p>
+        <p><span class="p-lbl">Predicted</span>The small coastal cities hold.</p>
+        <p><span class="p-lbl">Measured</span>One came in second-worst. A single funnel road.</p>
       </div>
-      <figcaption>The miss stays on the record next to the hits.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
+      <p>The peninsula city fell less than predicted because its naval commuters are not counted
+      yet; "second-worst" means second-most constrained of the county's cities on the discharge
+      measure.</p>
       <p>Volunteer the version-one limits before anyone asks: road capacities are federal
       defaults not yet calibrated to local traffic counts; the model departs everyone at once
       (real staged departures are gentler, real gridlock is harsher, and the two do not cancel);
@@ -488,9 +481,8 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">08 / 10</span>
     <h1>What about smaller totals with more affordable homes?</h1>
-    <p class="answer">It is lawful and we can build it — but the headline shrinks while
-    <strong>the hard part roughly doubles</strong>, and it depends on a trustworthy jobs count
-    that does not exist yet.</p>
+    <p class="answer">Legal, and we can build it. The headline shrinks — but the hard part,
+    the affordable homes, <strong>roughly doubles</strong>.</p>
     <figure class="viz">
       <div class="comp">
         <div class="col">
@@ -504,7 +496,7 @@ body.show-notes .notes { display:block; }
           <p class="bar-fig">smaller headline · mostly affordable</p>
         </div>
       </div>
-      <figcaption>Filled = affordable homes — the part that takes rezoning, density, and subsidy. For a coastal archetype, roughly double the former affordable obligation.</figcaption>
+      <figcaption>Filled = affordable homes: the rezoning, density, and subsidy part.</figcaption>
     </figure>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The structure: let the opportunity map place the affordable homes (pulling them
@@ -527,14 +519,14 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">09 / 10</span>
     <h1>What has to be decided, and when?</h1>
-    <p class="answer">Four decisions now, in dependency order — against a statutory clock that
-    leaves little room for a failed iteration.</p>
+    <p class="answer"><strong>Four decisions this year.</strong> The state's clock does the
+    rest.</p>
     <figure class="viz">
       <ol class="decisions">
-        <li><strong>Talk to state housing staff informally</strong> — test the placement approach and the composition option before anything formal.</li>
-        <li><strong>Build the open jobs count</strong> — it gates the composition option, and its acceptance test is finding the Navy error unaided.</li>
-        <li><strong>Calibrate the evacuation model</strong> against real traffic counts and summer loads — predictions logged first, misses published.</li>
-        <li><strong>Set placeholder targets for the six income levels</strong> the next cycle requires, so trial runs start before the state's number lands.</li>
+        <li><strong>Talk to state housing staff informally</strong> — before anything is formal.</li>
+        <li><strong>Build the open jobs count</strong> — the old one hid the Navy error.</li>
+        <li><strong>Calibrate the evacuation model</strong> — against real traffic counts.</li>
+        <li><strong>Set placeholder income targets</strong> — so trial runs can start now.</li>
       </ol>
       <svg viewBox="0 0 720 130" role="img" aria-label="Timeline: the four decisions run through 2026 and 2027; the draft methodology goes to the state in late 2027, followed by a 60-day review, a possible 45-day revision, and adoption in 2028.">
         <defs><marker id="ah9" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
@@ -560,10 +552,11 @@ body.show-notes .notes { display:block; }
       60-day state review, a possible 45-day revision, adoption in 2028. That is why the
       informal state conversation comes first — it is the only cheap iteration available.</p>
       <p>The order encodes dependencies: the state conversation shapes which structures are worth
-      building out; the jobs count gates the composition option and narrows every city's range;
-      calibration keeps the evacuation work honest before it carries more weight; the income-level
-      placeholders let trial runs start before the state's total arrives (~2027) rather than
-      after.</p>
+      building out; the jobs count gates the composition option and narrows every city's range
+      (its acceptance test is finding the Navy error unaided); calibration keeps the evacuation
+      work honest before it carries more weight — predictions logged first, misses published;
+      the income-level placeholders cover the six income levels the next cycle requires, so
+      trial runs start before the state's total arrives (~2027) rather than after.</p>
     </div>
   </div>
 </section>
@@ -573,8 +566,8 @@ body.show-notes .notes { display:block; }
   <div class="inner">
     <span class="eyebrow">10 / 10</span>
     <h1>Questions worth asking us</h1>
-    <p class="answer">The goal of this work is better questions, not finished arguments — these
-    four are good places to press.</p>
+    <p class="answer">We are after <strong>better questions</strong>, not finished arguments.
+    Start with these four.</p>
     <ol class="bigqs">
       <li>Which of your evacuation assumptions, if wrong, would change the answer?</li>
       <li>What happens to every number if the state's next total is 30% smaller?</li>
@@ -582,8 +575,8 @@ body.show-notes .notes { display:block; }
       <li>What exactly would have to change in state law for fire risk to lower a city's total?</li>
     </ol>
     <p class="pointer">
-      Shorter: the one-pager. Deeper: the staff paper "Preparing for the Seventh Cycle," then the
-      public repository — where every number in this walkthrough can be recomputed.
+      Shorter: the one-pager. Deeper: the staff paper, then the repository — every number here
+      can be recomputed.
     </p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Close on the invitation, not a summary. If a question stumps us, that is the system
