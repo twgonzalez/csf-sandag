@@ -163,6 +163,15 @@ def report() -> None:
         f"gate held at {jobs_runs['gate_shares']['resource_only']:.4f} for all five runs"
     )
 
+    from report.bedroom_lens import write as build_bedroom_lens
+
+    bedroom = build_bedroom_lens()
+    console.print(
+        f"  bedroom lens: four-city studio loophole "
+        f"{bedroom['four_city_gap_bedrooms']:,} bedrooms; predictions "
+        f"{bedroom['predictions_hit']}/{bedroom['predictions_total']} hit (misses published)"
+    )
+
     from report.capacity_map import build as build_capacity
 
     capacity = build_capacity()
