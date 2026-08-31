@@ -113,7 +113,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       from them.</p>
       <p><strong>What the numbers are.</strong> All allocations divide the <em>6th-cycle</em>
       total of 171,685 homes, so alternatives can be compared against the adopted plan everyone
-      knows. This is a test kitchen, not a draft allocation — the 7th-cycle total arrives from
+      knows. These are comparison runs, not a draft allocation — the 7th-cycle total arrives from
       the state, likely 2027, and everything scales with it. The measurements underneath are
       current: the 2026 state opportunity map, the 2020 census, the 2024–25 fire hazard maps,
       today's road network.</p>
@@ -136,27 +136,25 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
     </p>
     <div class="findings">
       <div class="f"><span class="f-n">01</span><div class="f-t">
-        <h3>The adopted 6th cycle checks out — and cannot be checked</h3>
+        <h3>The 2020 allocation is accurate, but not verifiable from its public documents</h3>
         <p>We rebuilt the adopted 2020 allocation from its published documents and matched all
         76 line items to within two homes. <strong>The adopted arithmetic is internally
         sound.</strong> But matching it required reverse-engineering a reconciliation step that
         appears in no adopted document — a step worth up to 990 homes for a single jurisdiction.
         A city in its 45-day appeal window could not have recomputed its own number. This is not
         a criticism of the team that produced the 6th cycle under 2019's tools and timelines; it
-        is a statement about what any team can defend without published code — and it is the
-        institution's largest exposure going into the 7th.</p></div></div>
+        is a statement about what any team can defend without published code — and it is the largest procedural exposure going into the 7th cycle.</p></div></div>
       <div class="f"><span class="f-n">02</span><div class="f-t">
-        <h3>The only correction ever made came through the most expensive channel available</h3>
+        <h3>The one error found in the 6th cycle required a formal appeal to surface</h3>
         <p>The one change between draft and adopted allocations was a jobs-data fix: naval
         installation jobs credited to the wrong jurisdictions, worth 135 homes. It surfaced
         because one city retained counsel and someone called the Navy — four months after the
         draft issued. The lesson is not that an error occurred; errors occur in every dataset.
         It is that <strong>the error-correction mechanism was an appeal</strong>. An open
         pipeline gives staff a cheaper one: our rebuild is designed to catch that class of error
-        automatically before a draft issues, and its acceptance test is finding that same Navy
-        error with no hints.</p></div></div>
+        automatically before a draft issues, and its acceptance test is to find that same Navy error with no prior knowledge of the answer.</p></div></div>
       <div class="f"><span class="f-n">03</span><div class="f-t">
-        <h3>The 2027 review will not be the 2019 review</h3>
+        <h3>State review standards have tightened substantially since 2019</h3>
         <p>HCD approved the 6th-cycle methodology weeks after the fair-housing objective entered
         the statute, with no implementing guidance in existence; the guidance arrived in 2021,
         and the Bay Area's methodology was pushed toward opportunity-based factors months later.
@@ -164,7 +162,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
         methodology with an income-mix adjustment — reasonable under 2019's understanding —
         would face questions in 2027 it never faced then.</p></div></div>
       <div class="f"><span class="f-n">04</span><div class="f-t">
-        <h3>The region's best neighborhoods sit on its most constrained land — measured</h3>
+        <h3>High-opportunity neighborhoods overlap heavily with physically constrained land</h3>
         <p>Crossing the state's opportunity map with fire, flood, protected land, and evacuation
         capacity: the lowest-scoring neighborhoods are <strong>3.3 times more likely</strong> to
         be on the least constrained land than the highest-scoring ones. The consequence is
@@ -173,15 +171,14 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
         precise pattern fair-housing law prohibits. Constraint can lawfully decide <em>where
         within</em> a community homes go; it cannot decide how many a community gets.</p></div></div>
       <div class="f"><span class="f-n">05</span><div class="f-t">
-        <h3>An evacuation measure with no drawn boundaries — validated against real fires</h3>
-        <p>We grouped neighborhoods by the escape routes they share — "evacuation sheds," implied
-        by the road network the way watersheds are implied by terrain, with no zone drawn by any
-        analyst — and scored each by how many households per hour its worst shared chokepoint
+        <h3>An evacuation measure derived from the road network, tested against historical fires</h3>
+        <p>We grouped neighborhoods by the escape routes they share — "evacuation sheds," derived
+        from the road network itself rather than from boundaries drawn by an analyst — and scored each by how many households per hour its worst shared chokepoint
         can discharge. Tested by replaying every 15,000+ acre fire since 2000 as an evacuation:
         the 2003 Cedar Fire replay's binding chokepoint is <strong>Wildcat Canyon Road, where
         most of that fire's victims died</strong>. The model had no knowledge of the fire.</p></div></div>
       <div class="f"><span class="f-n">06</span><div class="f-t">
-        <h3>Safety-aware allocation works — as placement, at zero fair-housing cost</h3>
+        <h3>Physical constraints can guide placement without weakening fair-housing outcomes</h3>
         <p>A split that weights neighborhoods by physical capacity moves roughly
         <strong>7,300 homes off fire-country land onto safe urban street grids</strong> while
         scoring identically on the fair-housing test to four decimal places — and the software
@@ -194,7 +191,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
   <section>
     <div class="section-head"><span class="part">Part II</span><h2>The evidence</h2></div>
 
-    <h3 style="margin-bottom:.6rem">Design rules, stated once</h3>
+    <h3 style="margin-bottom:.6rem">Design rules</h3>
     <ul class="rules">
       <li><strong>Zero-sum, always.</strong> The regional total is an input; every run reconciles to it exactly, by income level.</li>
       <li><strong>Computed at neighborhood level.</strong> City totals are outputs of neighborhood placement, never scored directly.</li>
@@ -204,7 +201,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       <li><strong>Same inputs, same outputs, byte for byte.</strong> Every data file is pinned and checksummed; every factor cites a public source.</li>
     </ul>
 
-    <h3 style="margin:1.8rem 0 .6rem">Three formulas, six archetypes</h3>
+    <h3 style="margin:1.8rem 0 .6rem">Three allocation approaches compared across six city types</h3>
     <p class="note" style="margin:0 0 .9rem">
       Illustrative, rounded figures from real runs. <em>2020 formula</em> = stations and jobs, as
       adopted. <em>Fair-housing benchmark</em> = affordable homes follow the state opportunity
@@ -225,15 +222,17 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       </table>
     </div>
     <p class="note">
-      Read the movements, not the digits. The fair-housing benchmark redraws the map — coastal
-      and high-scoring communities rise, the urban core's total falls while its burden shifts
-      toward market-rate homes, the metropolis loses its 2020 transit-count premium. The
-      safety-aware column then <em>re-sorts within that map</em>: fire-heavy archetypes give
-      back a fifth to a half of their benchmark increase; safe grids and low-hazard coast absorb
-      it. Fair housing decides how many; safety decides where.
+      The direction and rough size of the changes matter more than the specific figures. The
+      fair-housing benchmark changes the distribution substantially: coastal and high-scoring
+      communities rise, the urban core's total falls while its mix shifts toward market-rate
+      homes, and the metropolis loses the premium the 2020 transit count gave it. The
+      safety-aware column then adjusts within that distribution: fire-heavy archetypes give
+      back a fifth to a half of their benchmark increase, and safer areas absorb it. In short,
+      the fair-housing rule determines each city's level; safety determines placement within
+      and among cities of equal standing.
     </p>
 
-    <h3 style="margin:1.8rem 0 .6rem">The evacuation evidence, with its limits attached</h3>
+    <h3 style="margin:1.8rem 0 .6rem">Evacuation analysis: results and limitations</h3>
     <p class="note" style="margin:0 0 .9rem">
       451 sheds across 737 neighborhoods; every bottleneck's load, capacity, and member
       neighborhoods published. Validation: household-weighted, the shed predictions matched the
@@ -241,11 +240,11 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       predictions before computing: the peninsula city fell as predicted (less than predicted —
       its naval commuters aren't counted yet); the urban grids held as predicted; <strong>one
       small coastal city we expected to hold instead measured second-most constrained in the
-      county</strong> — its single funnel road outweighed our prior. The miss stays on the
-      record beside the hits.
+      county</strong>, because of a single funnel road. We report the incorrect prediction
+      alongside the correct ones.
     </p>
     <div class="hard">
-      <p><strong>Version-one limits, volunteered:</strong> road capacities are federal defaults
+      <p><strong>Version-one limitations:</strong> road capacities are federal defaults
       not yet calibrated to local traffic counts; everyone departs at once (real staged
       departures are gentler; real gridlock physics — stalled cars, blocked intersections — are
       harsher, and the two do not cancel); each neighborhood's traffic takes one best route, so
@@ -255,7 +254,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       Clearance clocks are not predictions.</strong></p>
     </div>
 
-    <h3 style="margin:1.8rem 0 .6rem">A structure worth studying: more affordable at the coast, more market-rate inland</h3>
+    <h3 style="margin:1.8rem 0 .6rem">An option to evaluate: affordable homes weighted coastward, market-rate homes weighted toward job centers</h3>
     <p class="note" style="margin:0 0 .9rem">
       One lawful design lowers high-scoring cities' headline totals while honoring fair housing:
       let the opportunity map place the affordable homes (pulling them coastward and toward good
@@ -264,7 +263,7 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       state now uses.
     </p>
     <div class="hard">
-      <p><strong>Its three catches, stated before anyone falls in love:</strong> the affordable
+      <p><strong>Three significant caveats:</strong> the affordable
       homes are the hard part — rezoning, density, subsidy — so a smaller total that is mostly
       affordable is a <em>heavier</em> lift than a larger total that is mostly market-rate, and
       an archetype reading past its headline will see roughly double its former affordable
@@ -279,11 +278,11 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       <table>
         <thead><tr><th>6th-cycle input</th><th>Open replacement</th><th>Status</th><th>Known issues</th></tr></thead>
         <tbody>
-          <tr><td>Transit stations (agency travel model)</td><td>Public transit feeds (GTFS)</td><td class="n">decision needed</td><td>Rebuild the station count, or measure access instead — see Part III</td></tr>
+          <tr><td>Transit stations (agency travel model)</td><td>Public transit schedule feeds (GTFS)</td><td class="n">decision needed</td><td>Rebuild the station count, or measure access instead — see Part III</td></tr>
           <tr><td>Jobs (internal blend of state/federal data)</td><td>Census LODES + state QCEW, with corrections</td><td class="n">specified, unbuilt</td><td>Multi-site employers, seasonality; acceptance test = find the Navy error unaided</td></tr>
           <tr><td>Household incomes (ACS)</td><td>Same — already public</td><td class="n">done</td><td>—</td></tr>
           <tr><td>Fair-housing geography (none in 2019)</td><td>State CTCAC/HCD opportunity map</td><td class="n">done, replicated exactly</td><td>39 tracts published at finer grain must be aggregated, not dropped</td></tr>
-          <tr><td>Fire hazard (none)</td><td>CAL FIRE severity zones, 2024–25 vintages</td><td class="n">done</td><td><strong>Trap:</strong> the statewide GIS service still serves 2007/2011 maps; use the OSFM services</td></tr>
+          <tr><td>Fire hazard (none)</td><td>CAL FIRE severity zones, 2024–25 vintages</td><td class="n">done</td><td><strong>Caution:</strong> the statewide GIS service still serves 2007/2011 maps; use the OSFM services</td></tr>
           <tr><td>Flood / protected land (none)</td><td>FEMA floodway; state protected-areas database</td><td class="n">done</td><td>Floodway, not floodplain — deliberate and documented</td></tr>
           <tr><td>Evacuation (none)</td><td>Open road network + census vehicle counts, shed method</td><td class="n">done, v1</td><td>Calibration to traffic counts owed; see limits above</td></tr>
           <tr><td>Sea level rise (none)</td><td>USGS coastal model</td><td class="n">awaiting scenario choice</td><td>Which scenario is a policy decision, not a default</td></tr>
@@ -292,9 +291,9 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       </table>
     </div>
 
-    <h3 style="margin:1.8rem 0 .6rem">What we refused to do</h3>
+    <h3 style="margin:1.8rem 0 .6rem">Constraints we imposed on our own analysis</h3>
     <ul class="rules">
-      <li><strong>No outcome-tuning.</strong> Asked whether the model could be adjusted until specific cities' numbers fell, we declined and recorded why: a formula tuned to a result is the closed-model problem rebuilt with extra steps.</li>
+      <li><strong>No outcome-tuning.</strong> Asked whether the model could be adjusted until specific cities' numbers fell, we declined and recorded why: a formula tuned to reach a predetermined result recreates the closed-model problem this work exists to solve.</li>
       <li><strong>Permit and production history never touches the allocation</strong> — quarantined at ingestion, per statute.</li>
       <li><strong>No factor without a public citation.</strong> A factor that cannot name its source is refused at load.</li>
       <li><strong>No prediction after the fact.</strong> Where we forecast results, the forecasts were committed before computation, and the misses published.</li>
@@ -326,16 +325,16 @@ footer { margin-top:3.5rem; padding-top:1.3rem; border-top:1px solid var(--rule)
       visible policy choice; recommend publishing raw and mitigation-adjusted exposure side by
       side.</li>
       <li><strong>The informal HCD conversation.</strong> Test the safety-aware structure and
-      the composition idea with state staff ahead of formal submission. The statutory clock —
-      draft methodology to the state in late 2027, 60-day review, possible 45-day revision,
-      adoption 2028 — leaves room for exactly one careless iteration. Spend it on purpose.</li>
+      the composition idea with state staff ahead of formal submission. The statutory schedule —
+      draft methodology to the state in late 2027, a 60-day review, a possible 45-day revision,
+      adoption in 2028 — leaves little room for a failed iteration.</li>
     </ol>
     <div class="good" style="margin-top:1.4rem">
-      <p><strong>The recommendation that survives any factor choice:</strong> publish the code,
+      <p><strong>A process recommendation independent of any factor choice:</strong> publish the code,
       pin the data, cite every factor, and hold the next methodology to the test the last one
       failed — <em>a city should be able to recompute its own number in an afternoon, for
-      free.</em> Every finding in this document exists because that standard is achievable now.
-      The proof is the repository itself.</p>
+      free.</em> Every finding in this document was produced under that standard; the repository
+      demonstrates it is practical.</p>
     </div>
   </section>
 
