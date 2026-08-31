@@ -428,6 +428,7 @@ SOURCES: dict[str, Source] = {
         title="2020 Census Redistricting Data (P.L. 94-171), California",
         landing="https://www.census.gov/programs-surveys/decennial-census/about/rdo/summary-files.html",
         verified="2026-08-31",
+        sha256="e02c83c85a9a5d69ded4bf0d4c8ebe3f4bcd2d8e5911db765e9e42915ad1f753",
         notes=(
             "Used for one table only: P5, group quarters population by major type, at census "
             "block level. The 'military quarters' category counts people living in barracks "
