@@ -1,0 +1,148 @@
+<title>The Seventh Cycle on One Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --ink:#16232B; --muted:#5A6B74; --rule:#D2DADE;
+  --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F; --ok:#2E6B4F;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+    --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+  --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:15.5px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+.sheet { max-width:760px; margin:0 auto; padding:clamp(1.6rem,4vw,3rem) clamp(1rem,3vw,2rem) 3rem; }
+h1 { font-family:var(--display); font-size:clamp(1.6rem,4vw,2.2rem); font-weight:800;
+  letter-spacing:-.025em; line-height:1.08; margin:0; }
+h2 { font-family:var(--display); font-size:.95rem; font-weight:700; margin:1.5rem 0 .5rem;
+  letter-spacing:.01em; }
+p { margin:0; }
+.eyebrow { font-family:var(--mono); font-size:.66rem; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.6rem; }
+.masthead { border-bottom:2px solid var(--ink); padding-bottom:1rem; }
+.bg { font-size:.92rem; color:var(--muted); margin-top:.7rem; }
+.bg strong { color:var(--ink); }
+.finding { display:grid; grid-template-columns:1.4rem 1fr; gap:0 .6rem; margin:.65rem 0; }
+.finding .n { font-family:var(--mono); font-size:.8rem; font-weight:600; color:var(--accent); padding-top:.1rem; }
+.finding p { font-size:.92rem; }
+.finding p strong { font-weight:600; }
+.viz { border:1px solid var(--rule); background:var(--surface); padding: .8rem 1rem .6rem; margin:.9rem 0; }
+.viz .cap { font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:.55rem; }
+.vrow { display:grid; grid-template-columns:9.5rem 1fr; gap:.6rem; align-items:center; padding:.22rem 0; }
+.vrow .lbl { font-size:.8rem; text-align:right; }
+.track { position:relative; height:1.05rem; }
+.baseline { position:absolute; top:0; bottom:0; width:2px; background:var(--ink); }
+.range { position:absolute; top:.18rem; height:.7rem; background:var(--accent-soft);
+  border:1px solid var(--accent); border-radius:2px; }
+.range.dn { background:transparent; border-color:var(--signal); }
+.vnote { font-size:.72rem; color:var(--muted); margin-top:.45rem; }
+.decisions { margin:.4rem 0 0; padding-left:1.1rem; }
+.decisions li { font-size:.9rem; margin-bottom:.3rem; }
+.decisions li strong { font-weight:600; }
+.qs { background:var(--accent-soft); border-left:3px solid var(--accent); padding:.75rem 1rem; margin-top:.9rem; }
+.qs h2 { margin:0 0 .4rem; }
+.qs ul { margin:0; padding-left:1.1rem; }
+.qs li { font-size:.88rem; color:var(--muted); margin-bottom:.25rem; }
+footer { margin-top:1.2rem; padding-top:.7rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.68rem; color:var(--muted); }
+@media print {
+  :root, :root[data-theme="dark"] {
+    --paper:#FFF; --surface:#FFF; --ink:#111; --muted:#444; --rule:#999;
+    --accent:#1F5C7A; --accent-soft:#EEF2F5; --signal:#B04A2F; --ok:#2E6B4F;
+  }
+  @page { size:letter; margin:.55in; }
+  body { font-size:9.6pt; line-height:1.38; }
+  .sheet { max-width:100%; padding:0; }
+  h1 { font-size:17pt; }
+  h2 { margin:.55rem 0 .25rem; font-size:10pt; }
+  .finding, .viz, .qs { break-inside:avoid; }
+  .viz { margin:.5rem 0; }
+  a { color:var(--ink); text-decoration:none; }
+}
+</style>
+
+<div class="sheet">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG · 7th-cycle housing methodology · one page · August 2026</span>
+    <h1>The Seventh Cycle on One Page</h1>
+    <p class="bg">
+      Every eight years the state assigns the region a housing number — last time,
+      <strong>171,685 homes</strong> — and SANDAG divides it among 19 cities. The total never
+      changes, only the split. Fair-housing law requires that homes for lower-income families be
+      steered toward neighborhoods with good schools and jobs. We built and tested an allocation
+      system that anyone can check, using only public data, to prepare for the next round.
+    </p>
+  </header>
+
+  <h2>Three things the work found</h2>
+  <div class="finding"><span class="n">1</span>
+    <p><strong>The last plan's math could not be checked — now it can be.</strong> We rebuilt
+    the 2020 allocation and matched it to within two homes per line, which required
+    reconstructing a calculation no published document describes. The one error ever found in
+    it (Navy jobs in the wrong cities) took a formal appeal to surface; an open system catches
+    that class of error before a draft goes out.</p>
+  </div>
+  <div class="finding"><span class="n">2</span>
+    <p><strong>Fair housing moved from the percentages to the totals.</strong> The 2019
+    methodology applied it to each city's income <em>mix</em>, and the state approved. The
+    state now expects it to shape <em>how many homes each city gets</em>. Under any lawful
+    next-cycle formula, high-opportunity coastal cities rise — the ranges below — regardless of
+    what else the methodology weighs.</p>
+  </div>
+  <div class="finding"><span class="n">3</span>
+    <p><strong>Safety data works — as placement, not as reduction.</strong> Our evacuation
+    model, tested by replaying every major fire since 2000, independently identified Wildcat
+    Canyon Road — where the Cedar Fire's victims died. Used as a placement factor it moves
+    roughly 7,300 homes onto safer ground at an <em>identical</em> fair-housing score. Used to
+    cut a fire-exposed city's total, it would push homes into the region's struggling
+    neighborhoods — so the software refuses to compute that, for anyone.</p>
+  </div>
+
+  <div class="viz">
+    <div class="cap">Where totals move — three of six city archetypes · | = 2020 plan · box = range across lawful next-cycle formulas</div>
+    <div class="vrow"><span class="lbl">The Metropolis</span>
+      <div class="track"><span class="baseline" style="left:88%"></span><span class="range dn" style="left:64%;width:8%"></span></div></div>
+    <div class="vrow"><span class="lbl">Coastal Enclave</span>
+      <div class="track"><span class="baseline" style="left:6%"></span><span class="range" style="left:8%;width:6%"></span></div></div>
+    <div class="vrow"><span class="lbl">Fire-Country Suburb</span>
+      <div class="track"><span class="baseline" style="left:9%"></span><span class="range" style="left:13%;width:11%"></span></div></div>
+    <p class="vnote">Scaled to each archetype's own 2020 figure (≈108,000 / ≈900 / ≈1,300). All comparisons divide the
+    6th-cycle total so they can be checked against the adopted plan; the state's new total arrives ~2027 and rescales everything.</p>
+  </div>
+
+  <h2>Four decisions ahead of the late-2027 state deadline</h2>
+  <ol class="decisions">
+    <li><strong>Talk to state housing staff informally</strong> — test the placement approach and the "more-affordable-coastal / more-market-rate-inland" option ahead of formal submission.</li>
+    <li><strong>Build the open jobs count</strong> — the last one was closed and contained the Navy error; several design options depend on a trustworthy replacement.</li>
+    <li><strong>Calibrate the evacuation model</strong> against real traffic counts and summer visitor loads — predictions logged before results, misses published.</li>
+    <li><strong>Set placeholder targets for the six income levels</strong> the next cycle requires, so trial runs can start before the state's number lands.</li>
+  </ol>
+
+  <div class="qs">
+    <h2>Questions worth asking us</h2>
+    <ul>
+      <li>Which of your evacuation assumptions, if wrong, would change the answer?</li>
+      <li>What happens to every number if the state's next total is 30% smaller?</li>
+      <li>Walk us through where your system would have caught the Navy jobs error.</li>
+      <li>What exactly would have to change in state law for fire risk to lower a city's total?</li>
+    </ul>
+  </div>
+
+  <footer>
+    Depth, in order: the ten-minute walkthrough · the staff paper "Preparing for the Seventh Cycle" ·
+    the public repository, where every number on this page can be recomputed.
+  </footer>
+</div>
