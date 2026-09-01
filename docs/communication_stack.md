@@ -18,8 +18,11 @@ is the spec; artifacts get built against it.
    corroborate each other.
 6. **Same visual identity** as the journal (palette, Archivo/Public Sans/Plex Mono), so the
    stack reads as one body of work.
-7. **"Questions worth asking us" is a first-class element** in every layer. The goal is better
-   questions, not finished arguments; we seed them explicitly.
+7. **Questions are a first-class element** in every layer — better questions, not finished
+   arguments, seeded explicitly. Two kinds, used deliberately: questions worth asking *us*
+   (audit the analysis; the one-pager's close, and every deck's presenter notes) and questions
+   worth asking *ourselves* (the agency's own agenda; the walkthrough's close, revised
+   2026-09-01). Deliverables aimed at decision-makers should end on the second kind.
 8. **Copy explains the visual — orient, point, conclude.** Every graphic gets three beats of
    copy: what you're looking at, the thing to notice in it, what it means. Visuals display the
    actual finding (the real numbers, large), never a stylized metaphor of the claim. Reading
