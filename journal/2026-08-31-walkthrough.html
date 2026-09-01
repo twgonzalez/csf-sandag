@@ -150,9 +150,11 @@ body.show-notes .notes { display:block; }
 .cover h1 { font-size:clamp(2.1rem,5.6vw,3.4rem); }
 .cover .bg { font-size:1rem; color:var(--muted); max-width:42rem; margin:.8rem 0 0; }
 .cover .bg strong { color:var(--ink); font-weight:600; }
-.cover .parts { margin:1.4rem 0 0; padding:0; list-style:none; font-family:var(--mono);
-  font-size:.78rem; color:var(--muted); line-height:2; }
-.cover .parts strong { color:var(--accent); font-weight:600; }
+.cover .parts { margin:1.4rem 0 0; padding:0; list-style:none; }
+.cover .parts li { font-size:.92rem; color:var(--ink); margin-bottom:.45rem; }
+.cover .parts li em { color:var(--muted); font-style:normal; }
+.cover .parts strong { font-family:var(--mono); font-size:.7rem; font-weight:600;
+  letter-spacing:.08em; color:var(--accent); margin-right:.6rem; text-transform:uppercase; }
 .cover .hint { margin-top:1.6rem; font-family:var(--mono); font-size:.72rem; color:var(--muted); }
 .cover .masthead { border-bottom:2px solid var(--ink); padding-bottom:1.2rem; }
 
@@ -193,20 +195,30 @@ body.show-notes .notes { display:block; }
       <span class="eyebrow">SANDAG · housing plan walkthrough · August 2026</span>
       <h1>The Seventh Cycle in Ten&nbsp;Minutes</h1>
       <p class="bg">
-        Every eight years, the state tells this region how many new homes to plan for — last
-        time, <strong>171,685</strong>. SANDAG's job is to split that number among 19 cities.
-        We rebuilt the last split, tested it against the rules coming in 2028, and found some
-        things the board should see. This is that story, in four parts.
+        Every eight years the state tells this region how many new homes to plan for — last
+        time, <strong>171,685</strong> — and SANDAG splits the number among 19 cities. The
+        rules for the next split, due in 2028, have changed. This deck is the board's early
+        look: what the new rules do to each city's number, which levers remain and what each
+        one actually does, and which decisions are still open this year. Ten minutes now, so
+        nothing in 2028 arrives as a surprise — and every figure can be recomputed from
+        public data.
       </p>
       <ul class="parts">
-        <li><strong>Part 1</strong> — We checked the last plan</li>
-        <li><strong>Part 2</strong> — The rules are changing</li>
-        <li><strong>Part 3</strong> — What the data can do</li>
-        <li><strong>Part 4</strong> — What happens next</li>
+        <li><strong>Part 1</strong>We checked the last plan — <em>its math was right, but no
+          city could verify its own number</em></li>
+        <li><strong>Part 2</strong>The rules are changing — <em>every lawful formula we
+          tested moves the numbers coastward</em></li>
+        <li><strong>Part 3</strong>What the data can do — <em>balance where homes go, their
+          safety and their size — never how many</em></li>
+        <li><strong>Part 4</strong>What happens next — <em>four decisions this year, and the
+          questions worth asking us</em></li>
       </ul>
       <p class="cover hint">→ or swipe to advance · N shows presenter notes · printing produces the handout<br>each frame cites its data, method, and code — file paths refer to the csf-sandag public repository</p>
     </div>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
+      <p>Purpose, if asked: the 2028 numbers will move whether or not the region acts — this
+      deck shows what will move them, what can still be shaped, and how every claim can be
+      checked. The cover's four lines are the whole argument; the frames are the evidence.</p>
       <p>Pacing: under a minute a frame. Every number shown was computed ahead of time by a
       public, checkable pipeline — nothing on these pages calculates anything. Cities appear as
       six types with rounded figures rather than by name; they are the same six used in the
