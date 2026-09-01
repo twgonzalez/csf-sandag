@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Seventh Cycle, in the Open</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --ink:#16232B; --muted:#5A6B74; --rule:#D2DADE;
+  --accent:#1F5C7A; --accent-soft:#E3EDF2;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+    --accent:#6FB2D2; --accent-soft:#1B333F;
+  }
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+.wrap { max-width:760px; margin:0 auto; padding:clamp(2rem,6vw,4rem) 1.4rem 3rem; }
+.eyebrow { font-family:var(--mono); font-size:.68rem; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.7rem; }
+h1 { font-family:var(--display); font-weight:800; letter-spacing:-.025em; line-height:1.06;
+  font-size:clamp(2rem,5.5vw,3rem); margin:0 0 1rem; }
+.bg { color:var(--muted); max-width:42rem; margin:0 0 2rem; }
+.bg strong { color:var(--ink); font-weight:600; }
+a.card { display:block; border:1px solid var(--rule); background:var(--surface);
+  padding:1rem 1.2rem; margin-bottom:.8rem; text-decoration:none; color:var(--ink);
+  border-radius:4px; }
+a.card:hover { border-color:var(--accent); }
+a.card.featured { border-left:4px solid var(--accent); }
+a.card .t { font-family:var(--display); font-weight:700; font-size:1.05rem; }
+a.card .d { color:var(--muted); font-size:.88rem; margin-top:.2rem; }
+footer { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:.7rem; color:var(--muted); line-height:1.8; }
+footer a { color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="eyebrow">SANDAG region · 7th-cycle housing methodology · open data, open code</span>
+  <h1>The Seventh Cycle, in the Open</h1>
+  <p class="bg">
+    Every eight years the state tells the San Diego region how many new homes to plan for, and
+    SANDAG splits the number among 19 cities. This project rebuilt the last split from public
+    documents, tested it against the rules coming in 2028, and publishes everything — the
+    data, the code, and every step between — so that <strong>any city can recompute its own
+    number</strong>. Start with the walkthrough.
+  </p>
+
+  <a class="card featured" href="journal/2026-08-31-walkthrough.html">
+    <span class="t">The Seventh Cycle in Ten Minutes</span>
+    <div class="d">The walkthrough: what the new rules do to each city's number, which levers
+    remain, and the questions worth asking — one visual per frame, every figure cited.</div>
+  </a>
+  <a class="card" href="journal/2026-08-31-one-pager.html">
+    <span class="t">The Seventh Cycle on One Page</span>
+    <div class="d">The sixty-second version. Prints to a single sheet.</div>
+  </a>
+  <a class="card" href="journal/2026-08-30-seventh-cycle-staff-paper.html">
+    <span class="t">Preparing for the Seventh Cycle</span>
+    <div class="d">The staff paper: narrative, evidence, and the decision agenda, in full.</div>
+  </a>
+  <a class="card" href="journal/2026-08-30-wildcat-canyon-validation.html">
+    <span class="t">The Wildcat Canyon Validation</span>
+    <div class="d">How the evacuation measure was tested against every major fire since 2000.</div>
+  </a>
+
+  <footer>
+    Code, data sources, and the full journal:
+    <a href="https://github.com/twgonzalez/csf-sandag">github.com/twgonzalez/csf-sandag</a><br>
+    Every number on these pages rebuilds from pinned public sources with <span style="font-family:var(--mono)">make all</span>.
+  </footer>
+</div>
+</body>
+</html>
