@@ -569,16 +569,77 @@ body.show-notes .notes { display:block; }
   </div>
 </section>
 
+<!-- ================= 7 ================= -->
+<section class="frame" id="f7">
+  <div class="inner">
+    <span class="eyebrow">Part 3 · What the data can do</span>
+    <h1>Measuring safety: fire, flood, and the way out</h1>
+    <p class="orient">
+      Balancing on safety starts with measuring it. Fire severity and flood zones come from
+      published state and federal maps. The missing piece was <strong>evacuation</strong> — so
+      we grouped neighborhoods by the escape routes they share, scored each by its worst
+      traffic pinch point (households per hour that can actually get out), and tested the
+      scores by <strong>replaying every big fire since 2000</strong>. Below: the 2003 Cedar
+      Fire replay.
+    </p>
+    <figure class="viz">
+      <svg viewBox="0 0 680 256" role="img" aria-label="Inside the replayed Cedar Fire perimeter, neighborhood traffic converges onto one road — Wildcat Canyon Road — which the model identified as the pinch point without any knowledge of the fire.">
+        <defs><marker id="ah6" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
+        <polygon points="380,44 520,32 622,82 640,160 558,218 428,210 368,140" fill="none"
+          stroke="var(--signal)" stroke-width="2" stroke-dasharray="7 5"/>
+        <text x="505" y="22" text-anchor="middle" fill="var(--signal)">the 2003 Cedar Fire's real perimeter</text>
+        <g stroke="currentColor" stroke-width="1.5">
+          <line x1="450" y1="92" x2="416" y2="142" marker-end="url(#ah6)"/>
+          <line x1="502" y1="122" x2="422" y2="148" marker-end="url(#ah6)"/>
+          <line x1="562" y1="112" x2="424" y2="146" marker-end="url(#ah6)"/>
+          <line x1="524" y1="172" x2="424" y2="154" marker-end="url(#ah6)"/>
+          <line x1="462" y1="152" x2="424" y2="151" marker-end="url(#ah6)"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="452" cy="88" r="5"/><circle cx="506" cy="120" r="5"/><circle cx="566" cy="110" r="5"/>
+          <circle cx="526" cy="174" r="5"/><circle cx="466" cy="152" r="5"/>
+        </g>
+        <line x1="410" y1="150" x2="150" y2="192" stroke="var(--signal)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="192" x2="56" y2="150" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+        <line x1="150" y1="192" x2="70" y2="226" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
+        <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the pinch point the model picked</text>
+        <text x="170" y="251" class="dim">dots = neighborhoods evacuating · the model was told nothing about the fire</text>
+      </svg>
+      <figcaption>across all replayed fires, the model's pinch points matched 63% of the time · one of three advance calls was wrong — a funnel road we underrated</figcaption>
+    </figure>
+    <p class="takeaway">The replay finds Wildcat Canyon Road — where most of that fire's
+    victims died — knowing nothing about the fire. Every neighborhood's safety is now a number
+    the formula can use. The next two frames: what it <strong>may not</strong> do with that
+    number, and what it <strong>does</strong>.</p>
+        <p class="sources"><b>SOURCES</b> · Data: OpenStreetMap road network · ACS B25044 vehicles per household · CAL FIRE FRAP fire perimeters (≥15,000 acres, 2000–) — Method: reports/evacuation_sheds.md · reports/evacuation_capacity.md — Code: metrics/sheds.py · metrics/evacuation.py</p>
+    <div class="notes"><span class="n-lbl">Presenter notes</span>
+      <p>Scale: 451 escape-route groups covering all 737 neighborhoods; every pinch point's
+      load and capacity is published. The Cedar Fire result is now a permanent automated test —
+      if a future model change stops finding Wildcat Canyon Road, the build fails.</p>
+      <p>The miss, told straight: we predicted the small coastal cities would score fine; one
+      came in second-worst in the county because of a single funnel road we underrated. The
+      peninsula city dropped as predicted, but less — its naval commuters aren't counted yet.</p>
+      <p>Version-one limits to volunteer: road capacities are federal defaults, not yet tuned
+      to local traffic counts; the model sends everyone at once; each neighborhood takes one
+      best route. Rankings are the meaningful output — the clock times are not predictions.</p>
+      <p>The larger point to land: the law fixes how many homes; the region still decides
+      where they go — and where determines the load on roads like this one when the fire
+      comes. Placement is the life-safety decision the region still owns, and it can now be
+      made with measurement.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= 6 ================= -->
 <section class="frame" id="f6">
   <div class="inner">
     <span class="eyebrow">Part 3 · What the data can do</span>
-    <h1>Why fire risk can't lower a city's number</h1>
+    <h1>What safety may not do: lower a city's number</h1>
     <p class="orient">
       Follow the homes. The regional total never changes, so a cut in one city must reappear
       in other cities — and homes pushed off hazardous land go where the
-      <strong>safest land</strong> is. We measured where that is: away from severe fire zones
-      and floodways, with the road capacity to evacuate.
+      <strong>safest land</strong> is. We measured where that is, using the fire, flood, and
+      evacuation scores from the last frame.
     </p>
     <figure class="viz">
       <svg viewBox="0 0 720 236" role="img" aria-label="Three steps: cut a fire-zone city's number; the total is fixed so the same homes reappear in other cities; they land mostly in struggling neighborhoods, the concentration fair-housing law forbids.">
@@ -635,66 +696,15 @@ body.show-notes .notes { display:block; }
   </div>
 </section>
 
-<!-- ================= 7 ================= -->
-<section class="frame" id="f7">
-  <div class="inner">
-    <span class="eyebrow">Part 3 · What the data can do</span>
-    <h1>So we measured evacuation — and tested it on real fires</h1>
-    <p class="orient">
-      We grouped neighborhoods by the escape routes they share, and scored each group by its
-      worst traffic pinch point — how many households per hour can actually get out. Then the
-      test: <strong>replay every big fire since 2000</strong> and see if the model finds the
-      real trouble spots. Below is the 2003 Cedar Fire replay.
-    </p>
-    <figure class="viz">
-      <svg viewBox="0 0 680 256" role="img" aria-label="Inside the replayed Cedar Fire perimeter, neighborhood traffic converges onto one road — Wildcat Canyon Road — which the model identified as the pinch point without any knowledge of the fire.">
-        <defs><marker id="ah6" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="currentColor"/></marker></defs>
-        <polygon points="380,44 520,32 622,82 640,160 558,218 428,210 368,140" fill="none"
-          stroke="var(--signal)" stroke-width="2" stroke-dasharray="7 5"/>
-        <text x="505" y="22" text-anchor="middle" fill="var(--signal)">the 2003 Cedar Fire's real perimeter</text>
-        <g stroke="currentColor" stroke-width="1.5">
-          <line x1="450" y1="92" x2="416" y2="142" marker-end="url(#ah6)"/>
-          <line x1="502" y1="122" x2="422" y2="148" marker-end="url(#ah6)"/>
-          <line x1="562" y1="112" x2="424" y2="146" marker-end="url(#ah6)"/>
-          <line x1="524" y1="172" x2="424" y2="154" marker-end="url(#ah6)"/>
-          <line x1="462" y1="152" x2="424" y2="151" marker-end="url(#ah6)"/>
-        </g>
-        <g fill="currentColor">
-          <circle cx="452" cy="88" r="5"/><circle cx="506" cy="120" r="5"/><circle cx="566" cy="110" r="5"/>
-          <circle cx="526" cy="174" r="5"/><circle cx="466" cy="152" r="5"/>
-        </g>
-        <line x1="410" y1="150" x2="150" y2="192" stroke="var(--signal)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="150" y1="192" x2="56" y2="150" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-        <line x1="150" y1="192" x2="70" y2="226" stroke="currentColor" stroke-width="1.5" opacity=".3"/>
-        <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the pinch point the model picked</text>
-        <text x="170" y="251" class="dim">dots = neighborhoods evacuating · the model was told nothing about the fire</text>
-      </svg>
-      <figcaption>across all replayed fires, the model's pinch points matched 63% of the time · one of three advance calls was wrong — a funnel road we underrated</figcaption>
-    </figure>
-    <p class="takeaway">The model picked Wildcat Canyon Road — the road where most of the Cedar
-    Fire's victims died. It was never told about the fire. This data is real enough to use.</p>
-        <p class="sources"><b>SOURCES</b> · Data: OpenStreetMap road network · ACS B25044 vehicles per household · CAL FIRE FRAP fire perimeters (≥15,000 acres, 2000–) — Method: reports/evacuation_sheds.md · reports/evacuation_capacity.md — Code: metrics/sheds.py · metrics/evacuation.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Scale: 451 escape-route groups covering all 737 neighborhoods; every pinch point's
-      load and capacity is published. The Cedar Fire result is now a permanent automated test —
-      if a future model change stops finding Wildcat Canyon Road, the build fails.</p>
-      <p>The miss, told straight: we predicted the small coastal cities would score fine; one
-      came in second-worst in the county because of a single funnel road we underrated. The
-      peninsula city dropped as predicted, but less — its naval commuters aren't counted yet.</p>
-      <p>Version-one limits to volunteer: road capacities are federal defaults, not yet tuned
-      to local traffic counts; the model sends everyone at once; each neighborhood takes one
-      best route. Rankings are the meaningful output — the clock times are not predictions.</p>
-    </div>
-  </div>
-</section>
-
 <!-- ================= 8 ================= -->
 <section class="frame" id="f8">
   <div class="inner">
     <span class="eyebrow">Part 3 · What the data can do</span>
-    <h1>Safety data can balance the 2028 numbers</h1>
+    <h1>What safety does: balance the 2028 numbers</h1>
     <p class="orient">
-      Both versions below follow the 2028 fairness rules. The <strong>center line</strong> is
+      Safety never touches a city's standing — it chooses among neighborhoods of
+      <strong>equal fairness standing</strong>, and the totals shift as a result. Both
+      versions below follow the 2028 fairness rules. The <strong>center line</strong> is
       the fairness-scorecard-alone version. Each bar shows what changes when safety data also
       gets a vote: bars pointing <strong>left</strong> give back part of their increase; bars
       pointing <strong>right</strong> take on a little more.
