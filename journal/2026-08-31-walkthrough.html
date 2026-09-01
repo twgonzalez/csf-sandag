@@ -133,6 +133,11 @@ svg .dim { fill:var(--muted); }
 .pointer { margin-top:1.4rem; padding-top:.8rem; border-top:2px solid var(--ink);
   font-family:var(--mono); font-size:.7rem; color:var(--muted); line-height:1.7; }
 
+/* per-frame source footnotes */
+.sources { margin-top:1rem; max-width:48rem; font-family:var(--mono); font-size:.62rem;
+  color:var(--muted); line-height:1.7; }
+.sources b { font-weight:600; color:var(--muted); letter-spacing:.08em; }
+
 /* presenter notes */
 .notes { display:none; margin-top:1.4rem; border-top:1px dashed var(--rule); padding-top:.7rem;
   max-width:48rem; }
@@ -199,7 +204,7 @@ body.show-notes .notes { display:block; }
         <li><strong>Part 3</strong> — What the data can do</li>
         <li><strong>Part 4</strong> — What happens next</li>
       </ul>
-      <p class="cover hint">→ or swipe to advance · N shows presenter notes · printing produces the handout</p>
+      <p class="cover hint">→ or swipe to advance · N shows presenter notes · printing produces the handout<br>each frame cites its data, method, and code — file paths refer to the csf-sandag public repository</p>
     </div>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Pacing: under a minute a frame. Every number shown was computed ahead of time by a
@@ -243,6 +248,7 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">51 of the 76 lines match exactly; the other 25 differ by
     one or two homes — rounding. The 2020 plan's math was right, and rebuilding it is how we
     know.</p>
+        <p class="sources"><b>SOURCES</b> · Data: SANDAG Final 6th Cycle RHNA Plan (2020), Table 4.7 · SANDAG open-data portal · methodology tables transcribed in data/reference/ — Method: reports/sixth_cycle_replication.md — Code: allocate/sixth_cycle.py · report/replication.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Open with credit: this is a compliment to the team that built the 6th cycle. The point
       of rebuilding was not to find mistakes — it was to establish a trustworthy starting line
@@ -283,6 +289,7 @@ body.show-notes .notes { display:block; }
     than 2020's. A number nobody can check invites an appeal or a lawsuit; a number anyone can
     check settles the argument. Every number in the rest of this deck is the second kind —
     public data, published math, open to the state and the public alike.</p>
+        <p class="sources"><b>SOURCES</b> · Data: 6th Cycle Methodology (2019), Tables 2–4 · Final Plan (2020), p. 14 (the correction) · data/reference/sixth_cycle_jobs.csv — Method: reports/sixth_cycle_replication.md · docs/status.md — Code: allocate/sixth_cycle.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The hidden step, if asked: the published income percentages don't add up to 100%, and
       fixing that the obvious way leaves the region about 640 affordable homes short of state
@@ -360,6 +367,7 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">In 2019, fairness came second. It could change each city's recipe — but
     by then the totals were already set. The state approved this.</p>
+        <p class="sources"><b>SOURCES</b> · Data: 6th Cycle Methodology (2019), pp. 6–12, income-mix adjustment and opportunity-map review — Method: docs/affh_in_the_6th_cycle.md — Code: allocate/equity.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Give the 2019 team full credit here. Their adopted document reviewed the state's
       neighborhood scorecard by name and showed that the cities with the best schools and jobs
@@ -435,6 +443,7 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">One move — fairness from step two to step one — resizes every bar.
     The next frame shows that run on the real numbers.</p>
+        <p class="sources"><b>SOURCES</b> · Data: CTCAC/HCD Opportunity Map, 2026 edition (replicated 638/638) · Gov. Code §65584(d)(5) · HCD AFFH guidance (2021) — Method: reports/opportunity_map.md — Code: metrics/opportunity.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>The measuring stick behind "good schools and jobs" is the state's official
       neighborhood scorecard — the CTCAC/HCD "opportunity map," updated every year. It rates
@@ -484,6 +493,7 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">Look at the top four rows: every box sits to the right of its tick.
     <strong>None of the five formulas tested lowers them.</strong> The employment-weighted
     ones are the next frame.</p>
+        <p class="sources"><b>SOURCES</b> · Data: Opportunity Map 2026 · 2020 Census P.L. 94-171 units · corrected LODES 2023 jobs · capacity layers — Method: reports/delta_vs_sixth_cycle.md · reports/jobs_runs.md — Code: allocate/model.py · params/ (all five formulas)</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Each box spans five runs: the fairness scorecard alone; fairness plus safety data;
       jobs-weighted siting; the "composition" structure (fairness places lower-income homes,
@@ -535,6 +545,7 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">Job-rich coastal cities <strong>rise</strong> under employment
     weighting too; only a job-light one falls. Every lawful combination tested moves coastal
     numbers up, so the working question for 2028 is how the increases are balanced.</p>
+        <p class="sources"><b>SOURCES</b> · Data: LODES8 2023 with corrections (SDMAC MEIR 2024 Exh. 6 · Census 2020 P.L. 94-171 · ACS B08604 · CDE School Directory) — Method: reports/jobs_adjustments.md · reports/jobs_runs.md · predictions: docs/predictions_jobs_runs.md — Code: metrics/adjustments/ · params/composition_jobs.toml</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Why it backfires, in one breath: sending market-rate homes to "where the jobs are"
       sends them to the coast, because our coastal cities hold more jobs per existing home
@@ -585,6 +596,7 @@ body.show-notes .notes { display:block; }
     ones fair-housing law directs lower-income homes <strong>away from</strong>. The total is
     fixed, so cutting a fire-zone city's number sends those homes exactly where the law says
     they must not concentrate.</p>
+        <p class="sources"><b>SOURCES</b> · Data: CAL FIRE FHSZ (SRA 2024 / LRA 2025) · FEMA NFHL floodway · CPAD 2026a · evacuation sheds · Opportunity Map 2026 — Method: reports/capacity_map.md — Code: metrics/capacity.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>How measured: we crossed the state's neighborhood scorecard with fire severity zones,
       floodways, protected land, and our evacuation measure, for every neighborhood in the
@@ -640,6 +652,7 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">The model picked Wildcat Canyon Road — the road where most of the Cedar
     Fire's victims died. It was never told about the fire. This data is real enough to use.</p>
+        <p class="sources"><b>SOURCES</b> · Data: OpenStreetMap road network · ACS B25044 vehicles per household · CAL FIRE FRAP fire perimeters (≥15,000 acres, 2000–) — Method: reports/evacuation_sheds.md · reports/evacuation_capacity.md — Code: metrics/sheds.py · metrics/evacuation.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Scale: 451 escape-route groups covering all 737 neighborhoods; every pinch point's
       load and capacity is published. The Cedar Fire result is now a permanent automated test —
@@ -691,6 +704,7 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">Fire country gives back part of its increase; safe street grids absorb
     it; the fairness score doesn't move. Safety — and the law's other factors, like sewer
     capacity and flood risk — can balance the numbers this way, within the fairness rules.</p>
+        <p class="sources"><b>SOURCES</b> · Data: as the two prior frames — Method: reports/delta_vs_sixth_cycle.md (three-column delta) — Code: params/capacity_within_bins.toml · allocate/model.py (fairness gate: enforce_affh_gate)</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Say the boundary out loud: this is balancing <em>within</em> the fairness rules, not
       escaping them. Fire-heavy communities keep an increase — they give back roughly a fifth
@@ -734,6 +748,7 @@ body.show-notes .notes { display:block; }
     rezoning that follows is written in <strong>units per acre</strong>, which favors small
     ones. What cities keep is narrower: bedroom standards on the subsidized share, incentives
     for family-sized homes, and measuring what actually gets built.</p>
+        <p class="sources"><b>SOURCES</b> · Data: ACS 2023 5-year, Tables B25041 (bedrooms) and B25001 (units) — Method: reports/bedroom_lens.md · predictions: docs/predictions_bedroom_lens.md — Code: report/bedroom_lens.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Conversion conventions, if asked: ACS bedroom counts, a studio counted as one sleeping
       room and "five or more" as five — both choices shrink the measured gap, so 32,469 is the
@@ -786,6 +801,7 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">An open plan turns appeals into arithmetic. Errors get caught before
     the draft goes out, not four months after.</p>
+        <p class="sources"><b>SOURCES</b> · Method: every input pinned and checksummed in config.py and data/raw/manifest.json · one command rebuilds everything (Makefile) — Code: the whole repository; start at README.md</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>What "open" means concretely: every data file is pinned and checksummed; every factor
       names its public source or is refused at load; forbidden factors (permit caps, past
@@ -834,6 +850,7 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">The order matters: the state conversation shapes everything else, and
     the jobs count unlocks the most options. Both can start now.</p>
+        <p class="sources"><b>SOURCES</b> · Schedule: Gov. Code §65584.04(i) (60-day review, 45-day revision) — Method: docs/plan.md (phases and decision gates) · docs/status.md (open decisions)</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Dependencies, if asked: the informal conversation is the only free iteration the
       statutory schedule allows, so it comes first. The jobs count gates the
@@ -865,6 +882,7 @@ body.show-notes .notes { display:block; }
       Shorter: the one-pager. Deeper: the staff paper, then the public repository — where every
       number in this deck can be recomputed.
     </p>
+        <p class="sources"><b>SOURCES</b> · Everything cited on these frames is reproducible from the repository: make all rebuilds every number from the pinned public sources.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Close on the standard, not a summary: a city should be able to recompute its own
       number in an afternoon, for free. Every number in this deck already meets that standard.
