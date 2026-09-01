@@ -138,13 +138,19 @@ svg .dim { fill:var(--muted); }
   color:var(--muted); line-height:1.7; }
 .sources b { font-weight:600; color:var(--muted); letter-spacing:.08em; }
 
-/* presenter notes */
-.notes { display:none; margin-top:1.4rem; border-top:1px dashed var(--rule); padding-top:.7rem;
-  max-width:48rem; }
-body.show-notes .notes { display:block; }
-.notes .n-lbl { font-family:var(--mono); font-size:.62rem; font-weight:600; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.3rem; }
-.notes p { margin:0 0 .4rem; font-size:.85rem; color:var(--muted); }
+/* navigation */
+.navbtn { position:fixed; top:50%; transform:translateY(-50%); z-index:5;
+  background:none; border:none; cursor:pointer; padding:.6rem .5rem;
+  color:var(--muted); line-height:1; }
+.navbtn svg { width:1.6rem; height:2.6rem; display:block; }
+.navbtn:hover { color:var(--accent); }
+.navbtn[disabled] { opacity:.25; cursor:default; }
+.navbtn.prev { left:.2rem; } .navbtn.next { right:.2rem; }
+.dots { display:flex; gap:.45rem; align-items:center; }
+.dots button { width:.55rem; height:.55rem; border-radius:50%; border:none; cursor:pointer;
+  background:var(--rule); padding:0; }
+.dots button:hover { background:var(--muted); }
+.dots button.on { background:var(--accent); }
 
 /* cover */
 .cover h1 { font-size:clamp(2.1rem,5.6vw,3.4rem); }
@@ -182,7 +188,7 @@ body.show-notes .notes { display:block; }
   .orient { margin-bottom:.5rem; }
   .takeaway { margin-top:.6rem; }
   .viz { padding:.6rem .8rem .5rem; }
-  .notes { display:block; margin-top:.6rem; padding-top:.45rem; }
+  .navbtn, .dots { display:none; }
   .cover .hint { display:none; }
   a { color:var(--ink); text-decoration:none; }
 }
@@ -213,16 +219,7 @@ body.show-notes .notes { display:block; }
         <li><strong>Part 4</strong>What happens next — <em>four decisions this year, and the
           questions we should be asking ourselves</em></li>
       </ul>
-      <p class="cover hint">→ or swipe to advance · N shows presenter notes · printing produces the handout<br>each frame cites its data, method, and code — file paths refer to the csf-sandag public repository</p>
-    </div>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Purpose, if asked: the 2028 numbers will move whether or not the region acts — this
-      deck shows what will move them, what can still be shaped, and how every claim can be
-      checked. The cover's four lines are the whole argument; the frames are the evidence.</p>
-      <p>Pacing: under a minute a frame. Every number shown was computed ahead of time by a
-      public, checkable pipeline — nothing on these pages calculates anything. Cities appear as
-      six types with rounded figures rather than by name; they are the same six used in the
-      one-pager and the staff paper, so the documents back each other up.</p>
+      <p class="cover hint">use the arrows at the screen edges, the dots below, a swipe, or ← → · printing produces the handout<br>each frame cites its data, method, and code — file paths refer to the csf-sandag public repository</p>
     </div>
   </div>
 </section>
@@ -261,13 +258,6 @@ body.show-notes .notes { display:block; }
     one or two homes — rounding. The 2020 plan's math was right, and rebuilding it is how we
     know.</p>
         <p class="sources"><b>SOURCES</b> · Data: SANDAG Final 6th Cycle RHNA Plan (2020), Table 4.7 · SANDAG open-data portal · methodology tables transcribed in data/reference/ — Method: reports/sixth_cycle_replication.md — Code: allocate/sixth_cycle.py · report/replication.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Open with credit: this is a compliment to the team that built the 6th cycle. The point
-      of rebuilding was not to find mistakes — it was to establish a trustworthy starting line
-      before testing anything new. Everything later in this deck stands on this frame.</p>
-      <p>"Within 2 homes" is rounding, nothing more. The plan reconciles exactly at the region
-      level.</p>
-    </div>
   </div>
 </section>
 
@@ -302,21 +292,6 @@ body.show-notes .notes { display:block; }
     check settles the argument. Every number in the rest of this deck is the second kind —
     public data, published math, open to the state and the public alike.</p>
         <p class="sources"><b>SOURCES</b> · Data: 6th Cycle Methodology (2019), Tables 2–4 · Final Plan (2020), p. 14 (the correction) · data/reference/sixth_cycle_jobs.csv — Method: reports/sixth_cycle_replication.md · docs/status.md — Code: allocate/sixth_cycle.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>The hidden step, if asked: the published income percentages don't add up to 100%, and
-      fixing that the obvious way leaves the region about 640 affordable homes short of state
-      totals. An unwritten rebalancing spreads the correction across every city; the biggest
-      city absorbs the most — roughly 990 homes down at the top income level, 850 up at the
-      lower ones. Every adopted number is correct. The step just isn't written anywhere.</p>
-      <p>This is not a criticism of the 2019 team, who worked with 2019's tools and deadlines.
-      It is the biggest procedural risk going into the 7th cycle: an appeal a city can't
-      evaluate is an appeal waiting to become a lawsuit — and Part 2 will show the 2028
-      allocations shifting hard enough that appeals are likely.</p>
-      <p>The point to land before advancing: this frame is not a complaint, it's the setup.
-      Everything from here on was produced with open data and published code — the transparency
-      the state and the public will be able to verify for themselves. Frame nine proposes
-      making that the official standard.</p>
-    </div>
   </div>
 </section>
 
@@ -380,17 +355,6 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">In 2019, fairness came second. It could change each city's recipe — but
     by then the totals were already set. The state approved this.</p>
         <p class="sources"><b>SOURCES</b> · Data: 6th Cycle Methodology (2019), pp. 6–12, income-mix adjustment and opportunity-map review — Method: docs/affh_in_the_6th_cycle.md — Code: allocate/equity.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Give the 2019 team full credit here. Their adopted document reviewed the state's
-      neighborhood scorecard by name and showed that the cities with the best schools and jobs
-      received the highest affordable <em>percentages</em>. The state approved without changes —
-      weeks after the fairness requirement entered the law, before the state had written any
-      guidance on how to meet it.</p>
-      <p>The bars are schematic, but the pattern is the real one: the best-schools beach cities
-      had few or no stations, so they ended up with small totals <em>and</em> the largest
-      affordable percentages at the same time. One line to keep handy: fair housing shaped the
-      percentages; stations and jobs shaped the totals.</p>
-    </div>
   </div>
 </section>
 
@@ -456,15 +420,6 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">One move — fairness from step two to step one — resizes every bar.
     The next frame shows that run on the real numbers.</p>
         <p class="sources"><b>SOURCES</b> · Data: CTCAC/HCD Opportunity Map, 2026 edition (replicated 638/638) · Gov. Code §65584(d)(5) · HCD AFFH guidance (2021) — Method: reports/opportunity_map.md — Code: metrics/opportunity.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>The measuring stick behind "good schools and jobs" is the state's official
-      neighborhood scorecard — the CTCAC/HCD "opportunity map," updated every year. It rates
-      every neighborhood on school quality, incomes, and environment. Before relying on it, we
-      rebuilt its published scores and matched all 638 complete neighborhoods exactly.</p>
-      <p>The guidance arrived in 2021, after our last plan was approved. The Bay Area's most
-      recent methodology was steered toward using this scorecard to help set city totals
-      directly. That is the bar the 2028 plan will be reviewed against.</p>
-    </div>
   </div>
 </section>
 
@@ -506,24 +461,6 @@ body.show-notes .notes { display:block; }
     <strong>None of the five formulas tested lowers them.</strong> The employment-weighted
     ones are the next frame.</p>
         <p class="sources"><b>SOURCES</b> · Data: Opportunity Map 2026 · 2020 Census P.L. 94-171 units · corrected LODES 2023 jobs · capacity layers — Method: reports/delta_vs_sixth_cycle.md · reports/jobs_runs.md — Code: allocate/model.py · params/ (all five formulas)</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Each box spans five runs: the fairness scorecard alone; fairness plus safety data;
-      jobs-weighted siting; the "composition" structure (fairness places lower-income homes,
-      job locations place the rest); and composition plus safety. Adding employment — the
-      factor most certain to appear in any real 2028 formula — widened the boxes upward for
-      the coast and pulled the big city part-way back toward its 2020 figure. We used the 2020
-      total of 171,685 on purpose, so every result compares to numbers people already know;
-      the state's new total arrives around 2027 and rescales everything proportionally.</p>
-      <p>Why the big city falls: it loses the bonus the 2020 formula gave its train stations —
-      not because the fairness rules disfavor it. Why the working-class suburb falls: the
-      fairness rules stop steering affordable homes toward it. Its mix shifts toward
-      market-rate even as its total drops. Figures are rounded and illustrative; the direction
-      and rough size are the point, not the digits.</p>
-      <p>Precision on "tested": five formulas is still not every design the law allows, but
-      the set covers the factor families any real 2028 methodology would draw from — fairness,
-      safety, employment, and their combinations. The employment results are the next
-      frame.</p>
-    </div>
   </div>
 </section>
 
@@ -558,26 +495,6 @@ body.show-notes .notes { display:block; }
     weighting too; only a job-light one falls. Every lawful combination tested moves coastal
     numbers up, so the working question for 2028 is how the increases are balanced.</p>
         <p class="sources"><b>SOURCES</b> · Data: LODES8 2023 with corrections (SDMAC MEIR 2024 Exh. 6 · Census 2020 P.L. 94-171 · ACS B08604 · CDE School Directory) — Method: reports/jobs_adjustments.md · reports/jobs_runs.md · predictions: docs/predictions_jobs_runs.md — Code: metrics/adjustments/ · params/composition_jobs.toml</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Why it backfires, in one breath: sending market-rate homes to "where the jobs are"
-      sends them to the coast, because our coastal cities hold more jobs per existing home
-      than the county average — the small high-resource beach cities sit at 1.05–1.27 times
-      their housing weight, and the military-heavy coastal city at 2.8 (its base jobs are now
-      correctly counted). Only one mid-size coastal city is genuinely job-light, and it is the
-      only one this structure lowers.</p>
-      <p>For the record: the expected results were written down before the runs and scored
-      after (docs/predictions_jobs_runs.md); the full tables are in reports/jobs_runs.md.</p>
-      <p>If a board member raises the economist's objection — "coastal land is close to fixed;
-      supply there barely responds; these numbers cannot physically be absorbed" — give the
-      honest boundary: these are planning obligations (what must be zoned for), not
-      construction forecasts, and state law expressly excludes build-out and stable-population
-      arguments from allocation factors. The
-      absorption question is real economics, but its proper address is the state's regional
-      total and the state's rules, not the regional split. What the split CAN do about
-      physical reality is exactly Part 3: place the obligation on the safest, most absorbable
-      ground — which is why the safety data matters more, not less, when every formula points
-      coastward.</p>
-    </div>
   </div>
 </section>
 
@@ -626,27 +543,6 @@ body.show-notes .notes { display:block; }
     the formula can use. The next two frames: what it <strong>may not</strong> do with that
     number, and what it <strong>does</strong>.</p>
         <p class="sources"><b>SOURCES</b> · Data: OpenStreetMap road network · ACS B25044 vehicles per household · CAL FIRE FRAP fire perimeters (≥15,000 acres, 2000–) — Method: reports/evacuation_sheds.md · reports/evacuation_capacity.md — Code: metrics/sheds.py · metrics/evacuation.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>If asked who drew the shed boundaries: nobody. They fall out of the road network the
-      way watersheds fall out of terrain — change the roads and the sheds change; no analyst
-      and no city line is involved. And because sheds are built from the same census tracts
-      the fairness map rates, safety and fairness are measured on identical units — which is
-      what lets the formula choose safer ground among neighborhoods of equal fairness
-      standing, two frames ahead.</p>
-      <p>Scale: 451 escape-route groups covering all 737 neighborhoods; every pinch point's
-      load and capacity is published. The Cedar Fire result is now a permanent automated test —
-      if a future model change stops finding Wildcat Canyon Road, the build fails.</p>
-      <p>The miss, told straight: we predicted the small coastal cities would score fine; one
-      came in second-worst in the county because of a single funnel road we underrated. The
-      peninsula city dropped as predicted, but less — its naval commuters aren't counted yet.</p>
-      <p>Version-one limits to volunteer: road capacities are federal defaults, not yet tuned
-      to local traffic counts; the model sends everyone at once; each neighborhood takes one
-      best route. Rankings are the meaningful output — the clock times are not predictions.</p>
-      <p>The larger point to land: the law fixes how many homes; the region still decides
-      where they go — and where determines the load on roads like this one when the fire
-      comes. Placement is the life-safety decision the region still owns, and it can now be
-      made with measurement.</p>
-    </div>
   </div>
 </section>
 
@@ -700,20 +596,6 @@ body.show-notes .notes { display:block; }
     law forbids. So the formula may never aim safety <strong>at a city</strong>. What it may
     aim at instead is the next frame.</p>
         <p class="sources"><b>SOURCES</b> · Data: CAL FIRE FHSZ (SRA 2024 / LRA 2025) · FEMA NFHL floodway · CPAD 2026a · evacuation sheds · Opportunity Map 2026 — Method: reports/capacity_map.md — Code: metrics/capacity.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>How measured: we crossed the state's neighborhood scorecard with fire severity zones,
-      floodways, protected land, and our evacuation measure, for every neighborhood in the
-      county. Adding evacuation made the pattern stronger, not weaker — the overlap was 2.7×
-      on land and hazard alone, 3.3× once evacuation capacity entered. Safety and opportunity
-      point in opposite directions here.</p>
-      <p>Precision if pressed: the law does not forbid housing in struggling neighborhoods —
-      it directs the <em>lower-income</em> homes toward high-scoring ones. Market-rate homes
-      can and do go to the safe grids; that is exactly where the balancing frame's absorption
-      lands. The collision is specifically between where evacuation capacity is best and
-      where the lower-income homes must go.</p>
-      <p>What stays legal: safety can decide <em>where within and among cities of equal
-      fairness standing</em> homes go. It cannot decide how many a city gets.</p>
-    </div>
   </div>
 </section>
 
@@ -760,22 +642,6 @@ body.show-notes .notes { display:block; }
     fairness score: aim at a city and it breaks; choose ground and it holds at 99.5%,
     identical.</p>
         <p class="sources"><b>SOURCES</b> · Data: as the two prior frames — Method: reports/delta_vs_sixth_cycle.md (three-column delta) — Code: params/capacity_within_bins.toml · allocate/model.py (fairness gate: enforce_affh_gate)</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>The clean test for a skeptical questioner, in two parts: what did the formula aim at
-      (a neighborhood's ground, or a city's total?), and what happened to the fairness score
-      (identical, or broken?). These runs aim only at ground and tie the score to four decimal
-      places. Say the boundary out loud: this is balancing <em>within</em> the fairness rules,
-      not escaping them. Fire-heavy communities keep an increase — they give back roughly a fifth
-      to a half of it. Nothing shown here scores below the fairness-only version; the two
-      versions tie on the fairness test to four decimal places.</p>
-      <p>The other statutory factors — sewer and water capacity, floodways, sea-level rise —
-      plug into the same slot: they help choose where, never how many. Sea-level rise needs a
-      board decision on which scenario to use; sewer data is specified but not yet built.</p>
-      <p>If asked about lowering coastal headline totals: we tested the one legal structure
-      sometimes suggested for it — the jobs frame earlier in this part. It raises job-rich
-      coastal totals; only a genuinely job-light coastal city falls. On current data it is not
-      a coastal relief valve.</p>
-    </div>
   </div>
 </section>
 
@@ -807,32 +673,6 @@ body.show-notes .notes { display:block; }
     ones. What cities keep is narrower: bedroom standards on the subsidized share, incentives
     for family-sized homes, and measuring what actually gets built.</p>
         <p class="sources"><b>SOURCES</b> · Data: ACS 2023 5-year, Tables B25041 (bedrooms) and B25001 (units) — Method: reports/bedroom_lens.md · predictions: docs/predictions_bedroom_lens.md — Code: report/bedroom_lens.py</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Conversion conventions, if asked: ACS bedroom counts, a studio counted as one sleeping
-      room and "five or more" as five — both choices shrink the measured gap, so 32,469 is the
-      conservative figure. The gap barely moves across the five formula runs (28,000–37,000
-      across the sensitivity band), because it lives in the unit-counting rule, not in any
-      allocation choice.</p>
-      <p>Two measured results worth volunteering: the family-size premium of high-scoring
-      neighborhoods is thinner than assumed (2.79 bedrooms per unit vs 2.62 countywide, about
-      7%), and two of the five high-scoring coastal cities already average county-level or
-      smaller homes (2.61 and 2.59). The small-unit tilt at the coast is not a projection; it
-      is underway. Both figures ran against written-down expectations and one of them
-      surprised us — the record is in reports/bedroom_lens.md.</p>
-      <p>Be straight about the limits if pressed, because the obvious objection is right:
-      zoning is written in units per acre, not bedrooms per acre, and the rezonings the
-      state's numbers force default to densities that favor small units. A hard bedroom
-      mandate on market-rate projects is weaker than it looks — density-bonus law lets
-      builders waive standards that make a project infeasible, streamlining laws bypass local
-      discretion, and the state reviews cost-adding requirements as constraints to remove. A
-      mandate that stops projects delivers no bedrooms at all.</p>
-      <p>What survives: requiring the subsidized share of a project to match the market
-      units' bedroom mix (standard inclusionary practice); incentives — extra density or
-      lower fees for family-sized homes — which waivers do not reach; family-need factors
-      such as overcrowding, which are on the statute's own factor list for allocation; and a
-      bedroom ledger published beside the unit ledger, which nothing can waive. Narrow tools,
-      but real ones — and measurement is the precondition for all the rest.</p>
-    </div>
   </div>
 </section>
 
@@ -881,20 +721,6 @@ body.show-notes .notes { display:block; }
     answered with data instead of asserted. That is how the questions the mandate silenced
     become askable again.</p>
     <p class="sources"><b>SOURCES</b> · The banned factors: Gov. Code §65584.04(g) (permit caps, prior underproduction, "stable population") — The 2020 formula's inputs: 6th Cycle Methodology (2019), Tables 1–4; open-data inventory in the staff paper — This project's constraints: docs/plan.md</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Say the history without grievance — the mandates are a rational response to decades
-      of unverifiable capacity claims, and this region benefits from housing getting built.
-      The point is narrower and stronger: the law banned what it could not verify. Verifiable
-      measurement is therefore not a way around the mandate; it is the one path back to being
-      heard on capacity — in the informal state conversation first, and in public review
-      after.</p>
-      <p>Each word of the footing is already demonstrated, not promised: transparent (every
-      frame's sources; the replication in Part 1), objective (sheds no one drew; predictions
-      written down before runs and scored, misses published), capacity-based (fire, flood,
-      evacuation, and the bedroom ledger, all measured on the fairness map's own
-      neighborhoods). If this framing holds, the seventh cycle is not the region arguing with
-      the state — it is the region answering the question the state gave up asking.</p>
-    </div>
   </div>
 </section>
 
@@ -922,14 +748,6 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">An open plan turns appeals into arithmetic. Errors get caught before
     the draft goes out, not four months after.</p>
         <p class="sources"><b>SOURCES</b> · Method: every input pinned and checksummed in config.py and data/raw/manifest.json · one command rebuilds everything (Makefile) — Code: the whole repository; start at README.md</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>What "open" means concretely: every data file is pinned and checksummed; every factor
-      names its public source or is refused at load; forbidden factors (permit caps, past
-      underproduction, "stable population" arguments) are refused by the software with the law
-      cited. Same inputs, same outputs, byte for byte.</p>
-      <p>This recommendation stands no matter which factors the board ultimately picks. It is
-      the cheapest insurance available against the 7th cycle's biggest procedural risk.</p>
-    </div>
   </div>
 </section>
 
@@ -971,14 +789,6 @@ body.show-notes .notes { display:block; }
     <p class="takeaway">The order matters: the state conversation shapes everything else, and
     the jobs count unlocks the most options. Both can start now.</p>
         <p class="sources"><b>SOURCES</b> · Schedule: Gov. Code §65584.04(i) (60-day review, 45-day revision) — Method: docs/plan.md (phases and decision gates) · docs/status.md (open decisions)</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Dependencies, if asked: the informal conversation is the only free iteration the
-      statutory schedule allows, so it comes first. The jobs count gates the
-      affordable-coastal / market-rate-inland structure and narrows every city's range.
-      Calibration keeps the evacuation work honest before it carries more weight. The income
-      placeholders cover the six levels the next cycle requires, so trial runs start before
-      the state's new total arrives (~2027), not after.</p>
-    </div>
   </div>
 </section>
 
@@ -1003,32 +813,34 @@ body.show-notes .notes { display:block; }
       number in this deck can be recomputed.
     </p>
         <p class="sources"><b>SOURCES</b> · Everything cited on these frames is reproducible from the repository: make all rebuilds every number from the pinned public sources.</p>
-    <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Close on ownership: these questions belong to the agency, and the data to answer them
-      now exists — a hard question becomes a computer run, and the run becomes a published
-      answer. Each maps to a part of the deck: the coastward shift (Part 2), the composition
-      test (the jobs frame), the safety dial and the bedroom ledger (Part 3), and the
-      verifiability standard (Part 4).</p>
-      <p>If anyone wants to press-test the analysis itself instead, invite it: which
-      evacuation assumptions, if wrong, would change the answer; what happens if the state's
-      next total is 30% smaller; where the system would have caught the Navy jobs error; what
-      would have to change in state law for fire risk to lower a total. Every one of those is
-      a run we can do and publish.</p>
-    </div>
   </div>
 </section>
 
+<button class="navbtn prev" id="prevbtn" aria-label="Previous frame"><svg viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M17 4 L7 20 L17 36"/></svg></button>
+<button class="navbtn next" id="nextbtn" aria-label="Next frame"><svg viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M7 4 L17 20 L7 36"/></svg></button>
 <div class="hud">
   <span>The Seventh Cycle in Ten Minutes</span>
-  <span class="k" id="counter">1 / 12</span>
-  <span class="k">← → advance · N notes · print for handout</span>
+  <nav class="dots" id="dots" aria-label="Frames"></nav>
+  <span class="k"><span id="counter">1 / 15</span> · print for handout</span>
 </div>
 
 <script>
 (function () {
   var frames = Array.prototype.slice.call(document.querySelectorAll('.frame'));
   var counter = document.getElementById('counter');
+  var dots = document.getElementById('dots');
+  var prev = document.getElementById('prevbtn');
+  var next = document.getElementById('nextbtn');
   var i = 0;
+
+  frames.forEach(function (_, k) {
+    var d = document.createElement('button');
+    d.setAttribute('aria-label', 'Frame ' + (k + 1));
+    d.addEventListener('click', function () { go(k); });
+    dots.appendChild(d);
+  });
+  prev.addEventListener('click', function () { go(i - 1); });
+  next.addEventListener('click', function () { go(i + 1); });
 
   function go(n) {
     n = Math.max(0, Math.min(frames.length - 1, n));
@@ -1040,6 +852,11 @@ body.show-notes .notes { display:block; }
   }
   function update() {
     counter.textContent = (i + 1) + ' / ' + frames.length;
+    Array.prototype.forEach.call(dots.children, function (d, k) {
+      d.className = k === i ? 'on' : '';
+    });
+    prev.disabled = i === 0;
+    next.disabled = i === frames.length - 1;
     if (history.replaceState) history.replaceState(null, '', '#' + i);
     window.scrollTo(0, 0);
   }
@@ -1054,7 +871,6 @@ body.show-notes .notes { display:block; }
       case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); go(i - 1); break;
       case 'Home': e.preventDefault(); go(0); break;
       case 'End': e.preventDefault(); go(frames.length - 1); break;
-      case 'n': case 'N': document.body.classList.toggle('show-notes'); break;
     }
   });
 
