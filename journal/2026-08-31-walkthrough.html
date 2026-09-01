@@ -58,6 +58,13 @@ svg .dim { fill:var(--muted); }
 .gridwrap .rowlbl { font-size:.78rem; color:var(--muted); text-align:right; white-space:nowrap; }
 .sq { display:grid; grid-template-columns:repeat(19,1fr); gap:3px; }
 .sq span { aspect-ratio:1; background:var(--ok); opacity:.85; border-radius:1px; }
+.sq span.d1, .legend .sw.d1 { opacity:.4; }
+.sq span.d2, .legend .sw.d2 { opacity:.15; box-shadow:inset 0 0 0 1.5px var(--ok); }
+.legend { display:flex; gap:.45rem; align-items:center; margin-top:.7rem;
+  font-family:var(--mono); font-size:.68rem; color:var(--muted); }
+.legend .sw { width:.75rem; height:.75rem; background:var(--ok); opacity:.85;
+  border-radius:1px; display:inline-block; margin-left:.6rem; }
+.legend .sw:first-child { margin-left:0; }
 .bigstat { display:flex; gap:2.2rem; flex-wrap:wrap; margin-top:1rem; padding-top:.8rem;
   border-top:1px solid var(--rule); }
 .bigstat div { min-width:8rem; }
@@ -211,29 +218,31 @@ body.show-notes .notes { display:block; }
     <p class="orient">
       The 2020 plan is really <strong>76 numbers</strong>: 19 cities, each with a target at 4
       income levels. Using only the plan's public documents, we redid the math for every one.
-      Each square below is one of those 76 numbers. Green means our rebuilt number matched the
-      adopted plan.
+      Each square below is one of those 76 numbers, shaded by how far our rebuilt figure
+      landed from the adopted plan's.
     </p>
     <figure class="viz">
       <div class="gridwrap">
         <span class="rowlbl">very-low income</span>
-        <div class="sq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="sq"><span class="d2"></span><span class="d1"></span><span class="d1"></span><span class="d1"></span><span></span><span class="d1"></span><span class="d1"></span><span></span><span></span><span></span><span class="d1"></span><span></span><span class="d1"></span><span></span><span class="d1"></span><span></span><span class="d1"></span><span class="d1"></span><span></span></div>
         <span class="rowlbl">low income</span>
-        <div class="sq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="sq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="d1"></span><span></span><span></span><span class="d1"></span></div>
         <span class="rowlbl">moderate income</span>
-        <div class="sq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="sq"><span></span><span class="d1"></span><span></span><span></span><span></span><span class="d1"></span><span class="d1"></span><span class="d1"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="d1"></span><span class="d1"></span></div>
         <span class="rowlbl">above moderate</span>
-        <div class="sq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="sq"><span class="d1"></span><span></span><span></span><span class="d1"></span><span class="d1"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="d1"></span><span class="d1"></span><span></span><span></span><span></span><span class="d1"></span><span></span></div>
       </div>
       <div class="bigstat">
         <div><div class="n">76 of 76</div><div class="l">numbers matched</div></div>
         <div><div class="n">≤ 2 homes</div><div class="l">biggest difference on any line</div></div>
         <div><div class="n">100%</div><div class="l">public data — nothing private</div></div>
       </div>
-      <figcaption>columns = the 19 cities · rows = the 4 income levels</figcaption>
+      <div class="legend"><span class="sw"></span> exact <span class="sw d1"></span> off by one home <span class="sw d2"></span> off by two</div>
+      <figcaption>columns = the 19 cities, largest 2020 allocation → smallest · rows = the four income levels</figcaption>
     </figure>
-    <p class="takeaway">Every square is green: the 2020 plan's math was right. We know because
-    we rebuilt it.</p>
+    <p class="takeaway">51 of the 76 lines match exactly; the other 25 differ by
+    one or two homes — rounding. The 2020 plan's math was right, and rebuilding it is how we
+    know.</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>Open with credit: this is a compliment to the team that built the 6th cycle. The point
       of rebuilding was not to find mistakes — it was to establish a trustworthy starting line
