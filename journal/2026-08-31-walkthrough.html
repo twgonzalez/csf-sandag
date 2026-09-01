@@ -575,10 +575,12 @@ body.show-notes .notes { display:block; }
     <span class="eyebrow">Part 3 · What the data can do</span>
     <h1>Measuring safety: fire, flood, and the way out</h1>
     <p class="orient">
-      Balancing on safety starts with measuring it. Fire severity and flood zones come from
-      published state and federal maps. The missing piece was <strong>evacuation</strong> — so
-      we grouped neighborhoods by the escape routes they share, scored each by its worst
-      traffic pinch point (households per hour that can actually get out), and tested the
+      Balancing on safety starts with measuring it. Fire and flood zones come from published
+      maps; the missing piece was <strong>evacuation</strong>. We measured it the way nature
+      defines a watershed: the same neighborhoods the state's fairness map rates were grouped
+      into <strong>evacuation sheds</strong> — everyone whose escape routes drain to one
+      shared pinch point — drawn by the road network itself, blind to city lines. Each shed is
+      scored by how many households per hour its pinch point can pass, and we tested the
       scores by <strong>replaying every big fire since 2000</strong>. Below: the 2003 Cedar
       Fire replay.
     </p>
@@ -605,7 +607,7 @@ body.show-notes .notes { display:block; }
         <text x="170" y="234" fill="var(--signal)" font-weight="600">Wildcat Canyon Road — the pinch point the model picked</text>
         <text x="170" y="251" class="dim">dots = neighborhoods evacuating · the model was told nothing about the fire</text>
       </svg>
-      <figcaption>across all replayed fires, the model's pinch points matched 63% of the time · one of three advance calls was wrong — a funnel road we underrated</figcaption>
+      <figcaption>451 sheds cover all 737 neighborhoods, no boundary drawn by hand · across all replayed fires the model's pinch points matched 63% of the time · one of three advance calls was wrong — a funnel road we underrated</figcaption>
     </figure>
     <p class="takeaway">The replay finds Wildcat Canyon Road — where most of that fire's
     victims died — knowing nothing about the fire. Every neighborhood's safety is now a number
@@ -613,6 +615,12 @@ body.show-notes .notes { display:block; }
     number, and what it <strong>does</strong>.</p>
         <p class="sources"><b>SOURCES</b> · Data: OpenStreetMap road network · ACS B25044 vehicles per household · CAL FIRE FRAP fire perimeters (≥15,000 acres, 2000–) — Method: reports/evacuation_sheds.md · reports/evacuation_capacity.md — Code: metrics/sheds.py · metrics/evacuation.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
+      <p>If asked who drew the shed boundaries: nobody. They fall out of the road network the
+      way watersheds fall out of terrain — change the roads and the sheds change; no analyst
+      and no city line is involved. And because sheds are built from the same census tracts
+      the fairness map rates, safety and fairness are measured on identical units — which is
+      what lets the formula choose safer ground among neighborhoods of equal fairness
+      standing, two frames ahead.</p>
       <p>Scale: 451 escape-route groups covering all 737 neighborhoods; every pinch point's
       load and capacity is published. The Cedar Fire result is now a permanent automated test —
       if a future model change stops finding Wildcat Canyon Road, the build fails.</p>
