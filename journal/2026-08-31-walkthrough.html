@@ -634,7 +634,7 @@ body.show-notes .notes { display:block; }
 <section class="frame" id="f6">
   <div class="inner">
     <span class="eyebrow">Part 3 · What the data can do</span>
-    <h1>What safety may not do: lower a city's number</h1>
+    <h1>What safety may not do: cut a city for being risky</h1>
     <p class="orient">
       Follow the homes. The regional total never changes, so a cut in one city must reappear
       in other cities — and homes pushed off hazardous land go where the
@@ -677,7 +677,8 @@ body.show-notes .notes { display:block; }
     </figure>
     <p class="takeaway">A fire cut doesn't remove homes — it <strong>moves</strong> them,
     disproportionately into struggling neighborhoods, which is the concentration fair-housing
-    law forbids. So safety can decide where homes go, never how many a city gets.</p>
+    law forbids. So the formula may never aim safety <strong>at a city</strong>. What it may
+    aim at instead is the next frame.</p>
         <p class="sources"><b>SOURCES</b> · Data: CAL FIRE FHSZ (SRA 2024 / LRA 2025) · FEMA NFHL floodway · CPAD 2026a · evacuation sheds · Opportunity Map 2026 — Method: reports/capacity_map.md — Code: metrics/capacity.py</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
       <p>How measured: we crossed the state's neighborhood scorecard with fire severity zones,
@@ -702,9 +703,11 @@ body.show-notes .notes { display:block; }
     <span class="eyebrow">Part 3 · What the data can do</span>
     <h1>What safety does: balance the 2028 numbers</h1>
     <p class="orient">
-      Safety never touches a city's standing — it chooses among neighborhoods of
-      <strong>equal fairness standing</strong>, and the totals shift as a result. Both
-      versions below follow the 2028 fairness rules. The <strong>center line</strong> is
+      The formula never sees a city. It places homes neighborhood by neighborhood, and
+      safety only picks among neighborhoods the fairness rules rate
+      <strong>equally</strong>. A city's total is just the sum of its neighborhoods — so
+      totals still shift, and that shift is what the bars show. Both versions below follow
+      the 2028 fairness rules. The <strong>center line</strong> is
       the fairness-scorecard-alone version. Each bar shows what changes when safety data also
       gets a vote: bars pointing <strong>left</strong> give back part of their increase; bars
       pointing <strong>right</strong> take on a little more.
@@ -732,13 +735,17 @@ body.show-notes .notes { display:block; }
       <div class="pinned">Fairness score, both versions: <strong>99.5% — identical.</strong>
         About <strong>7,300 homes</strong> end up on safer ground.</div>
     </figure>
-    <p class="takeaway">Fire country gives back part of its increase; safe street grids absorb
-    it; the fairness score doesn't move. Safety — and the law's other factors, like sewer
-    capacity and flood risk — can balance the numbers this way, within the fairness rules.</p>
+    <p class="takeaway">No city is cut for being risky — fire country still grows, just less,
+    because fewer of its risky corners get chosen. The signature of the difference is the
+    fairness score: aim at a city and it breaks; choose ground and it holds at 99.5%,
+    identical.</p>
         <p class="sources"><b>SOURCES</b> · Data: as the two prior frames — Method: reports/delta_vs_sixth_cycle.md (three-column delta) — Code: params/capacity_within_bins.toml · allocate/model.py (fairness gate: enforce_affh_gate)</p>
     <div class="notes"><span class="n-lbl">Presenter notes</span>
-      <p>Say the boundary out loud: this is balancing <em>within</em> the fairness rules, not
-      escaping them. Fire-heavy communities keep an increase — they give back roughly a fifth
+      <p>The clean test for a skeptical questioner, in two parts: what did the formula aim at
+      (a neighborhood's ground, or a city's total?), and what happened to the fairness score
+      (identical, or broken?). These runs aim only at ground and tie the score to four decimal
+      places. Say the boundary out loud: this is balancing <em>within</em> the fairness rules,
+      not escaping them. Fire-heavy communities keep an increase — they give back roughly a fifth
       to a half of it. Nothing shown here scores below the fairness-only version; the two
       versions tie on the fairness test to four decimal places.</p>
       <p>The other statutory factors — sewer and water capacity, floodways, sea-level rise —
