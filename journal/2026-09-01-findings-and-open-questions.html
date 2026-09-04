@@ -1,0 +1,296 @@
+<meta charset="utf-8">
+<title>The Seventh Cycle: Findings &amp; Open Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --ink:#16232B; --muted:#5A6B74; --rule:#D2DADE;
+  --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F; --ok:#2E6B4F;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+    --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+  --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+.sheet { max-width:800px; margin:0 auto; padding:clamp(1.8rem,5vw,3.5rem) clamp(1rem,3vw,2rem) 3rem; }
+.eyebrow { font-family:var(--mono); font-size:.66rem; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.6rem; }
+h1 { font-family:var(--display); font-size:clamp(1.7rem,4.5vw,2.5rem); font-weight:800;
+  letter-spacing:-.025em; line-height:1.08; margin:0 0 .9rem; }
+h2 { font-family:var(--display); font-size:1.15rem; font-weight:700; margin:2.2rem 0 .8rem;
+  padding-top:1.2rem; border-top:2px solid var(--ink); }
+p { margin:0 0 .8rem; }
+.masthead { margin-bottom:.5rem; }
+.standfirst { font-size:1.02rem; color:var(--muted); max-width:44rem; }
+.standfirst strong { color:var(--ink); font-weight:600; }
+.positioning { border-left:3px solid var(--accent); padding:.6rem 1rem; background:var(--accent-soft);
+  font-size:.92rem; margin:1.1rem 0 0; max-width:44rem; }
+.method { font-family:var(--mono); font-size:.7rem; color:var(--muted); line-height:1.7;
+  margin-top:1rem; }
+.finding { display:grid; grid-template-columns:1.6rem 1fr; gap:0 .7rem; margin:0 0 1.05rem; }
+.finding .n { font-family:var(--mono); font-size:.8rem; font-weight:600; color:var(--accent); padding-top:.15rem; }
+.finding h3 { font-family:var(--display); font-size:1rem; font-weight:700; margin:0 0 .25rem; }
+.finding p { font-size:.92rem; margin:0 0 .3rem; }
+.finding .src { font-family:var(--mono); font-size:.62rem; color:var(--muted); }
+.finding strong { font-weight:600; }
+.scroll { overflow-x:auto; }
+table { border-collapse:collapse; width:100%; margin:.6rem 0 1rem; font-size:.88rem; }
+th, td { text-align:left; padding:.4rem .7rem .4rem 0; border-bottom:1px solid var(--rule); }
+th { font-family:var(--mono); font-size:.64rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; }
+td.num { font-family:var(--mono); font-size:.8rem; white-space:nowrap; }
+.up { color:var(--accent); } .dn { color:var(--signal); }
+.qgroup { margin-bottom:1.4rem; }
+.qgroup h3 { font-family:var(--mono); font-size:.7rem; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 .5rem; }
+.qgroup ol, .qgroup ul { margin:0; padding-left:1.2rem; }
+.qgroup li { font-size:.93rem; margin-bottom:.45rem; }
+.qgroup li strong { font-weight:600; }
+footer { margin-top:2.4rem; padding-top:.9rem; border-top:2px solid var(--ink);
+  font-family:var(--mono); font-size:.68rem; color:var(--muted); line-height:1.9; }
+footer a, .finding a { color:var(--accent); }
+@media print {
+  :root, :root[data-theme="dark"] {
+    --paper:#FFF; --surface:#FFF; --ink:#111; --muted:#444; --rule:#999;
+    --accent:#1F5C7A; --accent-soft:#EEF2F5; --signal:#B04A2F; --ok:#2E6B4F;
+  }
+  @page { size:letter; margin:.6in; }
+  body { font-size:9.4pt; line-height:1.38; }
+  .sheet { max-width:100%; padding:0; }
+  h1 { font-size:16pt; }
+  h2 { margin:1rem 0 .5rem; padding-top:.6rem; }
+  .finding, .qgroup { break-inside:avoid; }
+  a { color:var(--ink); text-decoration:none; }
+}
+</style>
+
+<div class="sheet">
+  <header class="masthead">
+    <span class="eyebrow">SANDAG region · 7th-cycle housing methodology · 2026-09-01</span>
+    <h1>Findings &amp; Open Questions</h1>
+    <p class="standfirst">
+      Every eight years the state tells this region how many new homes to plan for — last time,
+      <strong>171,685</strong> — and SANDAG splits the number among 19 cities. The rules for the
+      next split, due in 2028, have changed. This page is the running ledger of what an open
+      rebuild of the allocation has found so far, and what it has not settled.
+    </p>
+    <p class="positioning">
+      An independent analysis, built entirely on public data so every claim can be checked. It
+      offers no recommendations — it exists to raise better questions before the seventh
+      cycle's decisions arrive.
+    </p>
+    <p class="method">
+      Method, in one line: every input is pinned and checksummed; expected results were written
+      down before each analysis ran and scored after, with misses published; one command
+      (<b>make all</b>) rebuilds every number. Cities appear as anonymized archetypes with
+      rounded figures; the repository carries the full tables.
+    </p>
+  </header>
+
+  <h2>What the analysis found</h2>
+
+  <div class="finding"><span class="n">01</span><div>
+    <h3>The 2020 plan's math was right — and effectively uncheckable</h3>
+    <p>Rebuilt from its published documents, all <strong>76 lines</strong> match within two
+    homes (51 exactly). But the match required reverse-engineering a reconciliation step no
+    document describes, worth up to <strong>990 homes</strong> on one city's line — and the
+    plan's only real error (Navy jobs in the wrong cities, 135 homes) took a formal appeal and
+    four months to surface. Cities had 45 days to object to numbers they could not recompute.</p>
+    <span class="src">reports/sixth_cycle_replication.md · allocate/sixth_cycle.py</span>
+  </div></div>
+
+  <div class="finding"><span class="n">02</span><div>
+    <h3>The rules moved from the mix to the totals</h3>
+    <p>The 2019 methodology addressed fair housing through each city's income <strong>mix</strong>,
+    and the state approved. Under guidance issued since 2021, the state now expects the fairness
+    map — or something like it — to help set <strong>how many homes each city gets</strong>.</p>
+    <span class="src">docs/affh_in_the_6th_cycle.md · CTCAC/HCD Opportunity Map 2026 (replicated 638/638)</span>
+  </div></div>
+
+  <div class="finding"><span class="n">03</span><div>
+    <h3>Every lawful formula tested moves the numbers coastward</h3>
+    <p>Five formulas — fairness alone, fairness + safety, jobs-weighted, the composition
+    structure, and composition + safety — all run against the same 171,685 homes. The
+    high-scoring coastal and back-country archetypes rise under every one; the big city and the
+    working-class suburb fall under every one.</p>
+    <div class="scroll"><table>
+      <thead><tr><th>Archetype</th><th>2020 plan</th><th>Range across the five formulas</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Coastal Enclave</td><td class="num">~900</td><td class="num">1,300 – 1,700</td><td class="num up">rises</td></tr>
+        <tr><td>Coastal City, Fire at its Back</td><td class="num">~3,900</td><td class="num">8,600 – 12,100</td><td class="num up">rises</td></tr>
+        <tr><td>Fire-Country Suburb</td><td class="num">~1,300</td><td class="num">1,900 – 5,100</td><td class="num up">rises</td></tr>
+        <tr><td>The Back Country</td><td class="num">~6,700</td><td class="num">16,400 – 21,100</td><td class="num up">rises</td></tr>
+        <tr><td>The Metropolis</td><td class="num">~108,000</td><td class="num">83,000 – 98,900</td><td class="num dn">falls</td></tr>
+        <tr><td>Urban Core Suburb</td><td class="num">~5,400</td><td class="num">1,400 – 1,800</td><td class="num dn">falls</td></tr>
+      </tbody>
+    </table></div>
+    <span class="src">reports/delta_vs_sixth_cycle.md · reports/jobs_runs.md · params/ (all five formulas)</span>
+  </div></div>
+
+  <div class="finding"><span class="n">04</span><div>
+    <h3>The structure suggested for coastal relief raises coastal numbers instead</h3>
+    <p>Letting job locations place the market-rate homes was expected to shrink coastal totals.
+    Measured: the job-rich coastal cities <strong>rise</strong> (+11%, +4%) and only one
+    genuinely job-light coastal city falls (−9%) — because the region's coastal cities hold
+    more jobs per existing home than the county average. The affordable share of the small
+    high-resource coastal archetype went <strong>down</strong> (59% → 57%), not up.</p>
+    <span class="src">reports/jobs_runs.md · predictions committed first: docs/predictions_jobs_runs.md</span>
+  </div></div>
+
+  <div class="finding"><span class="n">05</span><div>
+    <h3>Safety and opportunity point in opposite directions here</h3>
+    <p>The safest land to build on — away from severe fire and floodways, with the road capacity
+    to evacuate — is <strong>3.3×</strong> more likely to sit in a struggling neighborhood than
+    near the best schools and jobs (52.7% vs 19.4%). Adding evacuation strengthened the pattern
+    (2.7× → 3.3×); the county's single best evacuation performance belongs to a
+    struggling-neighborhood street grid. Consequence: cutting a fire-zone city's total sends
+    those homes exactly where fair-housing law says lower-income homes must not concentrate —
+    so hazard cannot lawfully reduce any city's number.</p>
+    <span class="src">reports/capacity_map.md · metrics/capacity.py</span>
+  </div></div>
+
+  <div class="finding"><span class="n">06</span><div>
+    <h3>Evacuation is measurable, objectively, and the measure survives testing</h3>
+    <p><strong>451 evacuation sheds</strong> — neighborhoods grouped by the escape routes they
+    share, drawn by the road network itself, blind to city lines — cover all 737 neighborhoods.
+    Replaying every 15,000+ acre fire since 2000, the model's pinch points matched 63% of the
+    time; the 2003 Cedar Fire replay independently found <strong>Wildcat Canyon Road</strong>,
+    where most of that fire's victims died. One of three advance predictions was wrong (a
+    funnel road we underrated) and is published with the hits.</p>
+    <span class="src">reports/evacuation_sheds.md · reports/evacuation_capacity.md</span>
+  </div></div>
+
+  <div class="finding"><span class="n">07</span><div>
+    <h3>Safety data balances the numbers — it cannot and need not cut them</h3>
+    <p>Used to choose among neighborhoods of equal fairness standing, safety moves roughly
+    <strong>7,300 homes</strong> onto safer ground: fire-heavy archetypes give back a fifth to
+    a half of their increases, safe street grids absorb them, and the fairness score is
+    <strong>identical to four decimal places (99.5%)</strong> on every run. The formula never
+    sees a city; totals shift only as the sum of their neighborhoods.</p>
+    <span class="src">reports/delta_vs_sixth_cycle.md · allocate/model.py (fairness gate)</span>
+  </div></div>
+
+  <div class="finding"><span class="n">08</span><div>
+    <h3>The state's ledger counts units, and families need bedrooms</h3>
+    <p>The same four-city coastal obligation delivers <strong>49,536 bedrooms</strong> built at
+    today's neighborhood mix or <strong>17,067</strong> built as studios and one-bedrooms — a
+    <strong>32,469-bedroom</strong> difference the unit ledger cannot record, stable across all
+    five formulas. The coastal small-unit tilt is already underway: two of the five
+    high-resource coastal cities average county-level or smaller homes today. Cities' remaining
+    tools are narrow — bedroom standards on the subsidized share, incentives, and measurement —
+    because zoning is written in units per acre and mandates are waivable.</p>
+    <span class="src">reports/bedroom_lens.md · predictions committed first: docs/predictions_bedroom_lens.md (2 of 4 hit; misses published)</span>
+  </div></div>
+
+  <div class="finding"><span class="n">09</span><div>
+    <h3>An open jobs count is buildable — and it changes the picture</h3>
+    <p>The standard open jobs data cannot see uniformed military: roughly
+    <strong>111,568 active-duty jobs</strong>, restored from public sources (county totals,
+    workers-by-workplace, military quarters at homeport). The 6th cycle's Navy error cannot
+    recur by construction — from open data alone, the misattributed sites carry no workforce.
+    A headquarters detector also found school-district job pile-ups (two districts
+    redistributed) and flagged the next one: a single downtown tract carries
+    <strong>39%</strong> of the county's public-administration jobs. One open divergence:
+    counting a base's jobs in the city that contains it roughly doubles the military-heavy
+    coastal city's employment versus the adopted convention — a definitional choice the 7th
+    cycle should make explicitly.</p>
+    <span class="src">reports/jobs_adjustments.md · metrics/adjustments/</span>
+  </div></div>
+
+  <div class="finding"><span class="n">10</span><div>
+    <h3>Measurement is what lets capacity count again</h3>
+    <p>The state removed local discretion because capacity claims arrived as assertions no one
+    could verify — and the ban caught the honest questions along with the pretexts: the 2020
+    formula contained <strong>no physical-capacity measure at all</strong>. A capacity claim
+    anyone can recompute is evidence, not excuse. That is the footing this work proposes for
+    the seventh cycle: transparent methods, objective measurement, capacity — safety,
+    infrastructure, economics — answered with data.</p>
+    <span class="src">Gov. Code §65584.04(g) (the banned factors) · docs/plan.md (this project's constraints)</span>
+  </div></div>
+
+  <h2>What remains open</h2>
+
+  <div class="qgroup">
+    <h3>Questions the region should be asking itself</h3>
+    <ol>
+      <li>Every lawful formula moves the numbers coastward. Do the coastal cities hear that
+      from the region this year — or from the state's draft in 2028?</li>
+      <li>The relief idea everyone assumed would work did the opposite when run. What else does
+      the region believe about this cycle that has never actually been run?</li>
+      <li>The law leaves one dial: how much weight safety carries. Where should it be set — and
+      can that setting be defended in public, in plain words?</li>
+      <li>A studio and a four-bedroom count the same in the state's ledger. When the units are
+      built, will they hold the families the fairness law is written for — and who measures
+      that if the region doesn't?</li>
+      <li>Last cycle, no city could check its own number. Will the 2028 method be published so
+      completely that every city can recompute its own?</li>
+    </ol>
+  </div>
+
+  <div class="qgroup">
+    <h3>Questions that belong in the state conversation</h3>
+    <ul>
+      <li>Does a unit-counted ledger serve the families the fairness objective is written for,
+      when the units that pencil on high-cost land are the smallest ones?</li>
+      <li>Should a base's jobs belong to the city that contains it, or be split by acreage?
+      The two conventions differ by thousands of jobs for one small city.</li>
+      <li>Coastal land supply barely responds to obligations. If absorption is a real
+      constraint, its address is the regional total and the state's rules — what evidence
+      would the state accept?</li>
+    </ul>
+  </div>
+
+  <div class="qgroup">
+    <h3>Decisions pending this year</h3>
+    <ul>
+      <li><strong>The informal state conversation</strong> — the only free iteration the
+      statutory clock allows (draft late 2027, 60-day review, possible 45-day revision,
+      adoption 2028).</li>
+      <li><strong>The transit factor</strong> — rebuild the 2019 station count from open
+      transit feeds, or replace it with jobs-reachable-by-transit. Moves more homes than any
+      other single choice.</li>
+      <li><strong>The sea-level-rise scenario</strong> — which scenario to plan against is a
+      policy choice, not a default.</li>
+      <li><strong>Placeholder targets for the six income levels</strong> the next cycle
+      requires, so trial runs precede the state's ~2027 total.</li>
+    </ul>
+  </div>
+
+  <div class="qgroup">
+    <h3>On the workbench (known limits, queued work)</h3>
+    <ul>
+      <li>Evacuation calibration against real traffic counts and seasonal loads — road
+      capacities are federal defaults; departure is modeled all-at-once; rankings are the
+      meaningful output, clock times are not predictions.</li>
+      <li>Jobs count: QCEW sector reconciliation and seasonal annualisation remain unbuilt —
+      counts are Q2 snapshots. The big-city / unincorporated military split is the least
+      certain corrected number.</li>
+      <li>Which jobs measure should carry weight: total jobs, jobs-reachable, or jobs-housing
+      fit — each lawful, each pointing differently.</li>
+      <li>Headquarters rosters beyond school districts (city and county government, hospital
+      systems), and an enrollment-based size proxy for the school correction.</li>
+      <li>Sewer and water capacity data (specified, unbuilt); a family-need allocation factor
+      (overcrowding is on the statute's own factor list) — designed, not yet run.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Companions: <a href="2026-08-31-walkthrough.html">the ten-minute walkthrough</a> ·
+    <a href="2026-08-31-one-pager.html">the one-pager</a> ·
+    <a href="2026-08-30-seventh-cycle-staff-paper.html">the staff paper</a><br>
+    Code, data, and full tables: <a href="https://github.com/twgonzalez/csf-sandag">github.com/twgonzalez/csf-sandag</a>
+    — every number on this page rebuilds from pinned public sources.
+  </footer>
+</div>
