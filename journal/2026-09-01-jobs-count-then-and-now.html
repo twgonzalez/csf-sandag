@@ -1,0 +1,234 @@
+<meta charset="utf-8">
+<title>The Jobs Count, Then and Now</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --paper:#F2F4F5; --surface:#FFFFFF; --ink:#16232B; --muted:#5A6B74; --rule:#D2DADE;
+  --accent:#1F5C7A; --accent-soft:#E3EDF2; --signal:#B04A2F; --ok:#2E6B4F;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+    --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#101A1F; --surface:#17242B; --ink:#E3EAED; --muted:#93A6AF; --rule:#2C3E47;
+  --accent:#6FB2D2; --accent-soft:#1B333F; --signal:#E08A62; --ok:#7BC29A;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--body);
+  font-size:15.5px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+.sheet { max-width:800px; margin:0 auto; padding:clamp(1.8rem,5vw,3.5rem) clamp(1rem,3vw,2rem) 3rem; }
+.eyebrow { font-family:var(--mono); font-size:.66rem; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.6rem; }
+h1 { font-family:var(--display); font-size:clamp(1.7rem,4.5vw,2.5rem); font-weight:800;
+  letter-spacing:-.025em; line-height:1.08; margin:0 0 .9rem; }
+h2 { font-family:var(--display); font-size:1.15rem; font-weight:700; margin:2rem 0 .7rem;
+  padding-top:1.1rem; border-top:2px solid var(--ink); }
+p { margin:0 0 .8rem; max-width:46rem; }
+.standfirst { font-size:1.02rem; color:var(--muted); }
+.standfirst strong, p strong { color:var(--ink); font-weight:600; }
+.positioning { border-left:3px solid var(--accent); padding:.6rem 1rem; background:var(--accent-soft);
+  font-size:.92rem; margin:1.1rem 0 0; max-width:44rem; }
+.note { font-family:var(--mono); font-size:.68rem; color:var(--muted); line-height:1.7; max-width:46rem; }
+.scroll { overflow-x:auto; }
+table { border-collapse:collapse; width:100%; margin:.6rem 0 .4rem; font-size:.86rem; }
+th, td { text-align:left; padding:.35rem .7rem .35rem 0; border-bottom:1px solid var(--rule); }
+th { font-family:var(--mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); font-weight:600; }
+td.num { font-family:var(--mono); font-size:.78rem; white-space:nowrap; }
+tr.hl td { background:var(--accent-soft); }
+.up { color:var(--accent); } .dn { color:var(--signal); }
+.big { display:flex; gap:2rem; flex-wrap:wrap; margin:.8rem 0 1rem; }
+.big div { min-width:9rem; }
+.big .n { font-family:var(--mono); font-size:1.35rem; font-weight:600; color:var(--accent); }
+.big .l { font-size:.78rem; color:var(--muted); }
+footer { margin-top:2.2rem; padding-top:.9rem; border-top:2px solid var(--ink);
+  font-family:var(--mono); font-size:.68rem; color:var(--muted); line-height:1.9; }
+footer a { color:var(--accent); }
+@media print {
+  :root, :root[data-theme="dark"] {
+    --paper:#FFF; --surface:#FFF; --ink:#111; --muted:#444; --rule:#999;
+    --accent:#1F5C7A; --accent-soft:#EEF2F5; --signal:#B04A2F; --ok:#2E6B4F;
+  }
+  @page { size:letter; margin:.6in; }
+  body { font-size:9.2pt; line-height:1.36; }
+  .sheet { max-width:100%; padding:0; }
+  h1 { font-size:16pt; }
+  h2 { margin:.9rem 0 .4rem; padding-top:.5rem; }
+  table { break-inside:avoid; }
+  a { color:var(--ink); text-decoration:none; }
+}
+</style>
+
+<div class="sheet">
+  <header>
+    <span class="eyebrow">SANDAG region · 7th-cycle housing methodology · 2026-09-01</span>
+    <h1>The Jobs Count, Then and Now</h1>
+    <p class="standfirst">
+      Jobs carried more than a third of the weight in the 2020 housing allocation, and the one
+      error ever found in that plan was a jobs error. This report compares the 2019 jobs data
+      with an open rebuild — what each counted, where they agree, and where and why they
+      differ. City names appear here because both counts are public tables; the housing
+      allocations themselves remain anonymized elsewhere.
+    </p>
+    <p class="positioning">
+      An independent analysis, built entirely on public data so every claim can be checked. It
+      offers no recommendations — it exists to raise better questions before the seventh
+      cycle's decisions arrive.
+    </p>
+  </header>
+
+  <h2>What 2019 used — and why nobody can rebuild it today</h2>
+  <p>
+    The 6th cycle's jobs input was SANDAG's Employment Estimates: state job-space counts
+    filled with a five-year average of census job data, supplemented by military counts from
+    the San Diego Military Advisory Council and the Defense Manpower Data Center (Navy ship
+    crews counted at their homeport). <strong>The blend was proprietary; only the 19 city
+    totals were published.</strong> One input has since disappeared entirely: DMDC no longer
+    publishes per-installation personnel data, so the 2019 jobs input could not be
+    reconstructed today by anyone — including SANDAG.
+  </p>
+
+  <h2>The one error, as a reminder of the stakes</h2>
+  <p>
+    Between draft and adoption, exactly one input changed: Navy jobs. Two satellite sites —
+    the Silver Strand Training Complex (Coronado) and the Outlying Landing Field (Imperial
+    Beach), which hold <strong>at most 99 actual jobs</strong> — had been carrying Naval Base
+    San Diego's numbers, and North Island's jobs were re-split 80.5/19.5 between Coronado and
+    San Diego. It moved 135 homes. It surfaced four months after the draft, through a phone
+    call to Naval Facilities Engineering Command, and only because one city could afford to
+    appeal.
+  </p>
+  <div class="scroll"><table>
+    <thead><tr><th>City</th><th>Draft 2019</th><th>Adopted 2020</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td>Coronado</td><td class="num">27,594</td><td class="num">25,149</td><td class="num dn">−2,445</td></tr>
+      <tr><td>Imperial Beach</td><td class="num">4,936</td><td class="num">3,666</td><td class="num dn">−1,270</td></tr>
+      <tr><td>San Diego</td><td class="num">921,054</td><td class="num">924,967</td><td class="num up">+3,913</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Source: 6th Cycle RHNA Methodology (2019), Table 2 · Final RHNA Plan (2020), Table 4.2 and p. 14.</p>
+
+  <h2>The open rebuild</h2>
+  <p>
+    The replacement count uses census workplace data (LODES 2023) plus two corrections, every
+    source pinned and checksummed: a <strong>uniformed-military layer</strong> (census data
+    cannot see a sailor — roughly 111,568 active-duty jobs, restored from published county
+    totals, workers-by-workplace data, and military quarters counted at homeport), and a
+    <strong>headquarters detector</strong> that catches jobs piled onto an employer's
+    reporting address (two school districts redistributed; a single downtown tract holding
+    39% of the county's public-administration jobs flagged for the next roster). Tested
+    against the one known answer: from open data alone, the two satellite sites carry no
+    workforce, and Imperial Beach's share lands nearer the corrected 2020 numbers than the
+    erroneous draft. <strong>The 2019 error class cannot recur by construction.</strong>
+  </p>
+
+  <h2>Nineteen cities, two counts, seven years apart</h2>
+  <div class="big">
+    <div><div class="n">1,656,199</div><div class="l">2019 blend, regional total (adopted)</div></div>
+    <div><div class="n">1,628,559</div><div class="l">open count, 2023 vintage</div></div>
+    <div><div class="n">15 of 19</div><div class="l">cities agree within ⅓ of a point of regional share</div></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>City</th><th>Adopted 2019</th><th>Open count</th><th>Share then</th><th>Share now</th><th>Δ share</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>San Diego</td><td class="num">924,967</td><td class="num">885,209</td><td class="num">55.85%</td><td class="num">54.36%</td><td class="num dn">−1.49 pp</td></tr>
+      <tr class="hl"><td>Unincorporated County</td><td class="num">154,686</td><td class="num">181,607</td><td class="num">9.34%</td><td class="num">11.15%</td><td class="num up">+1.81 pp</td></tr>
+      <tr><td>Carlsbad</td><td class="num">76,779</td><td class="num">80,229</td><td class="num">4.64%</td><td class="num">4.93%</td><td class="num up">+0.29 pp</td></tr>
+      <tr><td>Chula Vista</td><td class="num">72,403</td><td class="num">72,444</td><td class="num">4.37%</td><td class="num">4.45%</td><td class="num">+0.08 pp</td></tr>
+      <tr><td>Escondido</td><td class="num">55,059</td><td class="num">54,325</td><td class="num">3.32%</td><td class="num">3.34%</td><td class="num">+0.01 pp</td></tr>
+      <tr><td>El Cajon</td><td class="num">45,468</td><td class="num">43,869</td><td class="num">2.75%</td><td class="num">2.69%</td><td class="num">−0.05 pp</td></tr>
+      <tr><td>Oceanside</td><td class="num">45,178</td><td class="num">47,614</td><td class="num">2.73%</td><td class="num">2.92%</td><td class="num">+0.20 pp</td></tr>
+      <tr><td>San Marcos</td><td class="num">40,964</td><td class="num">39,999</td><td class="num">2.47%</td><td class="num">2.46%</td><td class="num">−0.02 pp</td></tr>
+      <tr><td>Vista</td><td class="num">40,629</td><td class="num">34,985</td><td class="num">2.45%</td><td class="num">2.15%</td><td class="num">−0.30 pp</td></tr>
+      <tr class="hl"><td>National City</td><td class="num">37,497</td><td class="num">23,336</td><td class="num">2.26%</td><td class="num">1.43%</td><td class="num dn">−0.83 pp</td></tr>
+      <tr><td>Poway</td><td class="num">36,349</td><td class="num">34,268</td><td class="num">2.19%</td><td class="num">2.10%</td><td class="num">−0.09 pp</td></tr>
+      <tr><td>La Mesa</td><td class="num">29,773</td><td class="num">26,663</td><td class="num">1.80%</td><td class="num">1.64%</td><td class="num">−0.16 pp</td></tr>
+      <tr><td>Encinitas</td><td class="num">27,871</td><td class="num">27,156</td><td class="num">1.68%</td><td class="num">1.67%</td><td class="num">−0.02 pp</td></tr>
+      <tr class="hl"><td>Coronado</td><td class="num">25,149</td><td class="num">35,351</td><td class="num">1.52%</td><td class="num">2.17%</td><td class="num up">+0.65 pp</td></tr>
+      <tr><td>Santee</td><td class="num">18,634</td><td class="num">18,187</td><td class="num">1.13%</td><td class="num">1.12%</td><td class="num">−0.01 pp</td></tr>
+      <tr><td>Solana Beach</td><td class="num">9,151</td><td class="num">9,115</td><td class="num">0.55%</td><td class="num">0.56%</td><td class="num">+0.01 pp</td></tr>
+      <tr><td>Lemon Grove</td><td class="num">7,492</td><td class="num">7,421</td><td class="num">0.45%</td><td class="num">0.46%</td><td class="num">+0.00 pp</td></tr>
+      <tr><td>Del Mar</td><td class="num">4,484</td><td class="num">3,602</td><td class="num">0.27%</td><td class="num">0.22%</td><td class="num">−0.05 pp</td></tr>
+      <tr><td>Imperial Beach</td><td class="num">3,666</td><td class="num">3,179</td><td class="num">0.22%</td><td class="num">0.20%</td><td class="num">−0.03 pp</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">
+    Shares are each city's fraction of its column's regional total. Highlighted rows are the
+    four gaps larger than a third of a percentage point, explained below. The two counts are
+    different vintages (≈2018 vs 2023) and definitions (annualized blend vs second-quarter
+    snapshot), so levels are not expected to match; the comparison is the geography.
+  </p>
+  <p>
+    The result worth pausing on: <strong>two unrelated methods, built seven years apart — one
+    proprietary, one fully open — independently reproduce the same employment geography for
+    fifteen of nineteen cities.</strong> Chula Vista differs by 41 jobs. That is strong
+    evidence both that the 2019 team's blend was sound and that an open count can stand in
+    for it.
+  </p>
+
+  <h2>The four gaps, each with a name</h2>
+  <p>
+    <strong>Coronado (+0.65 pp).</strong> Two documented causes: the Navy grew (about 15%
+    more Navy active-duty in the county between the fiscal-2019 and fiscal-2023 counts), and
+    a convention difference — the open
+    count assigns all of North Island to the city that contains it, where the adopted plan
+    split the base 80.5/19.5 with San Diego by land area. Whether a base's jobs belong to the
+    city containing its gate or are split by acreage is a definitional choice the 7th cycle
+    should make explicitly; it is worth thousands of jobs to one small city.
+  </p>
+  <p>
+    <strong>National City (−0.83 pp).</strong> Most likely our undercount, stated plainly:
+    Naval Base San Diego straddles the San Diego–National City line, and the open count's
+    installation roster currently credits it wholly to San Diego. The 2019 blend, using the
+    Navy's own site data, credited National City with a share. Refining the roster to split
+    straddling installations is queued work.
+  </p>
+  <p>
+    <strong>San Diego (−1.49 pp) and the Unincorporated County (+1.81 pp).</strong> The
+    military layer's split between these two giants is the least certain corrected number —
+    it inherits whatever headquarters distortion remains in the census data, and Camp
+    Pendleton's workforce is difficult to bound with public sources. The county total and the
+    smaller cities do not depend on it.
+  </p>
+
+  <h2>Why this matters for 2028</h2>
+  <p>
+    Whatever formula the 7th cycle adopts will almost certainly weigh employment, and the
+    corrected geography says something the 2019 data also implied but nobody computed:
+    <strong>the region's coastal cities hold more jobs per existing home than the county
+    average</strong> (Coronado 2.8× its housing weight; Poway 1.53; Carlsbad 1.27; even the
+    small beach cities are balanced, not job-light). Run through the allocator, every
+    employment weighting therefore moves housing numbers toward the coast — including the
+    structure sometimes suggested for relieving it. Still open on the jobs factor: which
+    measure should carry weight (total jobs, jobs reachable, or jobs-housing fit — each
+    lawful, each pointing differently), reconciliation to state sector totals, and seasonal
+    adjustment; today's counts are second-quarter snapshots.
+  </p>
+
+  <h2>Questions this raises</h2>
+  <p>
+    Should a base's jobs belong to the city that contains it, or be split by acreage — and
+    who decides before the numbers do? Should the 7th cycle adopt a jobs input that no longer
+    exists behind closed doors, or one any city can recompute? And which definition of "jobs"
+    serves the allocation's purpose: where the work is, where it can be reached, or whether
+    its wages match the housing nearby?
+  </p>
+
+  <footer>
+    Method and full tables: reports/jobs_adjustments.md · reports/jobs_runs.md — expected
+    results were written down before each run and scored after, with misses published.<br>
+    Sources: SANDAG 6th Cycle Methodology (2019) Table 2 · Final RHNA Plan (2020) Table 4.2 ·
+    LODES8 2023 · SDMAC MEIR 2024 Exh. 6 · 2020 Census P.L. 94-171 · ACS B08604 · California
+    School Directory<br>
+    Code and data: <a href="https://github.com/twgonzalez/csf-sandag">github.com/twgonzalez/csf-sandag</a>
+    — every number on this page rebuilds from pinned public sources.
+  </footer>
+</div>
