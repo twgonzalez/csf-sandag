@@ -154,6 +154,14 @@ def report() -> None:
         f"{jobs_adj['districts_flagged']} flagged"
     )
 
+    from report.jobs_explorer_data import build as build_jobs_explorer
+
+    explorer = build_jobs_explorer()
+    console.print(
+        f"  jobs explorer: {explorer['cities']} cities, {explorer['json_kb']} KB blob "
+        f"{'injected into tools/jobs-explorer.html' if explorer['injected'] else 'written'}"
+    )
+
     from report.jobs_runs import write as build_jobs_runs
 
     jobs_runs = build_jobs_runs()
