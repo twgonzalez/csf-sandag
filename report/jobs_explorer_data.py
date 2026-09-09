@@ -27,7 +27,12 @@ The contract — one object with:
         ``residual`` (their difference).
     ``sectors``
         The city's census-visible jobs by NAICS sector group, descending, as
-        ``[label, count]`` pairs (all twenty; the page shows the top eight).
+        ``[label, count, blocks]`` triples (all twenty; the page shows the top eight).
+        ``blocks`` is the sector's top five census blocks — ``[block_geoid, sector_jobs,
+        block_total_jobs, lat, lon]`` — so a reader can stand on the ground the number
+        claims. Coordinates are the census-published interior points from TIGER, not
+        computed here. Block-level LODES figures carry the Census Bureau's noise
+        infusion; the page says so wherever blocks appear.
     ``wages``
         Census-visible jobs in the three published earnings bands, low to high.
     ``tracts``
@@ -51,9 +56,11 @@ from __future__ import annotations
 import datetime as dt
 import json
 
+import geopandas as gpd
 import pandas as pd
 
-from config import LODES_VINTAGE, PROCESSED, REFERENCE, ROOT
+import cache
+from config import COUNTY_FIPS, LODES_VINTAGE, PROCESSED, REFERENCE, ROOT, SOURCES
 from ingest.crosswalk import load_block_geography
 from ingest.lodes import EARNINGS_BANDS, SECTORS, load_workplace_jobs
 
@@ -100,6 +107,29 @@ CITY_CAVEATS: dict[str, list[str]] = {
 }
 
 
+def _block_centroids() -> pd.DataFrame:
+    """Census-published interior points for every block in the county.
+
+    These are TIGER's own ``INTPTLAT20``/``INTPTLON20`` fields, passed through — the page's
+    map links point at coordinates the Census Bureau published, not ones we computed.
+    """
+    blocks_dir = cache.unzip(cache.fetch(SOURCES["tiger_blocks_2020"]))
+    shp = next(blocks_dir.glob("*.shp"))
+    tiger = gpd.read_file(
+        shp,
+        columns=["GEOID20", "COUNTYFP20", "INTPTLAT20", "INTPTLON20"],
+        ignore_geometry=True,
+    )
+    tiger = tiger[tiger["COUNTYFP20"] == COUNTY_FIPS]
+    return pd.DataFrame(
+        {
+            "block_geoid": tiger["GEOID20"],
+            "lat": tiger["INTPTLAT20"].astype(float).round(5),
+            "lon": tiger["INTPTLON20"].astype(float).round(5),
+        }
+    )
+
+
 def build() -> dict:
     """Assemble the blob, write the JSON, and inject it into the explorer page."""
     log = json.loads((PROCESSED / "jobs_corrections_log.json").read_text())
@@ -111,6 +141,7 @@ def build() -> dict:
 
     blocks = load_block_geography()[["block_geoid", "tract_geoid", "jurisdiction"]]
     wac = load_workplace_jobs(by="block").merge(blocks, on="block_geoid", how="left")
+    wac = wac.merge(_block_centroids(), on="block_geoid", how="left")
     sector_cols = list(SECTORS.values())
     band_cols = list(EARNINGS_BANDS.values())
     by_city = wac.groupby("jurisdiction")[sector_cols + band_cols].sum()
@@ -135,6 +166,19 @@ def build() -> dict:
         j = by_juris[key]
         m = mil[key]
         sect = by_city.loc[key, sector_cols].sort_values(ascending=False)
+        city_blocks = wac[wac["jurisdiction"] == key]
+        sectors_out = []
+        for col, count in sect.items():
+            top_blocks = []
+            if count > 0:
+                for row in city_blocks.nlargest(5, col).itertuples():
+                    n = int(getattr(row, col))
+                    if n <= 0:
+                        continue
+                    top_blocks.append(
+                        [row.block_geoid, n, int(row.jobs_total), float(row.lat), float(row.lon)]
+                    )
+            sectors_out.append([col.replace("_", " "), int(count), top_blocks])
         city_tracts = tracts[tracts["jurisdiction"] == key].sort_values(
             "jobs_total_corrected", ascending=False
         )
@@ -161,7 +205,7 @@ def build() -> dict:
                 "lodes": int(m["lodes_jobs"]),
                 "residual": int(m["residual"]),
             },
-            "sectors": [[label.replace("_", " "), int(count)] for label, count in sect.items()],
+            "sectors": sectors_out,
             "wages": [int(by_city.loc[key, c]) for c in band_cols],
             "tracts": [
                 [
