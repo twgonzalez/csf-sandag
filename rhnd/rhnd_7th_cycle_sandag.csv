@@ -1,0 +1,69 @@
+line,label,mono_vintage__difference__jun2031,mono_vintage__difference__jan2031,mono_vintage__dilution__jun2031,mono_vintage__dilution__jan2031,newest_vintage__difference__jun2031,newest_vintage__difference__jan2031,newest_vintage__dilution__jun2031,newest_vintage__dilution__jan2031
+1,Population: 2039-06-15,3423080,3420899,3423080,3420899,3479812,3477118,3479812,3477118
+2,- Group Quarters Population,-118738,-118738,-118738,-118738,-118738,-118738,-118738,-118738
+3,Household (HH) Population,3304342,3302161,3304342,3302161,3361074,3358380,3361074,3358380
+4,Projected Households,1290675,1289021,1290675,1289021,1290675,1289021,1290675,1289021
+5a,"+ Vacancy Adjustment, Existing Households",26725,26691,26725,26691,27785,27749,27785,27749
+5b,"+ Vacancy Adjustment, Projected Households",2326,2255,2326,2255,2324,2253,2324,2253
+6,+ Overcrowding Adjustment,38201,38201,36945,36945,36134,36134,34932,34932
+7,+ Cost-burden Adjustment,136160,136160,94263,94263,133056,133056,91250,91250
+8,- Overcrowded and Cost-burdened Overlap,-34463,-34463,-34463,-34463,-34803,-34803,-34803,-34803
+9,+ Replacement Adjustment Demolitions (0.10%),1236,1236,1236,1236,1236,1236,1236,1236
+11,+ Jobs Housing Relationship Adjustment,0,0,0,0,0,0,0,0
+12,+ Homelessness Adjustment,3965,3965,3965,3965,3704,3704,3704,3704
+13,+ State of Emergency Adjustment,28,28,28,28,28,28,28,28
+14,- Occupied Units (HHs) projected 2028-12-31,-1236270,-1236270,-1236270,-1236270,-1236270,-1236270,-1236270,-1236270
+15,Preliminary Regional Housing Need (excl. seasonal),228584,226825,185431,183672,223869,222109,180860,179100
+10,+ Replacement Adjustment Seasonal/Recreational/Occasional,0,0,0,0,0,0,0,0
+16,+ Feasible Jobs/Housing Balance Adjustment,0,0,0,0,0,0,0,0
+total,7th Cycle Regional Housing Need Determination,228584,226825,185431,183672,223869,222109,180860,179100
+
+income_category,share_and_units
+acutely_low,0.0644,14719,mono_vintage__difference__jun2031
+extremely_low,0.0741,16944,mono_vintage__difference__jun2031
+very_low,0.1055,24117,mono_vintage__difference__jun2031
+low,0.1579,36097,mono_vintage__difference__jun2031
+moderate,0.1854,42385,mono_vintage__difference__jun2031
+above_moderate,0.4126,94322,mono_vintage__difference__jun2031
+acutely_low,0.0644,14606,mono_vintage__difference__jan2031
+extremely_low,0.0741,16814,mono_vintage__difference__jan2031
+very_low,0.1055,23931,mono_vintage__difference__jan2031
+low,0.1579,35819,mono_vintage__difference__jan2031
+moderate,0.1854,42059,mono_vintage__difference__jan2031
+above_moderate,0.4126,93596,mono_vintage__difference__jan2031
+acutely_low,0.0644,11941,mono_vintage__dilution__jun2031
+extremely_low,0.0741,13745,mono_vintage__dilution__jun2031
+very_low,0.1055,19564,mono_vintage__dilution__jun2031
+low,0.1579,29282,mono_vintage__dilution__jun2031
+moderate,0.1854,34384,mono_vintage__dilution__jun2031
+above_moderate,0.4126,76515,mono_vintage__dilution__jun2031
+acutely_low,0.0644,11827,mono_vintage__dilution__jan2031
+extremely_low,0.0741,13615,mono_vintage__dilution__jan2031
+very_low,0.1055,19378,mono_vintage__dilution__jan2031
+low,0.1579,29004,mono_vintage__dilution__jan2031
+moderate,0.1854,34057,mono_vintage__dilution__jan2031
+above_moderate,0.4126,75789,mono_vintage__dilution__jan2031
+acutely_low,0.0658,14730,newest_vintage__difference__jun2031
+extremely_low,0.0737,16492,newest_vintage__difference__jun2031
+very_low,0.1045,23389,newest_vintage__difference__jun2031
+low,0.1576,35273,newest_vintage__difference__jun2031
+moderate,0.1844,41277,newest_vintage__difference__jun2031
+above_moderate,0.4141,92707,newest_vintage__difference__jun2031
+acutely_low,0.0658,14615,newest_vintage__difference__jan2031
+extremely_low,0.0737,16362,newest_vintage__difference__jan2031
+very_low,0.1045,23205,newest_vintage__difference__jan2031
+low,0.1576,34996,newest_vintage__difference__jan2031
+moderate,0.1844,40953,newest_vintage__difference__jan2031
+above_moderate,0.4141,91978,newest_vintage__difference__jan2031
+acutely_low,0.0658,11901,newest_vintage__dilution__jun2031
+extremely_low,0.0737,13324,newest_vintage__dilution__jun2031
+very_low,0.1045,18896,newest_vintage__dilution__jun2031
+low,0.1576,28497,newest_vintage__dilution__jun2031
+moderate,0.1844,33347,newest_vintage__dilution__jun2031
+above_moderate,0.4141,74896,newest_vintage__dilution__jun2031
+acutely_low,0.0658,11785,newest_vintage__dilution__jan2031
+extremely_low,0.0737,13194,newest_vintage__dilution__jan2031
+very_low,0.1045,18712,newest_vintage__dilution__jan2031
+low,0.1576,28219,newest_vintage__dilution__jan2031
+moderate,0.1844,33023,newest_vintage__dilution__jan2031
+above_moderate,0.4141,74167,newest_vintage__dilution__jan2031

@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Draft 7th-Cycle RHND — San Diego</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7; --surface-1: #fcfcfb;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --series-1: #2a78d6; --series-2: #eb6834;
+    --pos: #2a78d6; --neg: #e34948;
+    --warn: #fab219;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface-1: #1a1a19;
+      --text-primary: #f0efec; --text-secondary: #c3c2b7; --muted: #898781;
+      --grid: #2c2c2a; --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --series-1: #3987e5; --series-2: #d95926;
+      --pos: #3987e5; --neg: #e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface-1: #1a1a19;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5; --series-2: #d95926;
+    --pos: #3987e5; --neg: #e66767;
+  }
+  html { background: var(--page); }
+  body {
+    background: var(--page);
+    margin: 0 auto; padding: 32px 16px 64px; max-width: 920px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary); line-height: 1.55; font-size: 15.5px;
+  }
+  h1 { font-size: 27px; line-height: 1.2; margin: 6px 0 2px; }
+  h2 { font-size: 19px; margin: 40px 0 10px; }
+  h3 { font-size: 16px; margin: 26px 0 8px; }
+  p, li { color: var(--text-secondary); }
+  strong { color: var(--text-primary); }
+  a { color: var(--series-1); }
+  .kicker { color: var(--muted); font-size: 13px; letter-spacing: 0.06em;
+             text-transform: uppercase; }
+  .chip { display: inline-block; border: 1px solid var(--warn);
+           color: var(--text-primary); border-radius: 999px; padding: 1px 10px;
+           font-size: 12px; font-weight: 600; margin-left: 8px;
+           vertical-align: middle; }
+  .caveat { background: var(--surface-1); border: 1px solid var(--warn);
+             border-left: 4px solid var(--warn); border-radius: 8px;
+             padding: 12px 16px; margin: 20px 0; color: var(--text-secondary);
+             font-size: 14.5px; }
+  .callout { background: var(--surface-1); border: 1px solid var(--border);
+              border-left: 4px solid var(--series-1); border-radius: 8px;
+              padding: 12px 16px; margin: 18px 0; font-size: 14.5px; }
+  .callout h3 { margin: 2px 0 8px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px; margin: 22px 0; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border);
+           border-radius: 10px; padding: 14px 16px; }
+  .tile .label { font-size: 12.5px; color: var(--muted); }
+  .tile .value { font-size: 26px; font-weight: 650; margin-top: 2px; }
+  .tile .note { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+  figure { margin: 18px 0; background: var(--surface-1);
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 16px 8px; }
+  figcaption { font-size: 13px; color: var(--muted); margin: 6px 4px 8px; }
+  .legend { display: flex; gap: 18px; font-size: 13px;
+             color: var(--text-secondary); margin: 2px 4px 10px; flex-wrap: wrap; }
+  .legend .sw { display: inline-block; width: 11px; height: 11px;
+                 border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  svg { width: 100%; height: auto; display: block; }
+  svg .cat { font-size: 12.5px; fill: var(--text-secondary); }
+  svg .tick { font-size: 11px; fill: var(--muted);
+               font-variant-numeric: tabular-nums; }
+  svg .val { font-size: 11px; fill: var(--muted);
+              font-variant-numeric: tabular-nums; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px;
+           background: var(--surface-1); border: 1px solid var(--border);
+           border-radius: 10px; overflow: hidden; }
+  th, td { padding: 6px 10px; text-align: right;
+            font-variant-numeric: tabular-nums; border-top: 1px solid var(--grid); }
+  th { color: var(--muted); font-weight: 600; border-top: none; }
+  th:first-child, td:first-child { text-align: left;
+            font-variant-numeric: normal; }
+  tr.totalrow td { font-weight: 650; color: var(--text-primary); }
+  td { color: var(--text-secondary); }
+  details { margin: 10px 0; }
+  summary { cursor: pointer; color: var(--text-primary); font-weight: 600; }
+  #tip { position: fixed; pointer-events: none; background: var(--surface-1);
+          border: 1px solid var(--border); border-radius: 8px;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.18); padding: 8px 11px;
+          font-size: 12.5px; color: var(--text-primary); white-space: pre-line;
+          display: none; z-index: 10; max-width: 320px;
+          font-variant-numeric: tabular-nums; }
+  .hit:hover { fill: rgba(128,128,128,0.08); }
+  footer { margin-top: 48px; font-size: 13px; color: var(--muted);
+            border-top: 1px solid var(--grid); padding-top: 14px; }
+  @media print {
+    /* PDF export: light theme, expanded tables, no mid-element page breaks */
+    :root { color-scheme: light; }
+    body { max-width: none; padding: 0 4px; font-size: 13px; }
+    details > *:not(summary) { display: block !important; }
+    details summary { list-style: none; }
+    figure, table, .callout, .caveat, .tiles { break-inside: avoid; }
+    h2 { break-after: avoid; }
+    a { color: inherit; text-decoration: underline; }
+    #tip { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="tip"></div>
+
+<p class="kicker">Ballot-measure feasibility program · Workstream 4 · 2026-10-17</p>
+<h1>What San Diego's 7th-cycle housing need determination is likely to look
+like <span class="chip">DRAFT — UNVALIDATED</span></h1>
+<p>An independent, reproducible forecast of the Regional Housing Need
+Determination (RHND) that HCD will issue to SANDAG in 2028, built by running
+HCD's own published 7th-cycle methodology on public data — before the official
+number arrives.</p>
+
+  <div class="caveat" role="note">
+    <strong>&#9888;&#65038; Draft estimate — read this first.</strong>
+    This is an independent, unofficial forecast of a determination HCD will not
+    issue until 2028. It has not been validated by HCD, DOF, or SANDAG. It is
+    intended to inform <em>preliminary, order-of-magnitude</em> regional
+    planning conversations — it is <strong>not a substitute</strong> for HCD's
+    determination or SANDAG's allocation process, and it should
+    <strong>not be relied upon for specific planning studies</strong>, housing
+    element work, site inventories, or any decision requiring an adopted
+    number. Figures are approximations that will change with new ACS, LODES,
+    PIT, and DOF releases and with HCD's own methodological choices.
+  </div>
+
+<div class="tiles">
+  <div class="tile"><div class="label">Central draft estimate</div>
+    <div class="value">228,584</div>
+    <div class="note">units, 2028–2039 projection period</div></div>
+  <div class="tile"><div class="label">Scenario band</div>
+    <div class="value">179,100 – 228,584</div>
+    <div class="note">driven by HCD's own formula &amp; vintage choices</div></div>
+  <div class="tile"><div class="label">6th-cycle determination (2018)</div>
+    <div class="value">171,685</div>
+    <div class="note">adopted allocation total, 2021–2029</div></div>
+</div>
+
+<h2>What we did</h2>
+<p>HCD has already issued 7th-cycle determinations to the five-year-cycle
+counties, and those letters disclose the full methodology — every adjustment
+line, formula, dataset, and national benchmark. We rebuilt that method from
+its public inputs (ACS, LODES, HUD point-in-time counts, DOF projections and
+estimates, HCD annual-progress reports, CAL&nbsp;FIRE damage inspections,
+Caltrans forecasts) and <strong>proved the rebuild against the two published
+determinations</strong> before applying it to San Diego County:</p>
+<ul>
+  <li><strong>Mono County</strong> (final letter, Jan&nbsp;2026): 10 of
+  11 adjustment lines reproduced within 0–4 units; the one
+  remaining line (the PUMS overcrowding×cost-burden overlap) is a geography
+  limitation of public microdata that does not apply to San Diego.</li>
+  <li><strong>Humboldt County</strong> (final letter, Jul&nbsp;2025): 8
+  of 11 adjustment lines reproduced exactly — including
+  overcrowding, cost burden, and the overlap — and the vacancy line within
+  1 unit.</li>
+</ul>
+<p>The full line-by-line comparison, including everything that could
+<em>not</em> be reproduced and why, is in
+<a href="validation_mono.md">validation_mono.md</a>.</p>
+
+<h2>The logic, in one paragraph</h2>
+<p>HCD's 7th-cycle method starts from DOF's projected households at the end of
+the projection period, then adds what existing conditions already generate:
+units needed to reach healthy vacancy rates (2% owner / 7% renter),
+to bring overcrowding and housing cost burden down to the national rates
+(less an overlap credit so no household is counted twice), to replace
+demolitions, to house people counted in the point-in-time homeless count, and
+to cover disaster losses — then subtracts projected occupied units at the
+start of the period. For San Diego the result is dominated by the
+<strong>cost-burden line</strong> (136,160 units in the central
+scenario): 43.4% of the county's households pay 30%+ of income for housing
+against 31.7% nationally. Growth, the line that dominated the 6th cycle,
+contributes only about 54,405.</p>
+
+<h2>Why this is informative for preliminary SANDAG planning</h2>
+<ul>
+  <li><strong>The magnitude arrives before the letter does.</strong> Every
+  scenario lands well above the 6th cycle's 171,685 — electeds
+  and staff can see the order of magnitude, and which lines drive it, three
+  years before HCD hands the region the number.</li>
+  <li><strong>The band is HCD's own uncertainty, not ours.</strong> The spread
+  (179,100–228,584) comes from choices
+  HCD itself made differently in its two published letters (two formulas for
+  the overcrowding/cost-burden lines), plus data vintages and the
+  projection-period end date. Nothing in the band is an invented
+  assumption.</li>
+  <li><strong>The allocation conversation can start early.</strong> The
+  jurisdiction table below shows where need is <em>generated</em> under HCD's
+  definitions versus where the current allocation method would <em>send</em>
+  it — the structural tension the 7th-cycle methodology fight will be
+  about.</li>
+</ul>
+<p>None of this substitutes for the official process: HCD consults DOF on
+custom projections we cannot see, and both the method and the data vintages
+can change by 2028.</p>
+
+<h2>Per-jurisdiction: 6th cycle vs draft 7th cycle</h2>
+<p>Each jurisdiction's <strong>adopted 6th-cycle allocation</strong> (its
+current RHNA obligation) next to the <strong>existing need its own residents
+generate</strong> under HCD's 7th-cycle definitions (central scenario,
+computed from place-level ACS data; regional growth and homelessness shares
+are distributed by household share and labeled as such in the data file).</p>
+<figure>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--series-1)"></span>Adopted
+    6th-cycle allocation (171,685 total)</span>
+    <span><span class="sw" style="background:var(--series-2)"></span>Draft
+    7th-cycle generated need (228,584 total)</span>
+  </div>
+  <svg viewBox="0 0 830 860" role="img" aria-label="Adopted 6th-cycle allocation versus draft 7th-cycle generated need, by jurisdiction" font-family="inherit">
+<line x1="150.0" y1="22" x2="150.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="150.0" y="846" text-anchor="middle" class="tick">0k</text>
+<line x1="278.0" y1="22" x2="278.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="278.0" y="846" text-anchor="middle" class="tick">25k</text>
+<line x1="406.0" y1="22" x2="406.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="406.0" y="846" text-anchor="middle" class="tick">50k</text>
+<line x1="534.0" y1="22" x2="534.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="534.0" y="846" text-anchor="middle" class="tick">75k</text>
+<line x1="662.0" y1="22" x2="662.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="662.0" y="846" text-anchor="middle" class="tick">100k</text>
+<line x1="790.0" y1="22" x2="790.0" y2="830" stroke="var(--grid)" stroke-width="1"/>
+<text x="790.0" y="846" text-anchor="middle" class="tick">125k</text>
+<line x1="150" y1="22" x2="150" y2="830" stroke="var(--baseline)" stroke-width="1"/>
+<text x="142" y="46.0" text-anchor="end" class="cat">San Diego</text>
+<path d="M150.0,28.0 H699.1 Q703.1,28.0 703.1,32.0 V37.0 Q703.1,41.0 699.1,41.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,43.0 H655.8 Q659.8,43.0 659.8,47.0 V52.0 Q659.8,56.0 655.8,56.0 H150.0 Z" fill="var(--series-2)"/>
+<text x="709.14432" y="39" class="val">108,036</text>
+<text x="665.76768" y="54" class="val">99,564</text>
+<rect x="0" y="25" width="830" height="38" fill="transparent" class="hit" data-tip="San Diego&#10;6th-cycle adopted allocation: 108,036&#10;7th-cycle generated need (draft central): 99,564&#10;change: -8%"/>
+<text x="142" y="88.0" text-anchor="end" class="cat">Chula Vista</text>
+<path d="M150.0,70.0 H202.9 Q206.9,70.0 206.9,74.0 V79.0 Q206.9,83.0 202.9,83.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,85.0 H240.7 Q244.7,85.0 244.7,89.0 V94.0 Q244.7,98.0 240.7,98.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="67" width="830" height="38" fill="transparent" class="hit" data-tip="Chula Vista&#10;6th-cycle adopted allocation: 11,105&#10;7th-cycle generated need (draft central): 18,501&#10;change: +67%"/>
+<text x="142" y="130.0" text-anchor="end" class="cat">Escondido</text>
+<path d="M150.0,112.0 H195.2 Q199.2,112.0 199.2,116.0 V121.0 Q199.2,125.0 195.2,125.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,127.0 H208.3 Q212.3,127.0 212.3,131.0 V136.0 Q212.3,140.0 208.3,140.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="109" width="830" height="38" fill="transparent" class="hit" data-tip="Escondido&#10;6th-cycle adopted allocation: 9,607&#10;7th-cycle generated need (draft central): 12,169&#10;change: +27%"/>
+<text x="142" y="172.0" text-anchor="end" class="cat">Unincorporated County</text>
+<path d="M150.0,154.0 H180.3 Q184.3,154.0 184.3,158.0 V163.0 Q184.3,167.0 180.3,167.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,169.0 H287.1 Q291.1,169.0 291.1,173.0 V178.0 Q291.1,182.0 287.1,182.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="151" width="830" height="38" fill="transparent" class="hit" data-tip="Unincorporated County&#10;6th-cycle adopted allocation: 6,700&#10;7th-cycle generated need (draft central): 27,563&#10;change: +311%"/>
+<text x="142" y="214.0" text-anchor="end" class="cat">Oceanside</text>
+<path d="M150.0,196.0 H173.9 Q177.9,196.0 177.9,200.0 V205.0 Q177.9,209.0 173.9,209.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,211.0 H212.2 Q216.2,211.0 216.2,215.0 V220.0 Q216.2,224.0 212.2,224.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="193" width="830" height="38" fill="transparent" class="hit" data-tip="Oceanside&#10;6th-cycle adopted allocation: 5,443&#10;7th-cycle generated need (draft central): 12,937&#10;change: +138%"/>
+<text x="142" y="256.0" text-anchor="end" class="cat">National City</text>
+<path d="M150.0,238.0 H173.8 Q177.8,238.0 177.8,242.0 V247.0 Q177.8,251.0 173.8,251.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,253.0 H172.3 Q176.3,253.0 176.3,257.0 V262.0 Q176.3,266.0 172.3,266.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="235" width="830" height="38" fill="transparent" class="hit" data-tip="National City&#10;6th-cycle adopted allocation: 5,437&#10;7th-cycle generated need (draft central): 5,129&#10;change: -6%"/>
+<text x="142" y="298.0" text-anchor="end" class="cat">Carlsbad</text>
+<path d="M150.0,280.0 H165.8 Q169.8,280.0 169.8,284.0 V289.0 Q169.8,293.0 165.8,293.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,295.0 H179.8 Q183.8,295.0 183.8,299.0 V304.0 Q183.8,308.0 179.8,308.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="277" width="830" height="38" fill="transparent" class="hit" data-tip="Carlsbad&#10;6th-cycle adopted allocation: 3,873&#10;7th-cycle generated need (draft central): 6,603&#10;change: +70%"/>
+<text x="142" y="340.0" text-anchor="end" class="cat">La Mesa</text>
+<path d="M150.0,322.0 H165.4 Q169.4,322.0 169.4,326.0 V331.0 Q169.4,335.0 165.4,335.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,337.0 H175.3 Q179.3,337.0 179.3,341.0 V346.0 Q179.3,350.0 175.3,350.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="319" width="830" height="38" fill="transparent" class="hit" data-tip="La Mesa&#10;6th-cycle adopted allocation: 3,797&#10;7th-cycle generated need (draft central): 5,728&#10;change: +51%"/>
+<text x="142" y="382.0" text-anchor="end" class="cat">El Cajon</text>
+<path d="M150.0,364.0 H162.8 Q166.8,364.0 166.8,368.0 V373.0 Q166.8,377.0 162.8,377.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,379.0 H204.4 Q208.4,379.0 208.4,383.0 V388.0 Q208.4,392.0 204.4,392.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="361" width="830" height="38" fill="transparent" class="hit" data-tip="El Cajon&#10;6th-cycle adopted allocation: 3,280&#10;7th-cycle generated need (draft central): 11,404&#10;change: +248%"/>
+<text x="142" y="424.0" text-anchor="end" class="cat">San Marcos</text>
+<path d="M150.0,406.0 H162.0 Q166.0,406.0 166.0,410.0 V415.0 Q166.0,419.0 162.0,419.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,421.0 H176.2 Q180.2,421.0 180.2,425.0 V430.0 Q180.2,434.0 176.2,434.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="403" width="830" height="38" fill="transparent" class="hit" data-tip="San Marcos&#10;6th-cycle adopted allocation: 3,116&#10;7th-cycle generated need (draft central): 5,896&#10;change: +89%"/>
+<text x="142" y="466.0" text-anchor="end" class="cat">Vista</text>
+<path d="M150.0,448.0 H159.1 Q163.1,448.0 163.1,452.0 V457.0 Q163.1,461.0 159.1,461.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,463.0 H181.8 Q185.8,463.0 185.8,467.0 V472.0 Q185.8,476.0 181.8,476.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="445" width="830" height="38" fill="transparent" class="hit" data-tip="Vista&#10;6th-cycle adopted allocation: 2,561&#10;7th-cycle generated need (draft central): 6,993&#10;change: +173%"/>
+<text x="142" y="508.0" text-anchor="end" class="cat">Encinitas</text>
+<path d="M150.0,490.0 H154.0 Q158.0,490.0 158.0,494.0 V499.0 Q158.0,503.0 154.0,503.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,505.0 H160.2 Q164.2,505.0 164.2,509.0 V514.0 Q164.2,518.0 160.2,518.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="487" width="830" height="38" fill="transparent" class="hit" data-tip="Encinitas&#10;6th-cycle adopted allocation: 1,554&#10;7th-cycle generated need (draft central): 2,777&#10;change: +79%"/>
+<text x="142" y="550.0" text-anchor="end" class="cat">Lemon Grove</text>
+<path d="M150.0,532.0 H153.5 Q157.0,532.0 157.0,535.5 V541.5 Q157.0,545.0 153.5,545.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,547.0 H159.5 Q163.5,547.0 163.5,551.0 V556.0 Q163.5,560.0 159.5,560.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="529" width="830" height="38" fill="transparent" class="hit" data-tip="Lemon Grove&#10;6th-cycle adopted allocation: 1,359&#10;7th-cycle generated need (draft central): 2,635&#10;change: +94%"/>
+<text x="142" y="592.0" text-anchor="end" class="cat">Imperial Beach</text>
+<path d="M150.0,574.0 H153.4 Q156.8,574.0 156.8,577.4 V583.6 Q156.8,587.0 153.4,587.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,589.0 H160.5 Q164.5,589.0 164.5,593.0 V598.0 Q164.5,602.0 160.5,602.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="571" width="830" height="38" fill="transparent" class="hit" data-tip="Imperial Beach&#10;6th-cycle adopted allocation: 1,329&#10;7th-cycle generated need (draft central): 2,841&#10;change: +114%"/>
+<text x="142" y="634.0" text-anchor="end" class="cat">Poway</text>
+<path d="M150.0,616.0 H153.4 Q156.8,616.0 156.8,619.4 V625.6 Q156.8,629.0 153.4,629.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,631.0 H154.5 Q158.5,631.0 158.5,635.0 V640.0 Q158.5,644.0 154.5,644.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="613" width="830" height="38" fill="transparent" class="hit" data-tip="Poway&#10;6th-cycle adopted allocation: 1,319&#10;7th-cycle generated need (draft central): 1,661&#10;change: +26%"/>
+<text x="142" y="676.0" text-anchor="end" class="cat">Santee</text>
+<path d="M150.0,658.0 H153.1 Q156.2,658.0 156.2,661.1 V667.9 Q156.2,671.0 153.1,671.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,673.0 H163.5 Q167.5,673.0 167.5,677.0 V682.0 Q167.5,686.0 163.5,686.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="655" width="830" height="38" fill="transparent" class="hit" data-tip="Santee&#10;6th-cycle adopted allocation: 1,219&#10;7th-cycle generated need (draft central): 3,409&#10;change: +180%"/>
+<text x="142" y="718.0" text-anchor="end" class="cat">Coronado</text>
+<path d="M150.0,700.0 H152.3 Q154.7,700.0 154.7,702.3 V710.7 Q154.7,713.0 152.3,713.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,715.0 H154.4 Q158.4,715.0 158.4,719.0 V724.0 Q158.4,728.0 154.4,728.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="697" width="830" height="38" fill="transparent" class="hit" data-tip="Coronado&#10;6th-cycle adopted allocation: 912&#10;7th-cycle generated need (draft central): 1,645&#10;change: +80%"/>
+<text x="142" y="760.0" text-anchor="end" class="cat">Solana Beach</text>
+<path d="M150.0,742.0 H152.2 Q154.5,742.0 154.5,744.2 V752.8 Q154.5,755.0 152.2,755.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,757.0 H152.6 Q155.1,757.0 155.1,759.6 V767.4 Q155.1,770.0 152.6,770.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="739" width="830" height="38" fill="transparent" class="hit" data-tip="Solana Beach&#10;6th-cycle adopted allocation: 875&#10;7th-cycle generated need (draft central): 1,002&#10;change: +15%"/>
+<text x="142" y="802.0" text-anchor="end" class="cat">Del Mar</text>
+<path d="M150.0,784.0 H150.4 Q150.8,784.0 150.8,784.4 V796.6 Q150.8,797.0 150.4,797.0 H150.0 Z" fill="var(--series-1)"/>
+<path d="M150.0,799.0 H150.3 Q150.6,799.0 150.6,799.3 V811.7 Q150.6,812.0 150.3,812.0 H150.0 Z" fill="var(--series-2)"/>
+<rect x="0" y="781" width="830" height="38" fill="transparent" class="hit" data-tip="Del Mar&#10;6th-cycle adopted allocation: 163&#10;7th-cycle generated need (draft central): 122&#10;change: -25%"/>
+</svg>
+  <figcaption>Sorted by 6th-cycle allocation. Hover any row for values and
+  percent change. Source: SANDAG Final 6th Cycle RHNA Plan Table&nbsp;1.1;
+  jurisdiction_existing_need.csv (this project).</figcaption>
+</figure>
+
+<h2>The gap: who generates need vs who the method would allocate it to</h2>
+<p>If SANDAG's adopted 6th-cycle allocation method (65% transit stations, 35%
+jobs) were simply rerun at the draft 7th-cycle total, the gap between what a
+jurisdiction's residents generate and what the method assigns looks like
+this:</p>
+<figure>
+  <svg viewBox="0 0 814 552" role="img" aria-label="Gap between generated need and the 6th-cycle allocation method, by jurisdiction" font-family="inherit">
+<line x1="143.1" y1="18" x2="143.1" y2="522" stroke="var(--grid)" stroke-width="1"/>
+<text x="143.1" y="538" text-anchor="middle" class="tick">-45k</text>
+<line x1="286.1" y1="18" x2="286.1" y2="522" stroke="var(--grid)" stroke-width="1"/>
+<text x="286.1" y="538" text-anchor="middle" class="tick">-30k</text>
+<line x1="429.2" y1="18" x2="429.2" y2="522" stroke="var(--grid)" stroke-width="1"/>
+<text x="429.2" y="538" text-anchor="middle" class="tick">-15k</text>
+<line x1="572.2" y1="18" x2="572.2" y2="522" stroke="var(--grid)" stroke-width="1"/>
+<text x="572.2" y="538" text-anchor="middle" class="tick">+0k</text>
+<line x1="715.3" y1="18" x2="715.3" y2="522" stroke="var(--grid)" stroke-width="1"/>
+<text x="715.3" y="538" text-anchor="middle" class="tick">+15k</text>
+<line x1="572.2" y1="18" x2="572.2" y2="522" stroke="var(--baseline)" stroke-width="1.5"/>
+<text x="142" y="33" text-anchor="end" class="cat">Unincorporated County</text>
+<path d="M572.2,22.0 H746.0 Q750.0,22.0 750.0,26.0 V31.0 Q750.0,35.0 746.0,35.0 H572.2 Z" fill="var(--pos)"/>
+<text x="756.0" y="33" text-anchor="start" class="val">+18,643</text>
+<rect x="0" y="20" width="814" height="24" fill="transparent" class="hit" data-tip="Unincorporated County&#10;generated: 27,563&#10;6th-method allocation at new total: 8,920&#10;gap: +18,643"/>
+<text x="142" y="59" text-anchor="end" class="cat">El Cajon</text>
+<path d="M572.2,48.0 H635.3 Q639.3,48.0 639.3,52.0 V57.0 Q639.3,61.0 635.3,61.0 H572.2 Z" fill="var(--pos)"/>
+<text x="645.3" y="59" text-anchor="start" class="val">+7,037</text>
+<rect x="0" y="46" width="814" height="24" fill="transparent" class="hit" data-tip="El Cajon&#10;generated: 11,404&#10;6th-method allocation at new total: 4,368&#10;gap: +7,037"/>
+<text x="142" y="85" text-anchor="end" class="cat">Oceanside</text>
+<path d="M572.2,74.0 H622.5 Q626.5,74.0 626.5,78.0 V83.0 Q626.5,87.0 622.5,87.0 H572.2 Z" fill="var(--pos)"/>
+<text x="632.5" y="85" text-anchor="start" class="val">+5,690</text>
+<rect x="0" y="72" width="814" height="24" fill="transparent" class="hit" data-tip="Oceanside&#10;generated: 12,937&#10;6th-method allocation at new total: 7,247&#10;gap: +5,690"/>
+<text x="142" y="111" text-anchor="end" class="cat">Chula Vista</text>
+<path d="M572.2,100.0 H603.6 Q607.6,100.0 607.6,104.0 V109.0 Q607.6,113.0 603.6,113.0 H572.2 Z" fill="var(--pos)"/>
+<text x="613.6" y="111" text-anchor="start" class="val">+3,716</text>
+<rect x="0" y="98" width="814" height="24" fill="transparent" class="hit" data-tip="Chula Vista&#10;generated: 18,501&#10;6th-method allocation at new total: 14,786&#10;gap: +3,716"/>
+<text x="142" y="137" text-anchor="end" class="cat">Vista</text>
+<path d="M572.2,126.0 H602.4 Q606.4,126.0 606.4,130.0 V135.0 Q606.4,139.0 602.4,139.0 H572.2 Z" fill="var(--pos)"/>
+<text x="612.4" y="137" text-anchor="start" class="val">+3,584</text>
+<rect x="0" y="124" width="814" height="24" fill="transparent" class="hit" data-tip="Vista&#10;generated: 6,993&#10;6th-method allocation at new total: 3,410&#10;gap: +3,584"/>
+<text x="142" y="163" text-anchor="end" class="cat">Santee</text>
+<path d="M572.2,152.0 H585.2 Q589.2,152.0 589.2,156.0 V161.0 Q589.2,165.0 585.2,165.0 H572.2 Z" fill="var(--pos)"/>
+<text x="595.2" y="163" text-anchor="start" class="val">+1,785</text>
+<rect x="0" y="150" width="814" height="24" fill="transparent" class="hit" data-tip="Santee&#10;generated: 3,409&#10;6th-method allocation at new total: 1,624&#10;gap: +1,785"/>
+<text x="142" y="189" text-anchor="end" class="cat">San Marcos</text>
+<path d="M572.2,178.0 H584.9 Q588.9,178.0 588.9,182.0 V187.0 Q588.9,191.0 584.9,191.0 H572.2 Z" fill="var(--pos)"/>
+<text x="594.9" y="189" text-anchor="start" class="val">+1,747</text>
+<rect x="0" y="176" width="814" height="24" fill="transparent" class="hit" data-tip="San Marcos&#10;generated: 5,896&#10;6th-method allocation at new total: 4,149&#10;gap: +1,747"/>
+<text x="142" y="215" text-anchor="end" class="cat">Carlsbad</text>
+<path d="M572.2,204.0 H582.0 Q586.0,204.0 586.0,208.0 V213.0 Q586.0,217.0 582.0,217.0 H572.2 Z" fill="var(--pos)"/>
+<text x="592.0" y="215" text-anchor="start" class="val">+1,447</text>
+<rect x="0" y="202" width="814" height="24" fill="transparent" class="hit" data-tip="Carlsbad&#10;generated: 6,603&#10;6th-method allocation at new total: 5,157&#10;gap: +1,447"/>
+<text x="142" y="241" text-anchor="end" class="cat">Imperial Beach</text>
+<path d="M572.2,230.0 H578.4 Q582.4,230.0 582.4,234.0 V239.0 Q582.4,243.0 578.4,243.0 H572.2 Z" fill="var(--pos)"/>
+<text x="588.4" y="241" text-anchor="start" class="val">+1,072</text>
+<rect x="0" y="228" width="814" height="24" fill="transparent" class="hit" data-tip="Imperial Beach&#10;generated: 2,841&#10;6th-method allocation at new total: 1,769&#10;gap: +1,072"/>
+<text x="142" y="267" text-anchor="end" class="cat">Lemon Grove</text>
+<path d="M572.2,256.0 H576.1 Q580.1,256.0 580.1,259.9 V265.1 Q580.1,269.0 576.1,269.0 H572.2 Z" fill="var(--pos)"/>
+<text x="586.1" y="267" text-anchor="start" class="val">+826</text>
+<rect x="0" y="254" width="814" height="24" fill="transparent" class="hit" data-tip="Lemon Grove&#10;generated: 2,635&#10;6th-method allocation at new total: 1,809&#10;gap: +826"/>
+<text x="142" y="293" text-anchor="end" class="cat">Encinitas</text>
+<path d="M572.2,282.0 H575.6 Q579.0,282.0 579.0,285.4 V291.6 Q579.0,295.0 575.6,295.0 H572.2 Z" fill="var(--pos)"/>
+<text x="585.0" y="293" text-anchor="start" class="val">+707</text>
+<rect x="0" y="280" width="814" height="24" fill="transparent" class="hit" data-tip="Encinitas&#10;generated: 2,777&#10;6th-method allocation at new total: 2,070&#10;gap: +707"/>
+<text x="142" y="319" text-anchor="end" class="cat">La Mesa</text>
+<path d="M572.2,308.0 H575.4 Q578.6,308.0 578.6,311.2 V317.8 Q578.6,321.0 575.4,321.0 H572.2 Z" fill="var(--pos)"/>
+<text x="584.6" y="319" text-anchor="start" class="val">+672</text>
+<rect x="0" y="306" width="814" height="24" fill="transparent" class="hit" data-tip="La Mesa&#10;generated: 5,728&#10;6th-method allocation at new total: 5,056&#10;gap: +672"/>
+<text x="142" y="345" text-anchor="end" class="cat">Coronado</text>
+<path d="M572.2,334.0 H574.3 Q576.3,334.0 576.3,336.1 V344.9 Q576.3,347.0 574.3,347.0 H572.2 Z" fill="var(--pos)"/>
+<text x="582.3" y="345" text-anchor="start" class="val">+431</text>
+<rect x="0" y="332" width="814" height="24" fill="transparent" class="hit" data-tip="Coronado&#10;generated: 1,645&#10;6th-method allocation at new total: 1,214&#10;gap: +431"/>
+<text x="142" y="371" text-anchor="end" class="cat">Del Mar</text>
+<path d="M572.2,360.0 H571.8 Q571.3,360.0 571.3,360.5 V372.5 Q571.3,373.0 571.8,373.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="371" text-anchor="start" class="val">-95</text>
+<rect x="0" y="358" width="814" height="24" fill="transparent" class="hit" data-tip="Del Mar&#10;generated: 122&#10;6th-method allocation at new total: 217&#10;gap: -95"/>
+<text x="142" y="397" text-anchor="end" class="cat">Poway</text>
+<path d="M572.2,386.0 H571.8 Q571.3,386.0 571.3,386.5 V398.5 Q571.3,399.0 571.8,399.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="397" text-anchor="start" class="val">-95</text>
+<rect x="0" y="384" width="814" height="24" fill="transparent" class="hit" data-tip="Poway&#10;generated: 1,661&#10;6th-method allocation at new total: 1,756&#10;gap: -95"/>
+<text x="142" y="423" text-anchor="end" class="cat">Solana Beach</text>
+<path d="M572.2,412.0 H571.4 Q570.6,412.0 570.6,412.8 V424.2 Q570.6,425.0 571.4,425.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="423" text-anchor="start" class="val">-164</text>
+<rect x="0" y="410" width="814" height="24" fill="transparent" class="hit" data-tip="Solana Beach&#10;generated: 1,002&#10;6th-method allocation at new total: 1,166&#10;gap: -164"/>
+<text x="142" y="449" text-anchor="end" class="cat">Escondido</text>
+<path d="M572.2,438.0 H569.2 Q566.3,438.0 566.3,441.0 V448.0 Q566.3,451.0 569.2,451.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="449" text-anchor="start" class="val">-622</text>
+<rect x="0" y="436" width="814" height="24" fill="transparent" class="hit" data-tip="Escondido&#10;generated: 12,169&#10;6th-method allocation at new total: 12,791&#10;gap: -622"/>
+<text x="142" y="475" text-anchor="end" class="cat">National City</text>
+<path d="M572.2,464.0 H556.1 Q552.1,464.0 552.1,468.0 V473.0 Q552.1,477.0 556.1,477.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="475" text-anchor="start" class="val">-2,110</text>
+<rect x="0" y="462" width="814" height="24" fill="transparent" class="hit" data-tip="National City&#10;generated: 5,129&#10;6th-method allocation at new total: 7,239&#10;gap: -2,110"/>
+<text x="142" y="501" text-anchor="end" class="cat">San Diego</text>
+<path d="M572.2,490.0 H154.0 Q150.0,490.0 150.0,494.0 V499.0 Q150.0,503.0 154.0,503.0 H572.2 Z" fill="var(--neg)"/>
+<text x="578.2" y="501" text-anchor="start" class="val">-44,273</text>
+<rect x="0" y="488" width="814" height="24" fill="transparent" class="hit" data-tip="San Diego&#10;generated: 99,564&#10;6th-method allocation at new total: 143,837&#10;gap: -44,273"/>
+</svg>
+  <figcaption>Gap = generated − allocated, in units, at the
+  228,584-unit central scenario. Positive: residents generate
+  more need than the method would allocate there. Reading and caveats in
+  <a href="jurisdiction_gap.md">jurisdiction_gap.md</a>.</figcaption>
+</figure>
+
+<div class="callout">
+  <h3>Reading the San Diego shift</h3>
+  <p>The City of San Diego stands out twice in these charts, and both shifts
+  are properties of the <em>measurement</em>, not of anything that changed in
+  the city.</p>
+  <p><strong>Why its draft generated need (99,564) sits
+  below its 6th-cycle allocation (108,036) even though
+  the regional total rose by a third:</strong> the city's housing-stress rates
+  are almost exactly the regional rates — overcrowding
+  6.2% in the city vs 6.7% countywide, cost
+  burden 42.9% vs 43.4% (both far above the
+  national 31.7% benchmark) — so under HCD's definitions the city generates
+  need in proportion to the households it houses:
+  45% of the region's households,
+  44%
+  of the generated need. Its 6th-cycle allocation was never
+  proportional to households: it was driven by infrastructure.</p>
+  <p><strong>Why the allocation method sends it
+  143,837 (a 44,273-unit
+  gap):</strong> the 6th-cycle method allocates 65% of all units by transit
+  stations, and the city holds 100 of the region's 154 rail and Rapid
+  stations and 101 of its 140 major transit stops —
+  67% of the transit pot — plus
+  56% of the jobs component, for
+  63% of the total. The &minus;44k
+  gap is the wedge between owning two-thirds of the transit infrastructure and
+  housing 45% of the households. The same wedge, with the
+  opposite sign, is what the high-overcrowding, high-cost-burden jurisdictions
+  absorb: Unincorporated County (+18,643), El Cajon (+7,037), Oceanside (+5,690), Chula Vista (+3,716), Vista (+3,584).</p>
+  <p>Because the shift comes from the allocation formula's geometry rather
+  than from conditions inside the city, no census-tract pattern within the
+  City of San Diego "accounts for" it. A tract-level map of the city would
+  answer a different (and worthwhile) question — <em>where inside the city
+  the overcrowding and cost-burden need concentrates</em> — and can be built
+  from the same ACS tables at tract geography if wanted; it would not move
+  any number in these charts.</p>
+</div>
+
+<details>
+  <summary>Data table: all jurisdictions</summary>
+  <table>
+    <tr><th>Jurisdiction</th><th>6th-cycle adopted</th>
+        <th>7th generated (draft)</th><th>7th alloc. @ 6th method</th>
+        <th>Gap</th></tr>
+    <tr><td>San Diego</td><td>108,036</td><td>99,564</td><td>143,837</td><td>-44,273</td></tr>
+<tr><td>Unincorporated County</td><td>6,700</td><td>27,563</td><td>8,920</td><td>+18,643</td></tr>
+<tr><td>Chula Vista</td><td>11,105</td><td>18,501</td><td>14,786</td><td>+3,716</td></tr>
+<tr><td>Oceanside</td><td>5,443</td><td>12,937</td><td>7,247</td><td>+5,690</td></tr>
+<tr><td>Escondido</td><td>9,607</td><td>12,169</td><td>12,791</td><td>-622</td></tr>
+<tr><td>El Cajon</td><td>3,280</td><td>11,404</td><td>4,368</td><td>+7,037</td></tr>
+<tr><td>Vista</td><td>2,561</td><td>6,993</td><td>3,410</td><td>+3,584</td></tr>
+<tr><td>Carlsbad</td><td>3,873</td><td>6,603</td><td>5,157</td><td>+1,447</td></tr>
+<tr><td>San Marcos</td><td>3,116</td><td>5,896</td><td>4,149</td><td>+1,747</td></tr>
+<tr><td>La Mesa</td><td>3,797</td><td>5,728</td><td>5,056</td><td>+672</td></tr>
+<tr><td>National City</td><td>5,437</td><td>5,129</td><td>7,239</td><td>-2,110</td></tr>
+<tr><td>Santee</td><td>1,219</td><td>3,409</td><td>1,624</td><td>+1,785</td></tr>
+<tr><td>Imperial Beach</td><td>1,329</td><td>2,841</td><td>1,769</td><td>+1,072</td></tr>
+<tr><td>Encinitas</td><td>1,554</td><td>2,777</td><td>2,070</td><td>+707</td></tr>
+<tr><td>Lemon Grove</td><td>1,359</td><td>2,635</td><td>1,809</td><td>+826</td></tr>
+<tr><td>Poway</td><td>1,319</td><td>1,661</td><td>1,756</td><td>-95</td></tr>
+<tr><td>Coronado</td><td>912</td><td>1,645</td><td>1,214</td><td>+431</td></tr>
+<tr><td>Solana Beach</td><td>875</td><td>1,002</td><td>1,166</td><td>-164</td></tr>
+<tr><td>Del Mar</td><td>163</td><td>122</td><td>217</td><td>-95</td></tr>
+  </table>
+</details>
+
+<h2>The determination, line by line (central scenario)</h2>
+<details>
+  <summary>HCD Attachment-2 layout vs the 2018 determination</summary>
+  <table>
+    <tr><th>#</th><th>Line</th><th>Draft 7th cycle</th><th>6th cycle (2018)</th></tr>
+    <tr><td>1</td><td>Population: 2039-06-15</td><td>3,423,080</td><td>3,613,215</td></tr><tr><td>2</td><td>- Group Quarters Population</td><td>-118,738</td><td>-118,075</td></tr><tr><td>3</td><td>Household (HH) Population</td><td>3,304,342</td><td>3,495,140</td></tr><tr><td>4</td><td>Projected Households</td><td>1,290,675</td><td>1,251,115</td></tr><tr><td>5a</td><td>+ Vacancy Adjustment, Existing Households</td><td>26,725</td><td>31,500</td></tr><tr><td>5b</td><td>+ Vacancy Adjustment, Projected Households</td><td>2,326</td><td>–</td></tr><tr><td>6</td><td>+ Overcrowding Adjustment</td><td>38,201</td><td>38,700</td></tr><tr><td>7</td><td>+ Cost-burden Adjustment</td><td>136,160</td><td>–</td></tr><tr><td>8</td><td>- Overcrowded and Cost-burdened Overlap</td><td>-34,463</td><td>–</td></tr><tr><td>9</td><td>+ Replacement Adjustment Demolitions (0.10%)</td><td>1,236</td><td>6,255</td></tr><tr><td>11</td><td>+ Jobs Housing Relationship Adjustment</td><td>0</td><td>–</td></tr><tr><td>12</td><td>+ Homelessness Adjustment</td><td>3,965</td><td>–</td></tr><tr><td>13</td><td>+ State of Emergency Adjustment</td><td>28</td><td>–</td></tr><tr><td>14</td><td>- Occupied Units (HHs) projected 2028-12-31</td><td>-1,236,270</td><td>-1,155,883</td></tr><tr><td>15</td><td>Preliminary Regional Housing Need (excl. seasonal)</td><td>228,584</td><td>–</td></tr><tr><td>10</td><td>+ Replacement Adjustment Seasonal/Recreational/Occasional</td><td>0</td><td>–</td></tr><tr><td>16</td><td>+ Feasible Jobs/Housing Balance Adjustment</td><td>0</td><td>–</td></tr><tr class="totalrow"><td>total</td><td>7th Cycle Regional Housing Need Determination</td><td>228,584</td><td>171,685</td></tr>
+  </table>
+  <p>All eight scenarios, with every line and the underlying rates:
+  <a href="rhnd_7th_cycle_sandag.md">rhnd_7th_cycle_sandag.md</a> /
+  <a href="rhnd_7th_cycle_sandag.csv">.csv</a></p>
+</details>
+
+<h2>Scenario totals</h2>
+<details>
+  <summary>All eight scenarios</summary>
+  <table>
+    <tr><th>Scenario (vintage · lines-6/7 formula · due date)</th><th>Total</th></tr>
+    <tr><td>mono vintage · difference · jun2031</td><td>228,584</td></tr>
+<tr><td>mono vintage · difference · jan2031</td><td>226,825</td></tr>
+<tr><td>newest vintage · difference · jun2031</td><td>223,869</td></tr>
+<tr><td>newest vintage · difference · jan2031</td><td>222,109</td></tr>
+<tr><td>mono vintage · dilution · jun2031</td><td>185,431</td></tr>
+<tr><td>mono vintage · dilution · jan2031</td><td>183,672</td></tr>
+<tr><td>newest vintage · dilution · jun2031</td><td>180,860</td></tr>
+<tr><td>newest vintage · dilution · jan2031</td><td>179,100</td></tr>
+  </table>
+  <p>"difference" = the Mono letter's rate-difference formula;
+  "dilution" = the Humboldt letter's units-to-reach-the-US-rate formula.
+  Vintages: mono = 2019–23 ACS / LODES 2022 / PIT 2024; newest = 2020–24 ACS /
+  LODES 2023 / PIT 2025.</p>
+</details>
+
+<h2>Detail documents and data</h2>
+<ul>
+  <li><a href="README.md">README.md</a> — what was run, vintages, band
+  drivers, rerun triggers</li>
+  <li><a href="validation_mono.md">validation_mono.md</a> — the Mono and
+  Humboldt reproductions, line by line, with every known limitation</li>
+  <li><a href="rhnd_7th_cycle_sandag.md">rhnd_7th_cycle_sandag.md</a> /
+  <a href="rhnd_7th_cycle_sandag.csv">.csv</a> — the full determination
+  table, all scenarios</li>
+  <li><a href="jurisdiction_existing_need.csv">jurisdiction_existing_need.csv</a>
+  — per-jurisdiction lines (computed vs distributed columns flagged in the
+  header)</li>
+  <li><a href="jurisdiction_gap.md">jurisdiction_gap.md</a> — the gap
+  analysis</li>
+  <li><a href="https://github.com/twgonzalez/ahoa/blob/main/data/manifest.yaml">data/manifest.yaml</a>
+  — provenance of every source file (URL, vintage, license, fetch date)</li>
+  <li><a href="https://github.com/twgonzalez/ahoa/tree/main/rhnd">rhnd/</a> —
+  the pipeline itself; rerunnable when new ACS/LODES/DOF vintages land</li>
+</ul>
+
+<footer>
+  <p><strong>Use limits:</strong> draft, unvalidated, approximate. Produced
+  for preliminary regional planning discussion only. Not an HCD or SANDAG
+  document; not validated by HCD, DOF, or SANDAG; not suitable for housing
+  elements, site inventories, environmental review, or any specific planning
+  study. The official 7th-cycle determination will be issued by HCD in 2028
+  following statutory consultation with SANDAG and DOF.</p>
+  <p>Regenerated 2026-10-17 by <code>rhnd/make_report.py</code>; every figure
+  traces to a source in <code>data/manifest.yaml</code> through the
+  <code>rhnd/</code> pipeline. Validation tolerances enforced by
+  <code>tests/test_rhnd.py</code>.</p>
+</footer>
+
+<script>
+  // PDF/print export: expand every collapsed section
+  window.addEventListener('beforeprint',
+    () => document.querySelectorAll('details').forEach(d => d.open = true));
+  const tip = document.getElementById('tip');
+  document.querySelectorAll('.hit').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      tip.textContent = el.dataset.tip;
+      tip.style.display = 'block';
+      const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+      let x = e.clientX + pad, y = e.clientY + pad;
+      if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+      if (y + h > innerHeight - 8) y = e.clientY - h - pad;
+      tip.style.left = x + 'px'; tip.style.top = y + 'px';
+    });
+    el.addEventListener('mouseleave', () => tip.style.display = 'none');
+  });
+</script>
+</body>
+</html>

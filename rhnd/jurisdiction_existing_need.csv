@@ -1,0 +1,26 @@
+# WHAT YOUR RESIDENTS GENERATE UNDER HCD'S 7TH-CYCLE DEFINITIONS.
+# This is NOT an allocation. Allocation columns (SANDAG 6th-cycle
+# method, scaled to the new regional total) are included for comparison.
+# Regional scenario: mono_vintage__difference__jun2031, total 228,584 units.
+# Computed columns scaled to the regional lines; scale factors: l5a=1.102, l6=0.971, l7=1.000, l8=0.971, l9=1.009, l13=1.000
+# growth/5b/12 distributed by E-5 2025 occupied-household share; 11 distributed by LODES jobs (regional line is 0); 13 located by DINS records (all unincorporated).
+jurisdiction,growth_lines_4_14,l5a_vacancy,l5b_vacancy_projected,l6_overcrowding,l7_cost_burden,l8_overlap,l9_demolitions,l10_seasonal,l11_jobs_housing,l12_homelessness,l13_emergency,total_generated,share_of_region,allocation_6th_method_scaled,gap_generated_minus_allocated
+Carlsbad,2065,954,88,0,3299,0,46,0,0,151,0,6603,0.0289,5157,1447
+Chula Vista,3993,2636,171,5881,10747,-5306,89,0,0,291,0,18501,0.0809,14786,3716
+Coronado,336,157,14,0,1086,0,28,0,0,24,0,1645,0.0072,1214,431
+Del Mar,88,22,4,0,1,0,2,0,0,6,0,122,0.0005,217,-95
+El Cajon,1612,1143,69,3110,8123,-2806,36,0,0,117,0,11404,0.0499,4368,7037
+Encinitas,1132,321,48,0,1169,0,25,0,0,82,0,2777,0.0121,2070,707
+Escondido,2216,1413,95,2693,7971,-2430,49,0,0,161,0,12169,0.0532,12791,-622
+Imperial Beach,429,287,18,652,2002,-588,10,0,0,31,0,2841,0.0124,1769,1072
+La Mesa,1166,716,50,414,3645,-374,26,0,0,85,0,5728,0.0251,5056,672
+Lemon Grove,427,408,18,258,1716,-232,10,0,0,31,0,2635,0.0115,1809,826
+National City,789,683,34,2396,3314,-2161,18,0,0,57,0,5129,0.0224,7239,-2110
+Oceanside,2921,1376,125,1289,8111,-1163,65,0,0,213,0,12937,0.0566,7247,5690
+Poway,779,289,33,90,477,-82,17,0,0,57,0,1661,0.0073,1756,-95
+San Diego,24485,11481,1047,14241,58826,-12847,547,0,0,1784,0,99564,0.4356,143837,-44273
+San Marcos,1441,543,62,901,3626,-813,32,0,0,105,0,5896,0.0258,4149,1747
+Santee,983,569,42,123,1709,-111,22,0,0,72,0,3409,0.0149,1624,1785
+Solana Beach,261,72,11,9,632,-8,6,0,0,19,0,1002,0.0044,1166,-164
+Vista,1497,997,64,2756,4023,-2486,33,0,0,109,0,6993,0.0306,3410,3584
+Unincorporated County,7786,2660,333,3388,15684,-3056,174,0,0,567,28,27563,0.1206,8920,18643
