@@ -105,15 +105,28 @@
   footer { margin-top: 48px; font-size: 13px; color: var(--muted);
             border-top: 1px solid var(--grid); padding-top: 14px; }
   @media print {
-    /* PDF export: light theme, expanded tables, no mid-element page breaks */
+    /* PDF export: light theme, expanded tables, clean pagination.
+       Each chart section starts its own page with the chart scaled to fit
+       beside its heading and intro; tables flow and only rows stay whole. */
+    @page { margin: 13mm 12mm; }
     :root { color-scheme: light; }
-    body { max-width: none; padding: 0 4px; font-size: 13px; }
+    body { max-width: none; padding: 0 2px; font-size: 12.5px; }
+    h1 { font-size: 23px; }
+    h2 { font-size: 17px; margin-top: 22px; break-after: avoid; }
     details > *:not(summary) { display: block !important; }
     details summary { list-style: none; }
-    figure, table, .callout, .caveat, .tiles { break-inside: avoid; }
-    h2 { break-after: avoid; }
+    h2.chart-section { break-before: page; }
+    figure { break-inside: avoid; zoom: 0.78; }
+    .caveat, .tiles, .tile { break-inside: avoid; }
+    .callout { break-before: page; break-inside: avoid; zoom: 0.92; }
+    table { break-inside: auto; }
+    tr { break-inside: avoid; }
+    details, h3 { break-after: auto; }
+    summary { break-after: avoid; }
     a { color: inherit; text-decoration: underline; }
+    footer { break-inside: avoid; }
     #tip { display: none !important; }
+    .no-print { display: none !important; }
   }
 </style>
 </head>
@@ -211,7 +224,7 @@ contributes only about 54,405.</p>
 custom projections we cannot see, and both the method and the data vintages
 can change by 2028.</p>
 
-<h2>Per-jurisdiction: 6th cycle vs draft 7th cycle</h2>
+<h2 class="chart-section">Per-jurisdiction: 6th cycle vs draft 7th cycle</h2>
 <p>Each jurisdiction's <strong>adopted 6th-cycle allocation</strong> (its
 current RHNA obligation) next to the <strong>existing need its own residents
 generate</strong> under HCD's 7th-cycle definitions (central scenario,
@@ -317,12 +330,13 @@ are distributed by household share and labeled as such in the data file).</p>
 <path d="M150.0,799.0 H150.3 Q150.6,799.0 150.6,799.3 V811.7 Q150.6,812.0 150.3,812.0 H150.0 Z" fill="var(--series-2)"/>
 <rect x="0" y="781" width="830" height="38" fill="transparent" class="hit" data-tip="Del Mar&#10;6th-cycle adopted allocation: 163&#10;7th-cycle generated need (draft central): 122&#10;change: -25%"/>
 </svg>
-  <figcaption>Sorted by 6th-cycle allocation. Hover any row for values and
-  percent change. Source: SANDAG Final 6th Cycle RHNA Plan Table&nbsp;1.1;
-  jurisdiction_existing_need.csv (this project).</figcaption>
+  <figcaption>Sorted by 6th-cycle allocation. <span class="no-print">Hover any
+  row for values and percent change. </span>Source: SANDAG Final 6th Cycle
+  RHNA Plan Table&nbsp;1.1; jurisdiction_existing_need.csv (this
+  project).</figcaption>
 </figure>
 
-<h2>The gap: who generates need vs who the method would allocate it to</h2>
+<h2 class="chart-section">The gap: who generates need vs who the method would allocate it to</h2>
 <p>If SANDAG's adopted 6th-cycle allocation method (65% transit stations, 35%
 jobs) were simply rerun at the draft 7th-cycle total, the gap between what a
 jurisdiction's residents generate and what the method assigns looks like
@@ -551,7 +565,9 @@ this:</p>
   <p>Regenerated 2026-10-17 by <code>rhnd/make_report.py</code>; every figure
   traces to a source in <code>data/manifest.yaml</code> through the
   <code>rhnd/</code> pipeline. Validation tolerances enforced by
-  <code>tests/test_rhnd.py</code>.</p>
+  <code>tests/test_rhnd.py</code>.
+  <span class="no-print">A print-ready copy:
+  <a href="rhnd_report.pdf">rhnd_report.pdf</a>.</span></p>
 </footer>
 
 <script>
